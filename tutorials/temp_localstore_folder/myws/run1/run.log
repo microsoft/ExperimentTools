@@ -1,0 +1,9 @@
+{"time": "2019-04-11T12:06:52.881720-07:00", "event": "started", "data": {"description": null, "exper_name": "my first experiment", "from_ip": "10.0.0.30", "from_computer_name": "AGENT1", "box_name": null}}
+{"time": "2019-04-11T12:06:57.834696-07:00", "event": "hp", "data": {"lr": 0.01, "epochs": 30}}
+{"time": "2019-04-11T12:06:57.941512-07:00", "event": "metrics", "data": {"val_loss": 0.49355962958943544}}
+{"time": "2019-04-11T12:06:57.941512-07:00", "event": "metrics", "data": {"val_acc": 0.9963980645817385}}
+{"time": "2019-04-11T12:06:58.960272-07:00", "event": "metrics", "data": {"val_loss": 0.2843702895183129}}
+{"time": "2019-04-11T12:06:58.960272-07:00", "event": "metrics", "data": {"val_acc": 0.8429041996852155}}
+{"time": "2019-04-11T12:06:59.994790-07:00", "event": "metrics", "data": {"val_loss": 0.27225085211586497}}
+{"time": "2019-04-11T12:06:59.994790-07:00", "event": "metrics", "data": {"val_acc": 0.8749884319043336}}
+{"time": "2019-04-11T12:07:00.951252-07:00", "event": "ended", "data": {"status": "completed", "exit_code": 0, "metrics_rollup": {"val_loss": 0.27225085211586497, "val_acc": 0.8749884319043336}}}

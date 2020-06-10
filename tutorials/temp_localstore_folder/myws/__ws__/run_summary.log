@@ -1,0 +1,2 @@
+{"ws_name": "myws", "exper_name": "my first experiment", "run_name": "run1", "time": "2019-04-11T12:06:52.884718-07:00", "event": "start", "description": null, "from_ip": "10.0.0.30", "from_computer_name": "AGENT1", "box_name": null}
+{"ws_name": "myws", "run_name": "run1", "time": "2019-04-11T12:07:00.951252-07:00", "event": "end", "status": "completed", "exit_code": 0, "metrics": {"val_loss": 0.27225085211586497, "val_acc": 0.8749884319043336}}

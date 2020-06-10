@@ -1,0 +1,245 @@
+{'_optimized_mode': False, '_use_framework_image': False, '_framework_name': 'PyTorch', '_framework_version': '1.2', '_estimator_config': {
+    "script": "aml_shim.py",
+    "arguments": [
+        "/bin/bash --login wrapped.sh",
+        1
+    ],
+    "target": "sandbox-compute",
+    "framework": "python",
+    "communicator": "Mpi",
+    "maxRunDurationSeconds": null,
+    "nodeCount": 1,
+    "environment": {
+        "name": null,
+        "version": null,
+        "environmentVariables": {
+            "XT_BOX_SECRET": "2c8fb35a-6a88-4f60-89b5-56e672700ea8",
+            "XT_SERVER_CERT": "LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2Z0lCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktnd2dnU2tBZ0VBQW9JQkFRRFhKdGJTTDZtUDcrU3EKRzNhWm4zZ1llSm1YTUFXUm9KMk1DWTZLL29BRGlINDltMi8xY28yZjVJNm9ReDdxZXBNVStGclk5UFA0ZDAvRgpnL1BuclJDZTMyS0xtVFRCemJDdlBpRFgwRzlhZVBsUHdTWnJ3VmtKNXh6RzdMUVd1T0ozcWpuS2RTbWtibFRPCk5SanFueEVLNkVYdWpFTHUrNDhmZ2djNy93Qkp2akRGcXlYTDJva2VZckJjOVI2K3BrRDI4bHhqakd2aVJxR2gKVG5PNDdLditlcURDbi9sZ3d3RFhaSFZtRHlTbWoxZ3NsYnBPOVIrbWxVVWxRZjJDNXBOTXBVcllXT3FxblRESApLTGluWHZtTjBYeDh2bG4xenN1clZqV1ZESDN2eVZyZzJHVWJRZHhzL1RoK0trQkhmL0FsMTZmdDZXQTdPZ2VkClNXUllaUUREQWdNQkFBRUNnZ0VBQWVjR2hFSkdvZzZ4ZTIyVnZXTURHVmhMcDJJVjBvVlVqMDN3VkR0TzMza2cKQUtSMHQzdGxWRElkcnRBMUlFYW9NVW5HNTk4Mm53NVRCc0NWY2dsK09hRnBDaW4zSlBXUUorU0pQczlKaE1mSQpFSlA1Sm4vRnJVZzlZV2JyYXI0RXhxRWJOTGFYZ1N3MmxNSTBiN0tyWUdqUVlYMGRCR2IyQzRYSFVaaitKQ2pGCnRwNHNycFh6UUJIcCtZTWdWNDdScDV0bU5NUGppUnZVTVdoZ2VzOTc2WjdCRnJOa0ZiWFAyZStWOUg1bDFvejQKU1kxTWJWVWhpZzBpL3gxZVgzRnorR1EyK2J1ZXladS9FaktzSzVwOXVjNUhiTTZHV2MwL3l3QTZ2bWxTT3dCYwpMTEFUaWNWa1BjRFZKa2NBRml1N095YnBWR2NsUUhsd2UrWjJ5SThZcFFLQmdRRDNlMkUzUTBEM0wvOGhEVXd1CnluZUg5OGpzRnJqQXVKYTFmZ2piQ1RudTB6dExjeThNTnFnZlJhVXExUFFrYkZ6S0FXK1BiU09FNHRzK05JUzcKV1AzRjhZdDc3S1BCamhUak5MVk5YZkdCMEIybHR0MFpkS215dUp4V3U3bFc2L3FkRSttcElYRlJoV2tBUjRwOApNbURvb0k3NEN3TExOTzFmNlNWQXpQS1pGd0tCZ1FEZWpwY2JlbWU1UFN1b1RhQ2J0NWNhNFJrdEZIWGg4VE9uCmozamo3SFRMUWwyNDhuV28zaXI2YTFlR25HOXpqS3VyVUtrb25ZcUpyUjZCbzMybWhzR0dGSTd1K0xLQVFoRXIKWERwRTgrQXVEb3JmeW9wZ1kwZ3M4QkRLQmlKL0FPVnFFTnBRUVBnVEg2WmY3RmVaSi9uM0FaT1N6K3A5Vm1UNApaVTlacG5LSk5RS0JnUUN0NXdEMU9Fa2FhWnU1dWdKaWp0dFhyQUtBQTZkbnBVNGgwcUtlWitsUnJSVHBlOUwvCm5oaWRnTzhESGdsQTN2U0U3bVZhUDdMSjJpOTlrcUlDbEJJZldoQk4wSWR4cDBsK0xyZUgyZyt1ekhOSTB5cWkKakp3Q2ZqODlvMFFsbEVUU3cvOVpYYXFuUWp2NmVrc1I0c1MrTXJURUQ5aXl1a3BqTHcyQ2I0RzVtUUtCZ1FDbwoxWGt5b2tCUG1XVW1MNFdZdThUSTRsek1Bd3FPbGdGK3F1dWwxTHFoZTc1SDBMK0xsTWI3NURTbzdNSHI0WnBWCncwSWdpcXNQV0tLYzdCOGxGbk4zT045WjBKYnhqNjBndkwyRGs1TE12Y0dDbGs4MVlmdmVBMXhwTmhBelVzVzMKR2dQVUFBVngxSC9Ob3lpdENsT3BtNnVOSTJlYkg5QkhVK3ZIY2VyUHhRS0JnRU9vT0hOaHlYU2ZubXVWK0pzaApSbW5sQ2JCSFVaV0ljS1lpQ1h4UnY1OHZ6OW1WakVHMjY5UEJiMjB3enFlclBjNGNRclNXRVF2NitPelBYK1lOCkU2cVpRUUtGTWJ2UGh1b1lkYjdQdlZ5VkFtSmtKZm5WaXpZYWM5RWdNdnFETThnVEJvcE04c2tldWFtTHkyeUYKd3BtNGV5UTAybXlWVExUNzVJYzdqenZXCi0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS0KLS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURORENDQWh5Z0F3SUJBZ0lRZDNUa3pmdTJRQyt0Q0dnZE81QnJtVEFOQmdrcWhraUc5dzBCQVFzRkFEQVgKTVJVd0V3WURWUVFERXd4NGRITmxjblpsY2k1amIyMHdIaGNOTWpBd016QTRNRFF3TlRJeFdoY05NakV3TXpBNApNRFF4TlRJeFdqQVhNUlV3RXdZRFZRUURFd3g0ZEhObGNuWmxjaTVqYjIwd2dnRWlNQTBHQ1NxR1NJYjNEUUVCCkFRVUFBNElCRHdBd2dnRUtBb0lCQVFEWEp0YlNMNm1QNytTcUczYVpuM2dZZUptWE1BV1JvSjJNQ1k2Sy9vQUQKaUg0OW0yLzFjbzJmNUk2b1F4N3FlcE1VK0ZyWTlQUDRkMC9GZy9QbnJSQ2UzMktMbVRUQnpiQ3ZQaURYMEc5YQplUGxQd1NacndWa0o1eHpHN0xRV3VPSjNxam5LZFNta2JsVE9OUmpxbnhFSzZFWHVqRUx1KzQ4ZmdnYzcvd0JKCnZqREZxeVhMMm9rZVlyQmM5UjYrcGtEMjhseGpqR3ZpUnFHaFRuTzQ3S3YrZXFEQ24vbGd3d0RYWkhWbUR5U20KajFnc2xicE85UittbFVVbFFmMkM1cE5NcFVyWVdPcXFuVERIS0xpblh2bU4wWHg4dmxuMXpzdXJWaldWREgzdgp5VnJnMkdVYlFkeHMvVGgrS2tCSGYvQWwxNmZ0NldBN09nZWRTV1JZWlFEREFnTUJBQUdqZkRCNk1BNEdBMVVkCkR3RUIvd1FFQXdJRm9EQUpCZ05WSFJNRUFqQUFNQjBHQTFVZEpRUVdNQlFHQ0NzR0FRVUZCd01CQmdnckJnRUYKQlFjREFqQWZCZ05WSFNNRUdEQVdnQlNlSUpucTQrT2U3RUFReitMSXdBZXZnckg4bmpBZEJnTlZIUTRFRmdRVQpuaUNaNnVQam51eEFFTS9peU1BSHI0S3gvSjR3RFFZSktvWklodmNOQVFFTEJRQURnZ0VCQUNhLzFmUXhxTFNtCnFiZmo0aGo2c3BwdStTbXlmMjdVRGxmazdnSzZGa3lWdXN3OXFlU0pxd29YNzZiMnN1TWxYRWFHeDUzOTd2OHcKcllNdGZXVXZDQUdWWDlmUktGeGJESmtVRFJ4Q3VNMGkyOGM3VU1UbmMvdnc4cmpUV0hISXFwanJkS3lMMmNEYwp0TVo1VEhoa3lHTlRUc3YzRDRJZXoxR2lWcXZLSXkxd0lBYVNtd1FoWUNFOThwRG9IZDJYZzkvRzVacGEvL3ZyCkY2ZmFVNWN5VzNVK0lJMGxUSVhDYXduMFRaY0ZkNHRtaUNHczc1WVhaRTJWdENKSEFFVU80VXhudGlaVWFDaHUKTlBsUncrSG1LTVB0S0tUTmp6VEdrdGhaeWkrRFFacVlYVmo5MjByNjl1eEdBWGdsSkxDdDJMUmFGbGZOeTJ2bwpNU0xBS0VkaTR0ND0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=",
+            "XT_STORE_CREDS": "eyJ0eXBlIjogInN0b3JhZ2UiLCAicHJvdmlkZXIiOiAiYXp1cmUtYmxvYi0yMSIsICJrZXkiOiAicWZYT3JXN2JIUXdWT1NRMjBWaVRsc2g0R1JTbW40VXd6YmRNVGtxcUdsVnQ5c3F0d0h1V1Z5QlIxWFJHdGkzSzFsVk1JazRrMFMxeGdPejU4ZVQ0YWc9PSIsICJuYW1lIjogInh0c2FuZGJveHN0b3JhZ2UifQ==",
+            "XT_MONGO_CONN_STR": "bW9uZ29kYjovL3h0LXNhbmRib3gtY29zbW9zOmtCT1dMUXJzZVpOVXFtRWpTTW9GT0ZUVFV1Z3pKTUh6NkZjZzJXT1diU29VUXBtVElYWUlXMGZrVkE4S1RrUGVCdEdnM2ZubUY4WG1IVTU5WlFwTXh3PT1AeHQtc2FuZGJveC1jb3Ntb3MuZG9jdW1lbnRzLmF6dXJlLmNvbToxMDI1NS8/c3NsPXRydWUmcmVwbGljYVNldD1nbG9iYWxkYg==",
+            "XT_STORE_CODE_PATH": "xtlib.store_azure_blob21.AzureBlobStore21",
+            "XT_NODE_ID": "node0",
+            "XT_WORKSPACE_NAME": "quick-test",
+            "XT_EXPERIMENT_NAME": "exper1",
+            "XT_RUN_NAME": "fake_run999",
+            "XT_RESUME_NAME": null,
+            "AML_WORKSPACE_NAME": "aml-sandbox-ws",
+            "AML_EXPERIMENT_NAME": "rfernand__quick-test__exper1",
+            "XT_USERNAME": "rfernand",
+            "XT_DESCRIPTION": null,
+            "XT_AGGREGATE_DEST": "job",
+            "XT_JOB_ID": "fake_job999",
+            "XT_COMPUTE_TARGET": "sandbox-compute",
+            "NCCL_SOCKET_IFNAME": "eth0",
+            "NCCL_IB_DISABLE": "1",
+            "NCCL_TREE_THRESHOLD": "0"
+        },
+        "python": {
+            "userManagedDependencies": false,
+            "interpreterPath": "python",
+            "condaDependenciesFile": null,
+            "baseCondaEnvironment": null,
+            "condaDependencies": {
+                "name": "project_environment",
+                "dependencies": [
+                    "python=3.6.2",
+                    {
+                        "pip": [
+                            "xtlib==0.0.999",
+                            "azureml-defaults",
+                            "torch==1.2",
+                            "torchvision==0.2.1",
+                            "horovod==0.16.1",
+                            "tensorboard==1.14.0",
+                            "future==0.17.1"
+                        ]
+                    }
+                ],
+                "channels": [
+                    "conda-forge"
+                ]
+            }
+        },
+        "docker": {
+            "enabled": null,
+            "baseImage": "mcr.microsoft.com/azureml/base-gpu:openmpi3.1.2-cuda10.0-cudnn7-ubuntu16.04",
+            "baseDockerfile": null,
+            "sharedVolumes": true,
+            "shmSize": "2g",
+            "arguments": [],
+            "baseImageRegistry": {
+                "address": null,
+                "username": null,
+                "password": null
+            }
+        },
+        "spark": {
+            "repositories": [],
+            "packages": [],
+            "precachePackages": false
+        },
+        "databricks": {
+            "mavenLibraries": [],
+            "pypiLibraries": [],
+            "rcranLibraries": [],
+            "jarLibraries": [],
+            "eggLibraries": []
+        },
+        "inferencingStackVersion": null
+    },
+    "history": {
+        "outputCollection": true,
+        "snapshotProject": true,
+        "directoriesToWatch": [
+            "logs"
+        ]
+    },
+    "spark": {
+        "configuration": {
+            "spark.app.name": "Azure ML Experiment",
+            "spark.yarn.maxAppAttempts": 1
+        }
+    },
+    "hdi": {
+        "yarnDeployMode": "cluster"
+    },
+    "tensorflow": {
+        "workerCount": 1,
+        "parameterServerCount": 1
+    },
+    "mpi": {
+        "processCountPerNode": 1
+    },
+    "dataReferences": {},
+    "data": {},
+    "sourceDirectoryDataStore": null,
+    "amlcompute": {
+        "vmSize": null,
+        "vmPriority": null,
+        "retainCluster": false,
+        "name": null,
+        "clusterMaxNodeCount": 1
+    }
+}, '_framework_processor': 'gpu', '_manual_restart_used': False, '_user_dependencies_provided': True, '_is_conflict_package_added': False, '_distributed_backend': <azureml.train._distributed_training.Mpi object at 0x00000241ACB21F28>, '_source_directory': 'fake_temp_dir', '_compute_target': AmlCompute(workspace=Workspace.create(name='aml-sandbox-ws', subscription_id='41c6e824-0f66-4076-81dd-f751c70a140b', resource_group='xt-sandbox'), name=sandbox-compute, id=/subscriptions/41c6e824-0f66-4076-81dd-f751c70a140b/resourceGroups/xt-sandbox/providers/Microsoft.MachineLearningServices/workspaces/aml-sandbox-ws/computes/sandbox-compute, type=AmlCompute, provisioning_state=Succeeded, location=eastus, tags=None), '_logger': <Logger azureml.train._telemetry_logger.azureml.train.estimator._mml_base_estimator (DEBUG)>, '_last_submitted_runconfig': {
+    "script": "aml_shim.py",
+    "arguments": [
+        "/bin/bash --login wrapped.sh",
+        1
+    ],
+    "target": "sandbox-compute",
+    "framework": "python",
+    "communicator": "Mpi",
+    "maxRunDurationSeconds": null,
+    "nodeCount": 1,
+    "environment": {
+        "name": null,
+        "version": null,
+        "environmentVariables": {
+            "XT_BOX_SECRET": "2c8fb35a-6a88-4f60-89b5-56e672700ea8",
+            "XT_SERVER_CERT": "LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2Z0lCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktnd2dnU2tBZ0VBQW9JQkFRRFhKdGJTTDZtUDcrU3EKRzNhWm4zZ1llSm1YTUFXUm9KMk1DWTZLL29BRGlINDltMi8xY28yZjVJNm9ReDdxZXBNVStGclk5UFA0ZDAvRgpnL1BuclJDZTMyS0xtVFRCemJDdlBpRFgwRzlhZVBsUHdTWnJ3VmtKNXh6RzdMUVd1T0ozcWpuS2RTbWtibFRPCk5SanFueEVLNkVYdWpFTHUrNDhmZ2djNy93Qkp2akRGcXlYTDJva2VZckJjOVI2K3BrRDI4bHhqakd2aVJxR2gKVG5PNDdLditlcURDbi9sZ3d3RFhaSFZtRHlTbWoxZ3NsYnBPOVIrbWxVVWxRZjJDNXBOTXBVcllXT3FxblRESApLTGluWHZtTjBYeDh2bG4xenN1clZqV1ZESDN2eVZyZzJHVWJRZHhzL1RoK0trQkhmL0FsMTZmdDZXQTdPZ2VkClNXUllaUUREQWdNQkFBRUNnZ0VBQWVjR2hFSkdvZzZ4ZTIyVnZXTURHVmhMcDJJVjBvVlVqMDN3VkR0TzMza2cKQUtSMHQzdGxWRElkcnRBMUlFYW9NVW5HNTk4Mm53NVRCc0NWY2dsK09hRnBDaW4zSlBXUUorU0pQczlKaE1mSQpFSlA1Sm4vRnJVZzlZV2JyYXI0RXhxRWJOTGFYZ1N3MmxNSTBiN0tyWUdqUVlYMGRCR2IyQzRYSFVaaitKQ2pGCnRwNHNycFh6UUJIcCtZTWdWNDdScDV0bU5NUGppUnZVTVdoZ2VzOTc2WjdCRnJOa0ZiWFAyZStWOUg1bDFvejQKU1kxTWJWVWhpZzBpL3gxZVgzRnorR1EyK2J1ZXladS9FaktzSzVwOXVjNUhiTTZHV2MwL3l3QTZ2bWxTT3dCYwpMTEFUaWNWa1BjRFZKa2NBRml1N095YnBWR2NsUUhsd2UrWjJ5SThZcFFLQmdRRDNlMkUzUTBEM0wvOGhEVXd1CnluZUg5OGpzRnJqQXVKYTFmZ2piQ1RudTB6dExjeThNTnFnZlJhVXExUFFrYkZ6S0FXK1BiU09FNHRzK05JUzcKV1AzRjhZdDc3S1BCamhUak5MVk5YZkdCMEIybHR0MFpkS215dUp4V3U3bFc2L3FkRSttcElYRlJoV2tBUjRwOApNbURvb0k3NEN3TExOTzFmNlNWQXpQS1pGd0tCZ1FEZWpwY2JlbWU1UFN1b1RhQ2J0NWNhNFJrdEZIWGg4VE9uCmozamo3SFRMUWwyNDhuV28zaXI2YTFlR25HOXpqS3VyVUtrb25ZcUpyUjZCbzMybWhzR0dGSTd1K0xLQVFoRXIKWERwRTgrQXVEb3JmeW9wZ1kwZ3M4QkRLQmlKL0FPVnFFTnBRUVBnVEg2WmY3RmVaSi9uM0FaT1N6K3A5Vm1UNApaVTlacG5LSk5RS0JnUUN0NXdEMU9Fa2FhWnU1dWdKaWp0dFhyQUtBQTZkbnBVNGgwcUtlWitsUnJSVHBlOUwvCm5oaWRnTzhESGdsQTN2U0U3bVZhUDdMSjJpOTlrcUlDbEJJZldoQk4wSWR4cDBsK0xyZUgyZyt1ekhOSTB5cWkKakp3Q2ZqODlvMFFsbEVUU3cvOVpYYXFuUWp2NmVrc1I0c1MrTXJURUQ5aXl1a3BqTHcyQ2I0RzVtUUtCZ1FDbwoxWGt5b2tCUG1XVW1MNFdZdThUSTRsek1Bd3FPbGdGK3F1dWwxTHFoZTc1SDBMK0xsTWI3NURTbzdNSHI0WnBWCncwSWdpcXNQV0tLYzdCOGxGbk4zT045WjBKYnhqNjBndkwyRGs1TE12Y0dDbGs4MVlmdmVBMXhwTmhBelVzVzMKR2dQVUFBVngxSC9Ob3lpdENsT3BtNnVOSTJlYkg5QkhVK3ZIY2VyUHhRS0JnRU9vT0hOaHlYU2ZubXVWK0pzaApSbW5sQ2JCSFVaV0ljS1lpQ1h4UnY1OHZ6OW1WakVHMjY5UEJiMjB3enFlclBjNGNRclNXRVF2NitPelBYK1lOCkU2cVpRUUtGTWJ2UGh1b1lkYjdQdlZ5VkFtSmtKZm5WaXpZYWM5RWdNdnFETThnVEJvcE04c2tldWFtTHkyeUYKd3BtNGV5UTAybXlWVExUNzVJYzdqenZXCi0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS0KLS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURORENDQWh5Z0F3SUJBZ0lRZDNUa3pmdTJRQyt0Q0dnZE81QnJtVEFOQmdrcWhraUc5dzBCQVFzRkFEQVgKTVJVd0V3WURWUVFERXd4NGRITmxjblpsY2k1amIyMHdIaGNOTWpBd016QTRNRFF3TlRJeFdoY05NakV3TXpBNApNRFF4TlRJeFdqQVhNUlV3RXdZRFZRUURFd3g0ZEhObGNuWmxjaTVqYjIwd2dnRWlNQTBHQ1NxR1NJYjNEUUVCCkFRVUFBNElCRHdBd2dnRUtBb0lCQVFEWEp0YlNMNm1QNytTcUczYVpuM2dZZUptWE1BV1JvSjJNQ1k2Sy9vQUQKaUg0OW0yLzFjbzJmNUk2b1F4N3FlcE1VK0ZyWTlQUDRkMC9GZy9QbnJSQ2UzMktMbVRUQnpiQ3ZQaURYMEc5YQplUGxQd1NacndWa0o1eHpHN0xRV3VPSjNxam5LZFNta2JsVE9OUmpxbnhFSzZFWHVqRUx1KzQ4ZmdnYzcvd0JKCnZqREZxeVhMMm9rZVlyQmM5UjYrcGtEMjhseGpqR3ZpUnFHaFRuTzQ3S3YrZXFEQ24vbGd3d0RYWkhWbUR5U20KajFnc2xicE85UittbFVVbFFmMkM1cE5NcFVyWVdPcXFuVERIS0xpblh2bU4wWHg4dmxuMXpzdXJWaldWREgzdgp5VnJnMkdVYlFkeHMvVGgrS2tCSGYvQWwxNmZ0NldBN09nZWRTV1JZWlFEREFnTUJBQUdqZkRCNk1BNEdBMVVkCkR3RUIvd1FFQXdJRm9EQUpCZ05WSFJNRUFqQUFNQjBHQTFVZEpRUVdNQlFHQ0NzR0FRVUZCd01CQmdnckJnRUYKQlFjREFqQWZCZ05WSFNNRUdEQVdnQlNlSUpucTQrT2U3RUFReitMSXdBZXZnckg4bmpBZEJnTlZIUTRFRmdRVQpuaUNaNnVQam51eEFFTS9peU1BSHI0S3gvSjR3RFFZSktvWklodmNOQVFFTEJRQURnZ0VCQUNhLzFmUXhxTFNtCnFiZmo0aGo2c3BwdStTbXlmMjdVRGxmazdnSzZGa3lWdXN3OXFlU0pxd29YNzZiMnN1TWxYRWFHeDUzOTd2OHcKcllNdGZXVXZDQUdWWDlmUktGeGJESmtVRFJ4Q3VNMGkyOGM3VU1UbmMvdnc4cmpUV0hISXFwanJkS3lMMmNEYwp0TVo1VEhoa3lHTlRUc3YzRDRJZXoxR2lWcXZLSXkxd0lBYVNtd1FoWUNFOThwRG9IZDJYZzkvRzVacGEvL3ZyCkY2ZmFVNWN5VzNVK0lJMGxUSVhDYXduMFRaY0ZkNHRtaUNHczc1WVhaRTJWdENKSEFFVU80VXhudGlaVWFDaHUKTlBsUncrSG1LTVB0S0tUTmp6VEdrdGhaeWkrRFFacVlYVmo5MjByNjl1eEdBWGdsSkxDdDJMUmFGbGZOeTJ2bwpNU0xBS0VkaTR0ND0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=",
+            "XT_STORE_CREDS": "eyJ0eXBlIjogInN0b3JhZ2UiLCAicHJvdmlkZXIiOiAiYXp1cmUtYmxvYi0yMSIsICJrZXkiOiAicWZYT3JXN2JIUXdWT1NRMjBWaVRsc2g0R1JTbW40VXd6YmRNVGtxcUdsVnQ5c3F0d0h1V1Z5QlIxWFJHdGkzSzFsVk1JazRrMFMxeGdPejU4ZVQ0YWc9PSIsICJuYW1lIjogInh0c2FuZGJveHN0b3JhZ2UifQ==",
+            "XT_MONGO_CONN_STR": "bW9uZ29kYjovL3h0LXNhbmRib3gtY29zbW9zOmtCT1dMUXJzZVpOVXFtRWpTTW9GT0ZUVFV1Z3pKTUh6NkZjZzJXT1diU29VUXBtVElYWUlXMGZrVkE4S1RrUGVCdEdnM2ZubUY4WG1IVTU5WlFwTXh3PT1AeHQtc2FuZGJveC1jb3Ntb3MuZG9jdW1lbnRzLmF6dXJlLmNvbToxMDI1NS8/c3NsPXRydWUmcmVwbGljYVNldD1nbG9iYWxkYg==",
+            "XT_STORE_CODE_PATH": "xtlib.store_azure_blob21.AzureBlobStore21",
+            "XT_NODE_ID": "node0",
+            "XT_WORKSPACE_NAME": "quick-test",
+            "XT_EXPERIMENT_NAME": "exper1",
+            "XT_RUN_NAME": "fake_run999",
+            "XT_RESUME_NAME": null,
+            "AML_WORKSPACE_NAME": "aml-sandbox-ws",
+            "AML_EXPERIMENT_NAME": "rfernand__quick-test__exper1",
+            "XT_USERNAME": "rfernand",
+            "XT_DESCRIPTION": null,
+            "XT_AGGREGATE_DEST": "job",
+            "XT_JOB_ID": "fake_job999",
+            "XT_COMPUTE_TARGET": "sandbox-compute",
+            "NCCL_SOCKET_IFNAME": "eth0",
+            "NCCL_IB_DISABLE": "1",
+            "NCCL_TREE_THRESHOLD": "0"
+        },
+        "python": {
+            "userManagedDependencies": false,
+            "interpreterPath": "python",
+            "condaDependenciesFile": null,
+            "baseCondaEnvironment": null,
+            "condaDependencies": {
+                "name": "project_environment",
+                "dependencies": [
+                    "python=3.6.2",
+                    {
+                        "pip": [
+                            "xtlib==0.0.999",
+                            "azureml-defaults",
+                            "torch==1.2",
+                            "torchvision==0.2.1",
+                            "horovod==0.16.1",
+                            "tensorboard==1.14.0",
+                            "future==0.17.1"
+                        ]
+                    }
+                ],
+                "channels": [
+                    "conda-forge"
+                ]
+            }
+        },
+        "docker": {
+            "enabled": null,
+            "baseImage": "mcr.microsoft.com/azureml/base-gpu:openmpi3.1.2-cuda10.0-cudnn7-ubuntu16.04",
+            "baseDockerfile": null,
+            "sharedVolumes": true,
+            "shmSize": "2g",
+            "arguments": [],
+            "baseImageRegistry": {
+                "address": null,
+                "username": null,
+                "password": null
+            }
+        },
+        "spark": {
+            "repositories": [],
+            "packages": [],
+            "precachePackages": false
+        },
+        "databricks": {
+            "mavenLibraries": [],
+            "pypiLibraries": [],
+            "rcranLibraries": [],
+            "jarLibraries": [],
+            "eggLibraries": []
+        },
+        "inferencingStackVersion": null
+    },
+    "history": {
+        "outputCollection": true,
+        "snapshotProject": true,
+        "directoriesToWatch": [
+            "logs"
+        ]
+    },
+    "spark": {
+        "configuration": {
+            "spark.app.name": "Azure ML Experiment",
+            "spark.yarn.maxAppAttempts": 1
+        }
+    },
+    "hdi": {
+        "yarnDeployMode": "cluster"
+    },
+    "tensorflow": {
+        "workerCount": 1,
+        "parameterServerCount": 1
+    },
+    "mpi": {
+        "processCountPerNode": 1
+    },
+    "dataReferences": {},
+    "data": {},
+    "sourceDirectoryDataStore": null,
+    "amlcompute": {
+        "vmSize": null,
+        "vmPriority": null,
+        "retainCluster": false,
+        "name": null,
+        "clusterMaxNodeCount": 1
+    }
+}}

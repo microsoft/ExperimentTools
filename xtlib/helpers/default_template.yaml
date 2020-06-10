@@ -1,0 +1,61 @@
+external-services:
+    philly-registry: {type: "registry", login-server: "", login: "false"}
+    philly: {type: "philly"}
+    phoenixaml: {type: "aml", subscription-id: "", resource-group: ""}
+    phoenixbatch: {type: "batch", key: "$vault", url: ""}
+    phoenixkeyvault: {type: "vault", url: ""}
+    phoenixmongodb: {type: "mongo", mongo-connection-string: "$vault"}
+    phoenixregistry: {type: "registry", login-server: "", username: "", password: "$vault", login: "true"}
+    phoenixstorage: {type: "storage", provider: "azure-blob-21", key: "$vault"}
+
+xt-services:
+    mongo: "phoenixmongodb"
+    storage: "phoenixstorage"
+    target: "local"
+    vault: "phoenixkeyvault"
+
+compute-targets:
+    aml: {service: "phoenixaml", compute: "", vm-size: "", nodes: 1, low-pri: False, setup: "aml"}
+    batch: {service: "phoenixbatch", vm-size: "", azure-image: "dsvm", nodes: 1, low-pri: True, box-class: "dsvm", setup: "batch"}
+    local-docker: {service: "pool", boxes: ["local"], setup: "local", docker: "pytorch-xtlib-local"}
+    local: {service: "pool", boxes: ["local"], setup: "local"}
+    philly: {service: "philly", vc: "", cluster: "", sku: "", nodes: 1, low-pri: True, docker: "philly-pytorch", setup: "philly"}
+
+boxes:
+    local: {address: "localhost", max-runs: 1, actions: [], setup: "local"}
+
+setups:
+    local: {activate: "$call conda activate $current_conda_env", conda-packages: [], pip-packages: []}
+    philly: {activate: null, conda-packages: [], pip-packages: ["xtlib==*"]}
+
+dockers:
+    philly-pytorch: {registry: "philly-registry", image: ""}
+    pytorch-xtlib-local: {registry: "", image: ""}
+    pytorch-xtlib: {registry: "phoenixregistry", image: ""}
+
+aml-options:
+    distributed-training: "mpi"
+    framework: "pytorch"
+    fw-version: "1.2"
+    max-seconds: null
+    use-gpu: True
+    user-managed: False
+
+azure-batch-images:
+    dsvm: {offer: "linux-data-science-vm-ubuntu", publisher: "microsoft-dsvm", sku: "linuxdsvmubuntu", node-agent-sku-id: "batch.node.ubuntu 18.04", version: "latest"}
+    ubuntu18: {offer: "UbuntuServer", publisher: "Canonical", sku: "18.04-LTS", node-agent-sku-id: "batch.node.ubuntu 18.04", version: "latest"}
+
+script-launch-prefix:
+    dsvm: "bash --login"
+    linux: "bash --login"
+
+general:
+    advanced-mode: False
+    azure-tenant-id: null
+    distributed: False
+    env-vars: {}
+    experiment: "exper1"
+    maximize-metric: True
+    primary-metric: "test-acc"
+    step-name: "step"
+    workspace: "ws1"

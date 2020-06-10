@@ -1,0 +1,218 @@
+#-------------------------------------------------------------------------------------------------------------------
+# DO NOT EDIT:
+#   - a new version of this file is released with each XTLib version; it will overwrite this file without warning.
+#   - to change a subset of these properties, use the "xt config" to create a LOCAL (current directory) config file.
+#-------------------------------------------------------------------------------------------------------------------
+# default_config.yaml: default configuration file for XT.  (READONLY)
+#    The contents of this file contain the default settings that define how XT operates.  Many of the settings can be 
+#    overridden by the various XT command  options (see "xt help commands" for more details). Detailed instructions 
+#    for getting started with this config file are available in the "XT Config File" help topic.
+#-------------------------------------------------------------------------------------------------------------------
+
+external-services:
+    # storage services
+    filestorage: {type: "storage", provider: "store-file", path: "~/.xt/file_store"}
+
+xt-services:
+    storage: null
+    mongo: null
+    vault: null
+    target: "local"                    # our default compute target 
+
+compute-targets:
+    local: {service: "pool", boxes: ["localhost"], setup: "local"}
+    local-docker: {service: "pool", boxes: ["localhost"], setup: "local", docker: "pytorch-xtlib-local"}
+
+dockers:
+    pytorch-xtlib-local: {registry: "", image: "pytorch-xtlib:latest"}
+
+setups:
+    # local machine is assumed to be self-managed (user configured for xtlib and ML app requirements)
+    local: {activate: "$call conda activate $current_conda_env", conda-packages: [], pip-packages: []}
+
+general:
+    advanced-mode: false                   # XT now defaults to basic mode
+    username: "$username"                  # used to log the user associated with runs created by the current user
+    azure-tenant-id: null                  # Azure tenant id if specified
+    workspace: "ws1"                       # name of current workspace 
+    experiment: "exper1"                   # default name of experiment associated with each run
+    feedback: true                         # when true, we display progress feedback for file uploads and downloads
+    run-cache-dir: "~/.xt/runs-cache"      # where we cache run information (SUMMARY and ALLRUNS)
+    distributed: false                     # when true, runs with multiple boxes/nodes are performed in distributed training mode
+    direct-run: false                      # when true, the target is run without using the XT controller (Philly, Batch, Azure ML)
+    quick-start: false                     # when true, XT start-up time will be reduced (experimental feature)
+    env-vars: {}                           # list of name=value pairs, separated by commas that the target app can read at start of run
+    authentication: "auto"                 # one of: auto, browser, device-code
+    xt-team-name: "phoenix"                # for use with XT Grok
+    remote-control: false                  # when true, XT client can send query/request commands to the XT controller
+    monitor: "new"                         # should new run be monitored in console?  one of: new, same, none
+
+    # TODO: move to a new metrics section
+    primary-metric: "test-acc"             # name of metric to optimize in roll-ups, hyperparameter search, and early stopping
+    maximize-metric: true                  # how primary metric is aggregated for hp search, hp explorer, early stopping 
+    step-name: "step"                      # usually "step" or "epoch"; the name of your app's logged metrics index value
+
+code:
+    code-dirs: ["$scriptdir/**"]           # path to the code directories needed for the run (code snapshot)
+    code-upload: true                      # upload code to job store before run, for use by ML script
+    code-zip: "fast"                       # none/fast/compress ("fast" means zip w/o compression)
+    code-omit: [".git", "__pycache__"]     # directories and files to omit when capturing code files
+    xtlib-upload: false                    # upload XTLIB sources files for each run and use for controller and ML app
+    working-dir: "."                       # specifies the working directory for the run, relative to the code directory
+
+after-files:
+    after-dirs: ["output/**"]              # specifies output files (for capture from compute node to STORE)
+    after-upload: true                     # should after files be uploaded at end of run?
+    after-omit: [".git", "__pycache__"]    # directories and files to omit when capturing after files
+
+data:
+    data-local: ""                         # local directory of data for app
+    data-upload: false                     # should data automatically be uploaded
+    data-share-path: ""                    # path in data share for current app's data
+    data-action: "none"                    # data action at start of run: none, download, mount
+    data-omit: []                          # directories and files to omit when capturing before/after files
+    data-writable: false                   # when true, mounted data is writable
+
+model:
+    model-local: ""                        # local directory of model for app
+    model-share-path: ""                   # path in model share for current app's model
+    model-action: "none"                   # model action at start of run: none, download, mount
+    model-writable: false                  # when true, mounted model is writable
+
+logging:
+    mirror-files: "logs/**"                # default wildcard path for log files to mirror
+    mirror-dest: "storage"                 # one of: none, storage
+    log: true                              # specifies if experiments are logged to STORE
+    notes: "none"                          # control when user is prompted for notes (none, before, after, all)
+
+internal:
+    console: "normal"                      # controls the level of console output (none, normal, diagnostics, detail)
+    stack-trace: false                     # show stack trace for errors  
+    auto-start: false                      # when true, the XT controller is automatically started on 'status' cmd
+    pip-freeze: false                      # should 'pip freeze' be run during node setup process (logging before/after pip packages)
+
+aml-options:
+    use-gpu: true                          # use GPU(s) 
+    framework: "pytorch"                   # currently, we support pytorch, tensorflow, or chainer
+    fw-version: "1.2"                      # version of framework (string)
+    user-managed: false                    # when true, AML assumes we have correct prepared environment (for local runs)
+    distributed-training: "mpi"            # one of: mpi, gloo, or nccl
+    max-seconds: null                      # max secs for run before timeout 
+
+early-stopping:
+    early-policy: "none"           # bandit, median, truncation, none
+    delay-evaluation: 10           # number of evals (metric loggings) to delay before the first policy application
+    evaluation-interval: 1         # the frequencency (# of metric logs) for testing the policy
+    slack-factor: 0                # (bandit only) specified as a ratio, the delta between this eval and the best performing eval
+    slack-amount: 0                # (bandit only) specified as an amount, the delta between this eval and the best performing eval
+    truncation-percentage: 5       # (truncation only) percent of runs to cancel at each eval interval
+
+hyperparameter-search:
+    option-prefix: "--"                 # prefix used by ML app for options specified on the cmd line (set to "null" to disable parsing/generation of options for hp search)
+    aggregate-dest: "job"               # set to "job", "experiment", or "none"
+    search-type: "random"               # random, grid, bayesian, or dgd
+    max-minutes: null                   # max minutes before terminating search
+    hp-config: ""                       # the name of the text file containing the hyperparameter ranges to be searched
+    fn-generated-config: "config.yaml"  # name of runset file generated by dynamic hyperparameter search
+    concurrent: 1                       # max number of concurrent runs per node
+    max-runs: null                      # used to limit total search runs in a full/grid search 
+
+hyperparameter-explorer:
+    hx-cache-dir: "~/.xt/hx_cache"     # directory hx uses for caching experiment runs 
+    steps-name: "steps"                # usually "epochs" or "steps" (hyperparameter - total # of steps to be run)
+    log-interval-name: "LOG_INTERVAL"  # name of hyperparameter that specifies how often to log metrics
+    time-name: "sec"                   # usually "epoch" or "sec
+    sample-efficiency-name: "SE"       # sample efficiency name 
+    success-rate-name: "RSR"           # success rate name 
+
+run-reports:
+    sort: "name"                   # default column sort for run reports (e.g., name, value, status, duration, etc.)
+    group: ""                      # column used to group the run reports
+    number-groups: false           # if true, group names will be preceeded by a group number (based on sorting order)
+    reverse: false                 # if experiment sort should be reversed in order    
+    max-width: 30                  # max width of any column
+    precision: 3                   # number of fractional digits to display for float values
+    uppercase-hdr: true            # show column names in uppercase letters
+    right-align-numeric: true      # right align columns that contain int/float values
+    truncate-with-ellipses: true   # if true, "..." added at end of truncated column headers/values
+    status: ""                     # the status values to match for 'list runs' cmd
+    report-rollup: false           # if primary metric is used to select run metrics to report (vs. last set of metrics)
+    last: 10                       # default number of runs to show
+
+    # "columns" defines the columns to show (and their order) for the "list runs" cmd.  The columns listed 
+    # should be a standard column, or a user-logged hyperparameter or metric.  use "list runs --available" to find available columns.
+    columns: ["run", "created:$do", "experiment", "queued", "job", "target", "repeat", "search", "status", 
+        "tags.priority", "tags.description",
+        "hparams.lr", "hparams.momentum", "hparams.optimizer", "hparams.steps", "hparams.epochs",
+        "metrics.step", "metrics.epoch", "metrics.train-loss", "metrics.train-acc", 
+        "metrics.dev-loss", "metrics.dev-acc", "metrics.dev-em", "metrics.dev-f1", "metrics.test-loss", "metrics.test-acc", 
+        "duration", 
+        ]
+
+commands: []                       # array of run commands
+    
+job-reports:
+    sort: "name"                   # default column sort for experiment list (name, value, status, duration)
+    reverse: false                 # if experiment sort should be reversed in order    
+    max-width: 30                  # max width of any column
+    precision: 3                   # number of fractional digits to display for float values
+    uppercase-hdr  : true          # show column names in uppercase letters
+    right-align-numeric: true      # right align columns that contain int/float values
+    truncate-with-ellipses: true   # if true, "..." added at end of truncated column headers/values
+    last: 10                       # default number of jobs to show
+
+    # "columns" defines the columns to show (and their order) for the "list jobs" cmd.  The columns listed 
+    # should be a standard column.  use "list jobs --available" to find available columns.
+    columns: ["job", "created", "started", "workspace", "experiment", "target", "nodes", "repeat", "tags.description", "tags.urgent", "tags.sad=SADD", "tags.funny", "low_pri", 
+        "vm_size", "azure_image", "service", "vc", "cluster", "queue", "service_type", "search", 
+        "job_status:$bz", "running_nodes:$bz", "running_runs:$bz", "error_runs:$bz", "completed_runs:$bz"]
+
+tensorboard:
+    template: "{workspace}_{run}_{logdir}"
+
+script-launch-prefix:
+    # list cmds used to launch scripts (controller, run, parent), by box-class
+    windows: ""
+    linux: "bash --login"
+    dsvm: "bash --login"
+    azureml: "bash"
+    philly: "bash --login"  
+
+azure-batch-images:
+    # these are OS images that you can use with your azure batch compute targets (see [compute-targets] section above)
+    dsvm: {offer: "linux-data-science-vm-ubuntu", publisher: "microsoft-dsvm", sku: "linuxdsvmubuntu", node-agent-sku-id: "batch.node.ubuntu 16.04", version: "latest"}
+    ubuntu18: {publisher: "Canonical", offer: "UbuntuServer", sku: "18.04-LTS", node-agent-sku-id: "batch.node.ubuntu 18.04", version: "latest"}
+
+boxes:
+    # This section lets you define remote computers for running your experiments (samples listed below).
+    # REQUIREMENTS: each box needs to have ports 22 and 18861 open for incoming messages.
+    # The "actions" property is a list of store names ("data", "model") whose download or mount actions should be performed on the box.
+    local: {address: "localhost", max-runs: 1, actions: [], setup: "local"}
+
+providers:
+    # the hyperparameter search services, and storage services.
+
+    command: {
+        "compute": "xtlib.impl_compute.ImplCompute", 
+        "storage": "xtlib.impl_storage.ImplStorage", 
+        "help": "xtlib.impl_help.ImplHelp", 
+        "utility": "xtlib.impl_utilities.ImplUtilities"
+    }
+
+    compute: {
+        "pool": "xtlib.backends.backend_pool.PoolBackend", 
+        "batch": "xtlib.backends.backend_batch.AzureBatch",
+        "aml": "xtlib.backends.backend_aml.AzureML"
+    }
+
+    hp-search: {
+        "dgd": "xtlib.hparams.hp_search_dgd.DGDSearch",
+        "bayesian": "xtlib.hparams.hp_search_bayesian.BayesianSearch",
+        "random": "xtlib.hparams.hp_search_random.RandomSearch"
+    }
+
+    storage: {
+        "azure-blob-21": "xtlib.storage.store_azure_blob21.AzureBlobStore21",
+        "azure-blob-210": "xtlib.storage.store_azure_blob210.AzureBlobStore210",
+        "store-file": "xtlib.storage.store_file.FileStore",
+    }

@@ -1,0 +1,7 @@
+'before running: : pip install --user xtlib==0.0.173'
+'after running: : @pip install --user xtlib==0.0.173'
+The system cannot find the file specified.
+USING LOCAL path for ENV[XT_DATA_DIR]= c:\github\ExperimentTools\quick-test\data
+CONDA: $CONDA_DEFAULT_ENV
+The system cannot find the path specified.
+running controller with: python -u -c "from xtlib.controller import run; run(port=18861, is_aml=False)" 

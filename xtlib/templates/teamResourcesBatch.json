@@ -1,0 +1,12 @@
+[{
+    "name": "[concat(resourceGroup().name, 'batch')]",
+    "type": "Microsoft.Batch/batchAccounts",
+    "apiVersion": "2019-08-01",
+    "location": "[resourceGroup().location]",
+    "dependsOn": [],
+    "properties": {
+        "poolAllocationMode": "BatchService"
+    },
+    "tags": {}
+}]
+

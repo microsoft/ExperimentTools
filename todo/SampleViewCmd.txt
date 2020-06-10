@@ -1,0 +1,34 @@
+TPX/run23:
+   run cmd:        train_from_scratch.py --lr=-01 --epochs=5
+
+lifetime:
+   run created:    02/19/2020 11:10 am
+   submitted:      02/19/2020 11:12 am
+   run started:    02/19/2020 12:15 pm     (queue time: 00:45)
+   run completed:  02/19/2020  3:45 pm     (run time: 1:34)
+   restarts:   2
+   exit code:  0
+
+uploaded code:
+   files: 
+compute service:
+   target: phillyexi
+   cluster: rr1
+   vc: rsrchv1
+   queue: None
+   sku: g1
+
+logs:
+   console.txt       (stdout output from ML app)     xt view console tpx/run23
+   philly log        (run output from philly)        xt view run tpx/run23 --service-log
+   run.log           (XT event log for run)          xt view run tpx/run23 --run-log
+   controller.log    (stdout from XT controller)     xt view run tpx/run23 --controller-log
+   
+after files:
+   files uploaded to run store: 23      
+   view with: xt list blobs tpx/run23 after
+
+hyperparameters: 
+   lr: .01
+
+

@@ -1,0 +1,26 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "variables": {},
+    "parameters": {
+        "batchAccountName": {
+            "type": "string"
+        },
+        "location": {
+            "type": "string"
+        }
+    },
+    "resources": [
+        {
+            "name": "[parameters('batchAccountName')]",
+            "type": "Microsoft.Batch/batchAccounts",
+            "apiVersion": "2019-08-01",
+            "location": "[parameters('location')]",
+            "dependsOn": [],
+            "properties": {
+                "poolAllocationMode": "BatchService"
+            },
+            "tags": {}
+        }
+    ]
+}

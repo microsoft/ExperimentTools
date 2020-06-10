@@ -1,0 +1,15 @@
+# simple.yaml: show how simple a xt_config.yaml file can be
+
+general:
+    workspace: "ws1"                   # name of current workspace 
+    experiment: "exper5"               # default name of experiment associated with each run
+    primary-metric: "test-acc"         # name of metric to optimize in roll-ups, hyperparameter search, and early stopping
+    maximize-metric: true              # how primary metric is aggregated for hp search, hp explorer, early stopping 
+    step-name: "epoch"                 # name of a single step
+
+commands:
+  - python code/miniMnist.py  --lr=.01
+  - python code/miniMnist.py  --lr=.02
+
+code:
+    code-dirs: ["code/**"]           # path to the code directories needed for the run (code snapshot)

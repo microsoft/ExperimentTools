@@ -1,0 +1,70 @@
+        [{
+            "type": "Microsoft.MachineLearningServices/workspaces",
+            "apiVersion": "2019-11-01",
+            "name": "[concat(resourceGroup().name, 'aml')]",
+            "location": "[resourceGroup().location]",
+
+            
+            "dependsOn": [
+                "[concat(resourceGroup().id , '/providers/Microsoft.KeyVault/vaults/', 'xt', resourceGroup().name, 'amlkey')]",
+                "[concat(resourceGroup().id , '/providers/Microsoft.Storage/storageAccounts/', 'xt', resourceGroup().name, 'amlsto')]",
+                "[concat(resourceGroup().id , '/providers/microsoft.insights/components/', 'xt', resourceGroup().name, 'amlins')]"
+            ],
+            "tags": {},
+            "sku": {
+                "name": "Enterprise",
+                "tier": "Enterprise"
+            },
+            "identity": {
+                "type": "systemAssigned"
+            },
+            "properties": {
+                "descsription": "",
+                "friendlyName": "",
+                "keyVault": "[concat(resourceGroup().id , '/providers/Microsoft.KeyVault/vaults/', 'xt', resourceGroup().name, 'amlkey')]",
+                "storageAccount": "[concat(resourceGroup().id , '/providers/Microsoft.Storage/storageAccounts/', 'xt', resourceGroup().name, 'amlsto')]",
+                "adbWorkspace": "",
+                "applicationInsights": "[concat(resourceGroup().id , '/providers/microsoft.insights/components/', 'xt', resourceGroup().name, 'amlins')]"
+            }
+        },
+
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2016-12-01",
+            "name": "[concat(resourceGroup().name, 'amlsto')]",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "Standard_LRS"
+            },
+            "kind": "Storage"
+        },
+
+        {
+            "type": "Microsoft.KeyVault/vaults",
+            "apiVersion": "2015-06-01",
+            "name": "[concat(resourceGroup().name, 'amlkey')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "accessPolicies": [],
+                "enabledForDeployment": true,
+                "enabledForTemplateDeployment": true,
+                "enabledForVolumeEncryption": true,
+                "sku": {
+                    "name": "Standard",
+                    "family": "A"
+                },
+                "tenantId": "[subscription().tenantId]"
+            }
+        },
+
+        {
+            "type": "Microsoft.Insights/components",
+            "apiVersion": "2015-05-01",
+            "name": "[concat(resourceGroup().name, 'amlins')]",
+            "location": "[resourceGroup().location]",
+            "kind": "web",
+            "properties": {
+                "Application_Type": "web"
+            }
+        }]
+

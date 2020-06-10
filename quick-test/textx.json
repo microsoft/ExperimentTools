@@ -1,0 +1,95 @@
+{
+    "version": "2017-10-01",
+    "metadata": {
+        "name": "/fake_job999/quick-test2/fake_run999/",
+        "cluster": "rr2",
+        "vc": "msrlabs"
+    },
+    "environmentVariables": {
+        "XT_BOX_SECRET": "da16ca5f-17f7-4fde-a977-847e900bfd0b",
+        "XT_SERVER_CERT": "LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2Z0lCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktnd2dnU2tBZ0VBQW9JQkFRRFhKdGJTTDZtUDcrU3EKRzNhWm4zZ1llSm1YTUFXUm9KMk1DWTZLL29BRGlINDltMi8xY28yZjVJNm9ReDdxZXBNVStGclk5UFA0ZDAvRgpnL1BuclJDZTMyS0xtVFRCemJDdlBpRFgwRzlhZVBsUHdTWnJ3VmtKNXh6RzdMUVd1T0ozcWpuS2RTbWtibFRPCk5SanFueEVLNkVYdWpFTHUrNDhmZ2djNy93Qkp2akRGcXlYTDJva2VZckJjOVI2K3BrRDI4bHhqakd2aVJxR2gKVG5PNDdLditlcURDbi9sZ3d3RFhaSFZtRHlTbWoxZ3NsYnBPOVIrbWxVVWxRZjJDNXBOTXBVcllXT3FxblRESApLTGluWHZtTjBYeDh2bG4xenN1clZqV1ZESDN2eVZyZzJHVWJRZHhzL1RoK0trQkhmL0FsMTZmdDZXQTdPZ2VkClNXUllaUUREQWdNQkFBRUNnZ0VBQWVjR2hFSkdvZzZ4ZTIyVnZXTURHVmhMcDJJVjBvVlVqMDN3VkR0TzMza2cKQUtSMHQzdGxWRElkcnRBMUlFYW9NVW5HNTk4Mm53NVRCc0NWY2dsK09hRnBDaW4zSlBXUUorU0pQczlKaE1mSQpFSlA1Sm4vRnJVZzlZV2JyYXI0RXhxRWJOTGFYZ1N3MmxNSTBiN0tyWUdqUVlYMGRCR2IyQzRYSFVaaitKQ2pGCnRwNHNycFh6UUJIcCtZTWdWNDdScDV0bU5NUGppUnZVTVdoZ2VzOTc2WjdCRnJOa0ZiWFAyZStWOUg1bDFvejQKU1kxTWJWVWhpZzBpL3gxZVgzRnorR1EyK2J1ZXladS9FaktzSzVwOXVjNUhiTTZHV2MwL3l3QTZ2bWxTT3dCYwpMTEFUaWNWa1BjRFZKa2NBRml1N095YnBWR2NsUUhsd2UrWjJ5SThZcFFLQmdRRDNlMkUzUTBEM0wvOGhEVXd1CnluZUg5OGpzRnJqQXVKYTFmZ2piQ1RudTB6dExjeThNTnFnZlJhVXExUFFrYkZ6S0FXK1BiU09FNHRzK05JUzcKV1AzRjhZdDc3S1BCamhUak5MVk5YZkdCMEIybHR0MFpkS215dUp4V3U3bFc2L3FkRSttcElYRlJoV2tBUjRwOApNbURvb0k3NEN3TExOTzFmNlNWQXpQS1pGd0tCZ1FEZWpwY2JlbWU1UFN1b1RhQ2J0NWNhNFJrdEZIWGg4VE9uCmozamo3SFRMUWwyNDhuV28zaXI2YTFlR25HOXpqS3VyVUtrb25ZcUpyUjZCbzMybWhzR0dGSTd1K0xLQVFoRXIKWERwRTgrQXVEb3JmeW9wZ1kwZ3M4QkRLQmlKL0FPVnFFTnBRUVBnVEg2WmY3RmVaSi9uM0FaT1N6K3A5Vm1UNApaVTlacG5LSk5RS0JnUUN0NXdEMU9Fa2FhWnU1dWdKaWp0dFhyQUtBQTZkbnBVNGgwcUtlWitsUnJSVHBlOUwvCm5oaWRnTzhESGdsQTN2U0U3bVZhUDdMSjJpOTlrcUlDbEJJZldoQk4wSWR4cDBsK0xyZUgyZyt1ekhOSTB5cWkKakp3Q2ZqODlvMFFsbEVUU3cvOVpYYXFuUWp2NmVrc1I0c1MrTXJURUQ5aXl1a3BqTHcyQ2I0RzVtUUtCZ1FDbwoxWGt5b2tCUG1XVW1MNFdZdThUSTRsek1Bd3FPbGdGK3F1dWwxTHFoZTc1SDBMK0xsTWI3NURTbzdNSHI0WnBWCncwSWdpcXNQV0tLYzdCOGxGbk4zT045WjBKYnhqNjBndkwyRGs1TE12Y0dDbGs4MVlmdmVBMXhwTmhBelVzVzMKR2dQVUFBVngxSC9Ob3lpdENsT3BtNnVOSTJlYkg5QkhVK3ZIY2VyUHhRS0JnRU9vT0hOaHlYU2ZubXVWK0pzaApSbW5sQ2JCSFVaV0ljS1lpQ1h4UnY1OHZ6OW1WakVHMjY5UEJiMjB3enFlclBjNGNRclNXRVF2NitPelBYK1lOCkU2cVpRUUtGTWJ2UGh1b1lkYjdQdlZ5VkFtSmtKZm5WaXpZYWM5RWdNdnFETThnVEJvcE04c2tldWFtTHkyeUYKd3BtNGV5UTAybXlWVExUNzVJYzdqenZXCi0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS0KLS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURORENDQWh5Z0F3SUJBZ0lRZDNUa3pmdTJRQyt0Q0dnZE81QnJtVEFOQmdrcWhraUc5dzBCQVFzRkFEQVgKTVJVd0V3WURWUVFERXd4NGRITmxjblpsY2k1amIyMHdIaGNOTWpBd016QTRNRFF3TlRJeFdoY05NakV3TXpBNApNRFF4TlRJeFdqQVhNUlV3RXdZRFZRUURFd3g0ZEhObGNuWmxjaTVqYjIwd2dnRWlNQTBHQ1NxR1NJYjNEUUVCCkFRVUFBNElCRHdBd2dnRUtBb0lCQVFEWEp0YlNMNm1QNytTcUczYVpuM2dZZUptWE1BV1JvSjJNQ1k2Sy9vQUQKaUg0OW0yLzFjbzJmNUk2b1F4N3FlcE1VK0ZyWTlQUDRkMC9GZy9QbnJSQ2UzMktMbVRUQnpiQ3ZQaURYMEc5YQplUGxQd1NacndWa0o1eHpHN0xRV3VPSjNxam5LZFNta2JsVE9OUmpxbnhFSzZFWHVqRUx1KzQ4ZmdnYzcvd0JKCnZqREZxeVhMMm9rZVlyQmM5UjYrcGtEMjhseGpqR3ZpUnFHaFRuTzQ3S3YrZXFEQ24vbGd3d0RYWkhWbUR5U20KajFnc2xicE85UittbFVVbFFmMkM1cE5NcFVyWVdPcXFuVERIS0xpblh2bU4wWHg4dmxuMXpzdXJWaldWREgzdgp5VnJnMkdVYlFkeHMvVGgrS2tCSGYvQWwxNmZ0NldBN09nZWRTV1JZWlFEREFnTUJBQUdqZkRCNk1BNEdBMVVkCkR3RUIvd1FFQXdJRm9EQUpCZ05WSFJNRUFqQUFNQjBHQTFVZEpRUVdNQlFHQ0NzR0FRVUZCd01CQmdnckJnRUYKQlFjREFqQWZCZ05WSFNNRUdEQVdnQlNlSUpucTQrT2U3RUFReitMSXdBZXZnckg4bmpBZEJnTlZIUTRFRmdRVQpuaUNaNnVQam51eEFFTS9peU1BSHI0S3gvSjR3RFFZSktvWklodmNOQVFFTEJRQURnZ0VCQUNhLzFmUXhxTFNtCnFiZmo0aGo2c3BwdStTbXlmMjdVRGxmazdnSzZGa3lWdXN3OXFlU0pxd29YNzZiMnN1TWxYRWFHeDUzOTd2OHcKcllNdGZXVXZDQUdWWDlmUktGeGJESmtVRFJ4Q3VNMGkyOGM3VU1UbmMvdnc4cmpUV0hISXFwanJkS3lMMmNEYwp0TVo1VEhoa3lHTlRUc3YzRDRJZXoxR2lWcXZLSXkxd0lBYVNtd1FoWUNFOThwRG9IZDJYZzkvRzVacGEvL3ZyCkY2ZmFVNWN5VzNVK0lJMGxUSVhDYXduMFRaY0ZkNHRtaUNHczc1WVhaRTJWdENKSEFFVU80VXhudGlaVWFDaHUKTlBsUncrSG1LTVB0S0tUTmp6VEdrdGhaeWkrRFFacVlYVmo5MjByNjl1eEdBWGdsSkxDdDJMUmFGbGZOeTJ2bwpNU0xBS0VkaTR0ND0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=",
+        "XT_STORE_CREDS": "eyJ0eXBlIjogInN0b3JhZ2UiLCAicHJvdmlkZXIiOiAiYXp1cmUtYmxvYi0yMSIsICJrZXkiOiAicWZYT3JXN2JIUXdWT1NRMjBWaVRsc2g0R1JTbW40VXd6YmRNVGtxcUdsVnQ5c3F0d0h1V1Z5QlIxWFJHdGkzSzFsVk1JazRrMFMxeGdPejU4ZVQ0YWc9PSIsICJuYW1lIjogInh0c2FuZGJveHN0b3JhZ2UifQ==",
+        "XT_MONGO_CONN_STR": "bW9uZ29kYjovL3h0LXNhbmRib3gtY29zbW9zOmtCT1dMUXJzZVpOVXFtRWpTTW9GT0ZUVFV1Z3pKTUh6NkZjZzJXT1diU29VUXBtVElYWUlXMGZrVkE4S1RrUGVCdEdnM2ZubUY4WG1IVTU5WlFwTXh3PT1AeHQtc2FuZGJveC1jb3Ntb3MuZG9jdW1lbnRzLmF6dXJlLmNvbToxMDI1NS8/c3NsPXRydWUmcmVwbGljYVNldD1nbG9iYWxkYg==",
+        "XT_STORE_CODE_PATH": "xtlib.storage.store_azure_blob21.AzureBlobStore21",
+        "XT_NODE_ID": "node0",
+        "XT_WORKSPACE_NAME": "quick-test2",
+        "XT_EXPERIMENT_NAME": "exper1",
+        "XT_TARGET_FILE": "",
+        "XT_RESUME_NAME": ""
+    },
+    "resources": {
+        "workers": {
+            "type": "skuResource",
+            "sku": "G1",
+            "count": 1,
+            "image": "phillyregistry.azurecr.io/microsoft_pytorch:v1.2.0_gpu_cuda9.0_py36_release_gpuenv_hvd0.16.2",
+            "commandLine": "echo ----- START of XT-level processing -----; echo running: long philly cmd string; echo initial cwd: $PWD; echo running: mkdir ~/.xt/cwd -p; mkdir ~/.xt/cwd -p; echo running: cd ~/.xt/cwd; cd ~/.xt/cwd; echo after cd, cwd: $PWD; export PATH=$PATH:~/.local/bin; echo CONDA: $CONDA_DEFAULT_ENV; echo running: pip install --user xtlib==0.0.999 > __pip_install__.log; pip install --user xtlib==0.0.999 > __pip_install__.log; echo after: pip install --user xtlib==0.0.999 > __pip_install__.log; export PATH=$HOME/.local/bin:$PATH; export PYTHONPATH=.:$PYTHONPATH; export XT_CODE_MNT=\"/mnt/default/jobs/fake_job999/before/code\"; export XT_OUTPUT_MNT=\"/mnt/output/runs/fake_run999/output\"; export XT_AFTER_MNT=\"/mnt/output/runs/fake_run999/after\"; mkdir -p \"/home/$USER/.xt\"; echo copying source code from: $XT_CODE_MNT; cp -r \"$XT_CODE_MNT\" ~/code; cd ~/code; echo unzipping xt_code.zip; sudo apt install unzip; unzip xt_code.zip > __unzip__.log; export PYTHONDONTWRITEBYTECODE=1; export PYTHONPATH=\"$XT_CODE_MNT:$PYTHONPATH\"; echo DOWNLOADING model SHARE=miniMnist to local path=/home/$USER/models/miniMnist; export XT_MODEL_DIR=\"/home/$USER/models/miniMnist\"; mkdir $XT_MODEL_DIR -p; echo running: xt download /xts-models-xts/miniMnist /home/$USER/models/miniMnist; xt download /xts-models-xts/miniMnist /home/$USER/models/miniMnist; echo after: xt download /xts-models-xts/miniMnist /home/$USER/models/miniMnist; echo '---------- MEMORY Report -----------:'; free -mh; echo '---------- CPU Report -----------:'; lscpu; echo '---------- GPU Report -----------:'; nvidia-smi; echo '---------- PYTHON/PYTHON3 Report -----------:'; python -V; python3 -V; echo '---------- PYTORCH Report -----------:'; python -c \"import torch; print('TORCH version', torch.__version__, ' says CUDA available=', torch.cuda.is_available())\"; python -u __run_controller__.py; echo ----- END of XT-level processing -----",
+            "interactive": null
+        }
+    },
+    "volumes": {
+        "default": {
+            "type": "blobfuseVolume",
+            "storageAccount": "xtsandboxstorage",
+            "containerName": "xt-store-info",
+            "path": "/mnt/default",
+            "options": [
+                "-o",
+                "attr_timeout=240",
+                "-o",
+                "entry_timeout=240",
+                "-o",
+                "negative_timeout=120",
+                "--log-level=LOG_WARNING",
+                "-o",
+                "allow_other",
+                "--file-cache-timeout-in-seconds=100000",
+                "-o",
+                "ro"
+            ]
+        },
+        "output": {
+            "type": "blobfuseVolume",
+            "storageAccount": "xtsandboxstorage",
+            "containerName": "quick-test2",
+            "path": "/mnt/output",
+            "options": [
+                "-o",
+                "attr_timeout=240",
+                "-o",
+                "entry_timeout=240",
+                "-o",
+                "negative_timeout=120",
+                "--log-level=LOG_WARNING",
+                "-o",
+                "allow_other",
+                "--file-cache-timeout-in-seconds=100000"
+            ]
+        },
+        "_output": {
+            "type": "blobfuseVolume",
+            "storageAccount": "xtsandboxstorage",
+            "containerName": "quick-test2",
+            "path": "/mnt/_output",
+            "options": [
+                "-o",
+                "attr_timeout=240",
+                "-o",
+                "entry_timeout=240",
+                "-o",
+                "negative_timeout=120",
+                "--log-level=LOG_WARNING",
+                "-o",
+                "allow_other",
+                "--file-cache-timeout-in-seconds=100000"
+            ]
+        }
+    },
+    "credentials": {
+        "storageAccounts": {
+            "xtsandboxstorage": {
+                "key": "qfXOrW7bHQwVOSQ20ViTlsh4GRSmn4UwzbdMTkqqGlVt9sqtwHuWVyBR1XRGti3K1lVMIk4k0S1xgOz58eT4ag=="
+            }
+        }
+    }
+}

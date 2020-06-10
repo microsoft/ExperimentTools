@@ -1,0 +1,9 @@
+hyperparameter-distributions:
+  beta: $linspace(.1, .9, 5)
+  lr:
+  - 0.01
+  - 0.02
+  - 0.03
+  optimizer:
+  - sgd
+  - adam

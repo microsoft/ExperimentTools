@@ -1,0 +1,14 @@
+# local xt_config.yaml file for microMnist directory
+compute-targets: {}
+    local: {service: "pool", boxes: ["localhost"], setup: "local"}
+
+xt-services:
+    target: local        # default target for XT run command
+
+general:
+    workspace: "ws1"          # name of current workspace 
+    experiment: "exper5"      # default name of experiment associated with each run
+
+code:
+    code-omit: ["output"]     # directories and files to omit when capturing code files
+    xtlib-upload: true        # upload XTLIB sources files for each run and use for controller and ML app    

@@ -1,0 +1,2 @@
+python code\miniMnist.py  --epochs=10  --optimizer=sgd  --lr=.0057
+python code\miniMnist.py  --epochs=10  --optimizer=adam --lr=.0013

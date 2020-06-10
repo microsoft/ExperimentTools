@@ -1,0 +1,35 @@
+# for xtlib API and XT command line usages:
+
+# for azure SDK usage
+# we specify versions numbers to ensure they work together correctly (last changed: 10/30/2019)
+azureml-sdk==1.0.69
+azure-storage-file==2.1.0
+azure-storage-blob==2.1.0
+azure-batch==8.0.0
+azureml-widgets==1.0.69.1
+
+arrow==0.14.0    # avoid annoying warning msgs in 0.14.4, 
+future      # temporarily needed by tensorboard
+grpcio>=1.24.3     # tensorboard requirement
+hyperopt    # for bayesian hyperparam searching
+ipykernel   # for exposing virtual env to Jupyter Notebook
+matplotlib  # for plots
+numpy       # general use
+pandas      # for DataFrame objects
+paramiko    # fast access to remote box (SSH session API)
+psutil      # for examine if controller is running on local machine
+ptvsd       # for debug-attaching to processes
+pymongo     # runs database
+python-interface    # for specifying interfaces for XT providers
+pywin32     # for keyboard stuffing (rereun cmd)
+rpyc==4.1.2 # xt <--> controller
+ruamel.yaml==0.15.89  # Needed by asureml-core
+seaborn     # for plotting styles and color schemes
+sphinx      # for docs
+sphinx_rtd_theme    # for docs
+tensorboard          # for tensorboard runs/testing
+tqdm        # for downloading allruns/summary files
+watchdog    # for watching file we want to copy to grok server
+
+# to run xtlib's tests, you will also need pytorch installed:
+#   conda install pytorch torchvision cudatoolkit=10.0 -c pytorch
