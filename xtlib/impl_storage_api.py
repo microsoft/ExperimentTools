@@ -417,9 +417,10 @@ class ImplStorageApi():
         use_multi = True
         upload_count = 0
 
-        if ".." in store_path or "." in store_path:
-            console.print("XT does not allow relative paths when specifying the store-path. Use an absolute path instead.")
-            return upload_count
+        if store_path is not None:
+            if ".." in store_path or "." in store_path:
+                console.print("XT does not allow relative paths when specifying the store-path. Use an absolute path instead.")
+                return upload_count
 
         # exapnd ~/ in front of local path
         local_path = os.path.expanduser(local_path)
