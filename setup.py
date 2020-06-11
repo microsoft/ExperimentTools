@@ -25,6 +25,7 @@ requirements = [
     "azureml-widgets==1.0.69.1",
 
     # other xtlib dependencies
+    "pillow==6.2.2",
     "numpy",  # general use
     "arrow==0.14.0",  # avoid annoying warning msgs in 0.14.4, 
     "rpyc==4.1.2",  # rpyc requires its versions to match (client/remote)
