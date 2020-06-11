@@ -418,7 +418,7 @@ class ImplStorageApi():
         upload_count = 0
 
         if store_path is not None:
-            if ".." in store_path or "." in store_path:
+            if store_path.find("..") == 0 or store_path.find(".") == 0:
                 console.print("XT does not allow relative paths when specifying the store-path. Use an absolute path instead.")
                 return upload_count
 
