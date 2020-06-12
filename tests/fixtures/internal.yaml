@@ -1,0 +1,2 @@
+compute-targets: 
+    aml-internal: {service: "aml-temp-ws", compute: "temp-compute", vm-size: "Standard_NC6", nodes: 1, low-pri: false, setup: "aml"} 
