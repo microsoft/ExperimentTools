@@ -60,7 +60,8 @@ class TestShowController(test_base.TestBase):
         pass
 
     def test_show_controller(self):
-        if not pc_utils.is_windows():
-            self.show_controller_linux()
-        else:
-            self.show_controller_windows()
+        if pc_utils.has_gui():
+            if not pc_utils.is_windows():
+                self.show_controller_linux()
+            else:
+                self.show_controller_windows()
