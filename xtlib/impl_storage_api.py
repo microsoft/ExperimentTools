@@ -417,6 +417,11 @@ class ImplStorageApi():
         use_multi = True
         upload_count = 0
 
+        if store_path is not None:
+            if store_path.find("..") == 0 or store_path.find(".") == 0:
+                console.print("XT does not allow relative paths when specifying the store-path. Use an absolute path instead.")
+                return upload_count
+
         # exapnd ~/ in front of local path
         local_path = os.path.expanduser(local_path)
 
@@ -435,7 +440,7 @@ class ImplStorageApi():
                 # single file defaults to the base name of the local file
                 store_path = os.path.basename(local_path)
             else:
-                store_path = "."
+                store_path = ""
 
         fs = self.create_file_accessor(use_blobs, share, workspace, experiment, job, run)
         uri = fs.get_uri(store_path)

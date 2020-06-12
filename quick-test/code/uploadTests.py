@@ -52,7 +52,7 @@ def single_blob_tests():
     test_cmd("xt upload test1.py maindir/subdir/test1.py --share=sharetest")
 
     # PASS: dest=PARENT path
-    test_cmd("xt upload test1.py ../__ws__/parent.txt --share=sharetest")
+    test_cmd("xt upload test1.py __ws__/parent.txt --share=sharetest")
     
     # PASS: dest=GLOBAL
     test_cmd("xt upload test1.py /{}/jobs/job1000/global_single.txt --share=sharetest".format(constants.INFO_CONTAINER))
@@ -70,10 +70,10 @@ def multiple_blob_tests():
     test_cmd("xt upload myapps maindir/subdir --share=sharetest")
 
     # PASS: dest=PARENT path
-    test_cmd("xt upload *.py ../__ws__ --share=sharetest")
+    test_cmd("xt upload *.py __ws__ --share=sharetest")
     
     # PASS: source=named, dest=PARENT 
-    test_cmd("xt upload myapps ../__ws__ --share=sharetest")
+    test_cmd("xt upload myapps __ws__ --share=sharetest")
 
     # PASS: dest=GLOBAL
     test_cmd("xt upload *.txt /{}/jobs/job1000 --share=sharetest".format(constants.INFO_CONTAINER))
