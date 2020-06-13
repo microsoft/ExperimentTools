@@ -17,44 +17,41 @@ with open("README.md", "r") as fh:
 
 requirements = [
     # azure SDK
-    "azureml-sdk==1.0.69",
-    "azure-storage-blob==2.1.0",
+    "azure-batch==8.0.0",
     "azure-identity==1.2.0",
     "azure-keyvault==4.0.0",
-    "azure-batch==8.0.0",
+    "azure-storage-blob==2.1.0",
+    "azureml-sdk==1.0.69",
     "azureml-widgets==1.0.69.1",
-
+ 
     # other xtlib dependencies
-    "numpy",  # general use
-    "arrow==0.14.0",  # avoid annoying warning msgs in 0.14.4, 
-    "rpyc==4.1.2",  # rpyc requires its versions to match (client/remote)
-    "future",  # temporarily needed by tensorboard
-    "watchdog==0.9.0",  # for watching file we want to copy to grok server (watchdog 0.10.0 has setup error)
-    "hyperopt",  # for bayesian hyperparam searching
-    "pymongo",  # for reporting/querying runs database (Azure MongoDB API)
-    "tqdm",  # for command line progress displays (still used?)
-    "tensorboard==2.1.0",  # for logging to Tensorboard
-    "psutil",  # for querying and killing processes (XT controller)
-    "ptvsd",  # for attaching debugger to python processes
-    "matplotlib",  # for plotting (exploring their use)
-    "seaborn",     # for plotting styles
-    "pandas",      # for DataFrame 
-    "PyYAML>=5.1.0",   # for YAML parser
-    "python-interface",    # for specifying provider interface classes
-    "paramiko",         # SSH session-level API (fast access to remote box)
-
-    #"torch==1.2.0",
-    # "torchvision==0.4.1",
-    #  "pillow==6.2.0",  
-    "grpcio>=1.24.3",   # tensorboard requirement
+    "PyYAML==5.3.1",            # for YAML parser
+    "arrow==0.14.0",            # avoid annoying warning msgs in 0.14.4, 
+    "future==0.18.2",           # temporarily needed by tensorboard
+    "grpcio==1.29.0",           # tensorboard requirement
+    "hyperopt==0.2.4",          # for bayesian hyperparam searching
+    "matplotlib==3.2.1",        # for plotting (exploring their use)
+    "numpy==1.18.1",            # general use
+    "pandas==1.0.4",            # for DataFrame 
+    "paramiko==2.7.1",          # SSH session-level API (fast access to remote box)
+    "pillow==6.2.2",
+    "psutil==5.7.0",            # for querying and killing processes (XT controller)
+    "ptvsd==4.3.2",             # for attaching debugger to python processes
+    "pymongo==3.10.1",          # for reporting/querying runs database (Azure MongoDB API)
+    "python-interface==1.6.0",  # for specifying provider interface classes
+    "rpyc==4.1.2",              # rpyc requires its versions to match (client/remote)
     "ruamel.yaml==0.15.89",
+    "seaborn==0.10.1",          # for plotting styles
+    "tensorboard==2.1.0",       # for logging to Tensorboard
+    "tqdm==4.46.1",             # for command line progress displays (still used?)
+    "watchdog==0.9.0"           # for watching file we want to copy to grok server (watchdog 0.10.0 has setup error)
 ]
 
 if platform.system() == 'Windows':
-    requirements.append('pywin32')  # windows only package
+    requirements.append('pywin32==227')                 # windows only package
 elif platform.system() == 'Linux':
-    requirements.append('scikit-learn') # required by shap, azureml-explain-model
-    requirements.append('pyasn1>=0.4.6') # linux only package
+    requirements.append('scikit-learn==0.22.2.post1')   # required by shap, azureml-explain-model
+    requirements.append('pyasn1==0.4.8')                # linux only package
 
 
 setuptools.setup(
@@ -88,8 +85,8 @@ setuptools.setup(
     install_requires=requirements,
     extras_require=dict(
         dev=[
-            "sphinx",  # for docs
-            "sphinx_rtd_theme"  # for docs
+            "sphinx==3.0.4",            # for docs
+            "sphinx_rtd_theme==0.4.3"   # for docs
         ], ),
 
     # used to identify the package to various searches
