@@ -20,7 +20,7 @@ class RunIndexTester():
     def __init__(self, mongo):
         '''
         unit test for mongo api: get_next_child_run().  we test on top of an 
-        existing job in the current storge system:
+        existing job in the current storage system:
             - job7569: 5 nodes, 10 child runs each, runs 4603-4607
         '''
         self.mongo = mongo
@@ -40,15 +40,22 @@ class RunIndexTester():
         # rewrite an initial set of active_runs for the job
         entries = build_active_runs(schedule, self.run_count, self.node_count)
 
-        ar = self.mongo.mongo_db["__jobs__"].find_and_modify({"job_id": self.job_id} , update={"$set": {"active_runs": entries, "schedule": schedule}}, new=True)
+        self.mongo.mongo_db["__jobs__"].find_and_modify({"job_id": self.job_id} , update={"$set": {"schedule": schedule}}, new=True)
+        
+        entries_with_job_id = [ ]
+        for entry in entries:
+            entry['job_id'] = self.job_id
+            entries_with_job_id.append(entry)
+
+        self.mongo.mongo_db["__active_runs__"].insert_many(entries_with_job_id)
+        
         #print("fresh active_runs: ", ar["active_runs"])
 
     def ar_status_check(self, status):
-        cursor = self.mongo.mongo_db["__jobs__"].find( {"_id": self.job_id}, {"active_runs": 1})
-        active_runs = utils.safe_cursor_value(cursor, "active_runs")
+        active_runs = self.mongo.mongo_db["__active_runs__"].find( {"job_id": self.job_id} )        active_runs = utils.safe_cursor_value(cursor, "active_runs")
 
         for ar in active_runs:
-            ar_status = ar["status"]
+            ar_status = utils.safe_cursor_value(ar, "status")
             self._assert(ar_status == status)
 
     def run_sequential_tests(self, schedule):
@@ -190,13 +197,12 @@ class NodeRunner():
             self.threads.append(run_worker)
 
     def restart_status_check(self):
-        cursor = self.mongo.mongo_db["__jobs__"].find( {"_id": self.job_id}, {"active_runs": 1})
-        active_runs = utils.safe_cursor_value(cursor, "active_runs")
+        active_runs = self.mongo.mongo_db["__active_runs__"].find( {"job_id": self.job_id} )
 
         for ar in active_runs:
-            node_id = ar["node_id"]
+            node_id = utils.safe_cursor_value(ar, "node_id")
             if node_id == self.node_id:
-                ar_status = ar["status"]
+                ar_status = utils.safe_cursor_value(ar, "status")
                 self.tester._assert( ar_status in [constants.UNSTARTED, constants.WAITING, constants.COMPLETED] )
 
     def wait_for_all_threads(self):

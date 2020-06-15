@@ -188,14 +188,19 @@ class ImplCompute(ImplBase):
         if node_index is None:
             node_index = 0
 
-        backend, job_info = job_helper.get_job_backend(self.store, self.core, job_id)
+        backend = job_helper.get_job_backend(self.store, self.core, job_id)
 
         node_id = utils.node_id(node_index)
-        service_info_by_node = job_info["service_info_by_node"]  
-        service_node_info = service_info_by_node[node_id]
-
+        mongo = self.store.get_mongo() 
+        service_info_by_node = mongo.get_service_info_by_node(job_id)
+        service_node_info = None
+        
+        for d in service_info_by_node:
+            if d['node_id'] == node_id:
+                service_node_info = d
+        
         service_name = backend.get_name()
-        node_count = len(job_info["service_info_by_node"])
+        node_count = len(service_info_by_node)
 
         console.print("==> monitoring: {}, node{} [{}] (press escape or control-c to exit, +/- to change node)" \
             .format(job_id, node_index, service_name), flush=True)
@@ -235,7 +240,10 @@ class ImplCompute(ImplBase):
                         node_id = utils.node_id(node_index)
 
                         # set new context
-                        service_node_info = service_info_by_node[node_id]
+                        for d in service_info_by_node:
+                            if d['node_id'] == node_id:
+                                service_node_info = d
+                                
                         start_offset = offset_by_node[node_id] if node_id in offset_by_node else 0
                         first_text_of_stream = not start_offset
                         console.print("==> switching to: node{}".format(node_index))

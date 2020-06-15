@@ -43,8 +43,7 @@ class MongoRunIndex():
         '''
         non-atomic update of all active runs for this node: set to constants.WAITING
         '''
-        elem_dict = {"node_id": self.node_id, "status": {"$in": [constants.STARTED, constants.RESTARTED]}}
-        fd = {"_id": self.job_id, "active_runs": {"$elemMatch": elem_dict}}
+        fd = {"job_id": self.job_id, "node_id": self.node_id, "status": {"$in": [constants.STARTED, constants.RESTARTED]}}
 
         while True:
             # this will only update a single array entry at a time (using mongo 3.2)
@@ -68,16 +67,16 @@ class MongoRunIndex():
         run_index = entry["run_index"]
 
         # optional assert
-        ar = self._get_job_property("active_runs")
+        ar = self.mongo.get_active_runs(self.job_id, run_index)
         ent = utils.find_by_property(ar, "run_index", run_index)
         
         if ent["status"] == constants.COMPLETED:
             errors.internal_error("mark_child_run_completed: run already marked completed: {}".format(ent))
 
-        fd = {"_id": self.job_id, "active_runs.run_index": run_index}
+        fd = {"job_id": self.job_id, "run_index": run_index}
 
         # mark entry as constants.COMPLETED
-        cmd = lambda: self.mongo.mongo_db["__jobs__"].find_and_modify(fd , update={"$set": {"active_runs.$.status": constants.COMPLETED}})
+        cmd = lambda: self.mongo.mongo_db["__active_runs__"].find_and_modify(fd , update={"$set": {"status": constants.COMPLETED}})
         self.mongo.mongo_with_retries("mark_child_run_completed", cmd)
         
     def _get_next_child_name(self):
@@ -116,32 +115,17 @@ class MongoRunIndex():
 
     def _get_first_entry(self, filter, update):
         # build filter dictionary for caller's nested properties
-        fd = {"_id": self.job_id}
+        fd = {"job_id": self.job_id}
 
-        em = {}
-        for name, value in filter.items():
-            em[name] = value
-
-        # must use $elemMatch to match an array element with multiple conditions
-        fd["active_runs"] = {"$elemMatch": em}
+        fd.update(filter)
 
         # mongodb workaround: since $ projection operator not working with find_and_modify(),
         # we add a unique id (guid) so we know which element we have updated
         guid = str(uuid.uuid4())
         update["guid"] = guid
 
-        # build update dictionary for caller's nested properties
-        ud = {}
-        for name, value in update.items():
-            key = "active_runs.$.{}".format(name)
-            ud[key] = value
-
-        cmd = lambda: self.mongo.mongo_db["__jobs__"].find_and_modify(fd, update={"$set": ud}, fields={"active_runs": 1}, new=True)
+        cmd = lambda: self.mongo.mongo_db["__active_runs__"].find_and_modify(fd, update={"$set": update}, new=True)
         result = self.mongo.mongo_with_retries("_get_first_entry", cmd)
-
-        if result:
-            active_runs = result["active_runs"]
-            result = utils.find_by_property(active_runs, "guid", guid)
 
         return result
 

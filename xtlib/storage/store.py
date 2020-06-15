@@ -959,10 +959,53 @@ class Store():
         # update mongo-db for fast access
         dd = json.loads(text)
         self.mongo.update_job_info(job_id, dd)
-    
+
+    def write_runs_by_box(self, job_id, runs_by_box):
+        docs = []
+        for box_id, info in runs_by_box.items():
+            dd = {'box_id': box_id, 'job_id': job_id}
+            dd.update(info[0])
+            docs.append(dd)
+
+        self.mongo.mongo_with_retries("insert_runs_by_box", lambda: self.mongo.mongo_db["__runs_by_box__"].insert_many(docs))
+
+    def write_service_job_info(self, job_id, service_job_info):
+        service_job_info['job_id'] = job_id
+        self.mongo.mongo_with_retries("insert_service_job_info", lambda: self.mongo.mongo_db["__service_job_info__"].insert_one(service_job_info))
+
+    def write_service_info_by_node(self, job_id, service_info_by_node):
+        docs = []
+        for node_id, info in service_info_by_node.items():
+            dd = {'node_id': node_id, 'job_id': job_id}
+            dd.update(info)
+            docs.append(dd)
+
+        self.mongo.mongo_with_retries("insert_service_info_by_node", lambda: self.mongo.mongo_db["__service_info_by_node__"].insert_many(docs))
+
+    def write_active_runs(self, job_id, active_runs):
+        for run in active_runs:
+            run['job_id'] = job_id
+
+        self.mongo.mongo_with_retries("insert_active_runs", lambda: self.mongo.mongo_db["__active_runs__"].insert_many(active_runs))
+
     def log_job_info(self, job_id, dd):
+        runs_by_box = dd['runs_by_box']
+        service_job_info = dd['service_job_info']
+        service_info_by_node = dd['service_info_by_node']
+        active_runs = dd['active_runs']
+
+        del dd['runs_by_box']
+        del dd['service_job_info']
+        del dd['service_info_by_node']
+        del dd['active_runs']
+
         text = json.dumps(dd, indent=4)
         self.write_job_info_file(job_id, text)
+
+        self.write_runs_by_box(job_id, runs_by_box)
+        self.write_service_job_info(job_id, service_job_info)
+        self.write_service_info_by_node(job_id, service_info_by_node)
+        self.write_active_runs(job_id, active_runs)
 
     def log_job_event(self, job_id, event_name, data_dict=None, description=None, event_time=None):
         if not event_time:

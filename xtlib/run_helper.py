@@ -370,10 +370,6 @@ def get_run_records(store, workspace, run_names, fields_dict=None):
     filter_dict = {}
     filter_dict["run_name"] = {"$in": run_names}
 
-    if not fields_dict:
-        # by default, get everything but the log records
-        fields_dict = {"log_records": 0}
-
     run_records = mongo.get_info_for_runs(workspace, filter_dict, fields_dict)
 
     return run_records
@@ -386,7 +382,7 @@ def get_run_record(store, workspace, run_name, fields_dict = None):
     return rr
 
 def get_service_node_info(store, workspace, run_name):
-    rr = run_helper.get_run_record(store, workspace, name, {"job_id": 1, "node_index": 1})
+    rr = run_helper.get_run_record(store, workspace, run_name, {"job_id": 1, "node_index": 1})
     job_id = rr["job_id"]
     node_index = rr["node_index"]
 
@@ -646,7 +642,7 @@ def get_client_cs(core, ws, run_name):
     box_secret = None
 
     filter = {"_id": run_name}
-    runs = core.store.mongo.get_info_for_runs(ws, filter, {"run_logs": 0})
+    runs = core.store.mongo.get_info_for_runs(ws, filter, None)
     if not runs:
         errors.store_error("Unknown run: {}/{}".format(ws, run_name))
 
@@ -684,7 +680,7 @@ def wrapup_runs_by_node(store, job_id, node_id, node_cancel_result):
 
     unwrapped = ["created", "queued", "spawning", "allocating", "running"]
     filter_dict = {"job_id": job_id, "node_index": node_index, "status":  {"$in": unwrapped}}
-    fields_dict = {"log_records": 0}
+    fields_dict = None
 
     runs = store.mongo.get_info_for_runs(ws_name, filter_dict, fields_dict)
 
