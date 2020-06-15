@@ -1,0 +1,29 @@
+hyperparameter-distributions:
+
+  seed: $randint()
+  n_steps: 3000
+  lr: [.0001, .01, .04, .08, .001, .004, .008, .0001, .0004, .0008, .00001, .00004, .00008]  
+  beta1: [.9, .80, .85, .88, .90, .92, .94, .96, .98]
+  bata2: [.995, .970, .975, .980, .985, .90, .995, .999]
+  batch_size: 256
+  grad_accum_steps: 4
+  max_abs_grad_norm: [.1, .05, .75, .1, 1.05, 1.1, 1.15]
+  dropout: [0, .1, .2, .3, .4, .5, .6, .7, .8, .9]
+  pt: Adam
+  model_name: tp_mul_onlySin 
+  n_layers: [6, 3, 4, 5, 6, 7, 8, 9]
+  n_heads: [8, 4, 5, 6, 7, 8, 9, 10]
+  hidden: [512, 128, 256, 512, 768, 1024]
+  filter: [2048, 1500, 1600, 1700, 1800, 1900, 2048, 2100, 2200]
+  
+  module_name: algebra__linear_1d, algebra__linear_1d_composed, algebra__linear_2d, algebra__linear_2d_composed, algebra__polynomial_roots, algebra__polynomial_roots_composed, 
+    algebra__sequence_next_term, algebra__sequence_nth_term, all_modules, arithmetic__add_or_sub, arithmetic__add_or_sub_in_base, arithmetic__add_sub_multiple, arithmetic__div, 
+    arithmetic__mixed, arithmetic__mul, arithmetic__mul_div_multiple, arithmetic__nearest_integer_root, arithmetic__simplify_surd, calculus__differentiate, calculus__differentiate_composed, 
+    comparison__closest, comparison__closest_composed, comparison__kth_biggest, comparison__kth_biggest_composed, comparison__pair, comparison__pair_composed, comparison__sort, comparison__sort_composed, 
+    measurement__conversion, measurement__time, numbers__base_conversion, numbers__div_remainder, numbers__div_remainder_composed, numbers__gcd, numbers__gcd_composed, numbers__is_factor, 
+    numbers__is_factor_composed, numbers__is_prime, numbers__is_prime_composed, numbers__lcm, numbers__lcm_composed, numbers__list_prime_factors, numbers__list_prime_factors_composed, 
+    numbers__place_value, numbers__place_value_composed, numbers__round_number, numbers__round_number_composed, polynomials__add, polynomials__coefficient_named, polynomials__collect, 
+    polynomials__compose, polynomials__evaluate, polynomials__evaluate_composed, polynomials__expand, polynomials__simplify_power, probability__swr_p_level_set, probability__swr_p_sequence
+
+
+
