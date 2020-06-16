@@ -507,19 +507,15 @@ class TestRun(test_base.TestBase):
 
         return output
 
-    def test_run(self):
-        self.tester.gen_all()
-        elapsed = time.time() - self.started
-        print("generated of {} tests took: {:.2f} secs".format(len(self.tester.all_cmds), elapsed))
-
-        text = self.xt("xt list runs --status=error", capture_output=True)        
-        assert("no matching runs found" in text[0])
-
-
     def test_random(self):
         # scale this up to 100, 5
         fake_runs = 100
         actual_runs = 5
+
+        self.tester.gen_all()
+        elapsed = time.time() - self.started
+        print("generated of {} tests took: {:.2f} secs".format(len(self.tester.all_cmds), elapsed))
+
         self.tester.test_random_subset_cmds(fake_runs, actual_runs)
 
         text = self.xt("xt list runs --status=error", capture_output=True)        
