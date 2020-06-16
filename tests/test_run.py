@@ -491,6 +491,35 @@ class TestRun(test_base.TestBase):
         """
         pass
 
+    def options():
+        '''
+        test the ability of XT command line parsing to handle strings and string lists in option values 
+        '''
+        child_name = "run1"
+
+        # if not store.does_run_exist(ws_name, child_name):
+        #     child_name = "run2.1"
+
+        prefix = "xt plot " + child_name
+
+        # options: unquoted tokens
+        self.xt(prefix + " train-acc, test-acc --show-plot=0  --legend-titles=foo, bar ")
+
+        # options: quoted with {}
+        self.xt(prefix + "  train-acc, test-acc --show-plot=0 --legend-titles={foo, bar}, {bar, ski, do} ")
+
+        # options: nested quotes
+        self.xt(prefix + '''  train-acc, test-acc --show-plot=0 --legend-titles="'foo, bar'", "'bar, ski, do'"  ''')
+
+        # arguments: unquoted tokens
+        self.xt(" xt set tags run2 urgent, priority=5, description=awesome ")
+
+        # arguments: quoted with {}
+        self.xt(" xt set tags run2 urgent, priority=5, description={test effect of 8 hidden layers} ")
+
+        # arguments: nested quotes
+        self.xt(''' xt set tags run2 urgent, priority=5, description='"test effect of 8 hidden layers"'  ''')
+
     def test_random(self):
         # scale this up to 100, 5
         fake_runs = 100
@@ -503,3 +532,5 @@ class TestRun(test_base.TestBase):
         self.tester.test_random_subset_cmds(fake_runs, actual_runs)
 
         self.assert_no_error_runs()
+
+        self.options()
