@@ -491,7 +491,7 @@ class TestRun(test_base.TestBase):
         """
         pass
 
-    def options():
+    def options(self):
         '''
         test the ability of XT command line parsing to handle strings and string lists in option values 
         '''
