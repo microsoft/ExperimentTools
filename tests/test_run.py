@@ -16,6 +16,7 @@ from xtlib import console
 from xtlib import file_utils
 from xtlib.storage.store import Store
 import xtlib.xt_cmds as xt_cmds
+import xtlib.xt_run as xt_run
 from xtlib.helpers import xt_config
 from xtlib.helpers import file_helper
 from xtlib.hparams.hparam_search import HParamSearch
@@ -451,7 +452,7 @@ def init_approved_dir():
     return compare
 
 
-class TestHPSearch(test_base.TestBase):
+class TestRun(test_base.TestBase):
 
     def setup_class(cls):
         """
@@ -490,12 +491,28 @@ class TestHPSearch(test_base.TestBase):
         """
         pass
 
+    def xt(self, cmd, capture_output=True):
+        print("-------------------------------")
+
+        print("xt cmd: " + cmd)
+        print("cwd: ", os.getcwd())
+
+        if capture_output:
+            console.set_capture(True)
+            xt_run.main(cmd)
+            output = console.set_capture(False)
+        else:
+            xt_run.main(cmd)
+            output = None
+
+        return output
+
     def test_run(self):
         self.tester.gen_all()
         elapsed = time.time() - self.started
         print("generated of {} tests took: {:.2f} secs".format(len(self.tester.all_cmds), elapsed))
 
-        text = xt("xt list runs --status=error", capture_output=True)        
+        text = self.xt("xt list runs --status=error", capture_output=True)        
         assert("no matching runs found" in text[0])
 
 
@@ -505,5 +522,5 @@ class TestHPSearch(test_base.TestBase):
         actual_runs = 5
         self.tester.test_random_subset_cmds(fake_runs, actual_runs)
 
-        text = xt("xt list runs --status=error", capture_output=True)        
+        text = self.xt("xt list runs --status=error", capture_output=True)        
         assert("no matching runs found" in text[0])
