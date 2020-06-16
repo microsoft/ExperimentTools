@@ -60,6 +60,38 @@ class TestUpload(test_base.TestBase):
         """
         pass
 
+    def dir_blobs(self):
+        # PASS: blob, no name, subdir=0, --work, no path
+        xt_cmds.main("xt list blobs")
+
+        # PASS: blob, name, subdir=0, --work, rel path
+        xt_cmds.main("xt list blobs myapps")
+
+        # PASS: blob, wildcard, subdir=0, --work, rel-path
+        xt_cmds.main("xt list blobs myapps/test*.py")
+
+        # PASS: blob, no name, subdir=0, --work, global-path
+        xt_cmds.main("xt list blobs /quick-test")
+
+        # PASS blob, no name, subdir=0, --work, root-path
+        xt_cmds.main("xt list blobs /")
+
+        # PASS: blob, no name, subdir=0, --work, parent-path
+        xt_cmds.main("xt list blobs ../")
+        xt_cmds.main("xt list blobs ../runs")
+        xt_cmds.main("xt list blobs ../../../../")
+
+        # PASS: blob, no name, subdir=*, --work, no path
+        xt_cmds.main("xt list blobs /quick-test --subdir=0")
+        xt_cmds.main("xt list blobs /quick-test --subdir=1")
+        xt_cmds.main("xt list blobs /quick-test --subdir=-1")
+
+        # PASS: blob, no name, subdir=*, --work/--run/--job/--exper, no path
+        xt_cmds.main("xt list blobs --work=quick-test")
+        xt_cmds.main("xt list blobs --exper=default-exper")
+        xt_cmds.main("xt list blobs --run=run2.1")
+        xt_cmds.main("xt list blobs --job=job1000")
+
     def test_single_blob(self):
 
         # blob, single, optional, enabled, found
@@ -82,6 +114,8 @@ class TestUpload(test_base.TestBase):
         
         # PASS: dest=GLOBAL
         xt_cmds.main(f"xt upload {self.testing_dir}/test1.py /{constants.INFO_CONTAINER}/jobs/job1000/global_single.txt --share=sharetest")
+
+        self.dir_blobs()
         
 
     # ---- MULTIPLE BLOBS ----
@@ -106,3 +140,5 @@ class TestUpload(test_base.TestBase):
         
         # PASS: source=RECURSIVE, dest=named
         xt_cmds.main(f"xt upload {self.testing_dir}/myapps/** foo --share=sharetest")
+
+        self.dir_blobs()
