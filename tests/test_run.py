@@ -491,22 +491,6 @@ class TestRun(test_base.TestBase):
         """
         pass
 
-    def xt(self, cmd, capture_output=True):
-        print("-------------------------------")
-
-        print("xt cmd: " + cmd)
-        print("cwd: ", os.getcwd())
-
-        if capture_output:
-            console.set_capture(True)
-            xt_run.main(cmd)
-            output = console.set_capture(False)
-        else:
-            xt_run.main(cmd)
-            output = None
-
-        return output
-
     def test_random(self):
         # scale this up to 100, 5
         fake_runs = 100
@@ -518,5 +502,4 @@ class TestRun(test_base.TestBase):
 
         self.tester.test_random_subset_cmds(fake_runs, actual_runs)
 
-        text = self.xt("xt list runs --status=error", capture_output=True)        
-        assert("no matching runs found" in text[0])
+        self.assert_no_error_runs()
