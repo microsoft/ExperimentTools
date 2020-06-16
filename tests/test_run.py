@@ -495,8 +495,15 @@ class TestHPSearch(test_base.TestBase):
         elapsed = time.time() - self.started
         print("generated of {} tests took: {:.2f} secs".format(len(self.tester.all_cmds), elapsed))
 
+        text = xt("xt list runs --status=error", capture_output=True)        
+        assert("no matching runs found" in text[0])
+
+
     def test_random(self):
         # scale this up to 100, 5
         fake_runs = 100
         actual_runs = 5
         self.tester.test_random_subset_cmds(fake_runs, actual_runs)
+
+        text = xt("xt list runs --status=error", capture_output=True)        
+        assert("no matching runs found" in text[0])
