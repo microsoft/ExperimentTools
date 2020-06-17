@@ -616,7 +616,7 @@ class TestRun(test_base.TestBase):
 
         output = self.xt('xt list jobs job2741-job2751 --tags-any={urgent, nodes}')
 
-    def test_tag(self):
+    def exercise_tags(self):
         result_runs = self.xt("xt list runs --status=completed")
         self.assertTrue(len(result_runs) > 3)
         first_result = result_runs[3]
@@ -645,3 +645,4 @@ class TestRun(test_base.TestBase):
         self.assert_no_error_runs()
 
         self.options()
+        self.exercise_tags()
