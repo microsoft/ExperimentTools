@@ -535,7 +535,7 @@ class TestRun(test_base.TestBase):
             #self.xt('xt list tags job2740')
 
             output = self.xt('xt list tags {}'.format(name))
-            output_text = output.join("\n")
+            output_text = "\n".join(output)
             self.assertTrue("description" in output_text)
             self.assertTrue("priority" in output_text)
             self.assertTrue("sad" in output_text)
@@ -549,18 +549,18 @@ class TestRun(test_base.TestBase):
         # test basic PROPERTY FILTERS
 
         output = self.xt('xt list jobs job2741-job2751 --filter={nodes==5}')
-        output_text = output.join("\n")
+        output_text = "\n".join(output)
         self.assertTrue("job2742" in output_text)
         self.assertTrue("job2471" in output_text)
 
         output = self.xt('xt list jobs job2741-job2751 --filter={nodes > 5}')
-        output_text = output.join("\n")
+        output_text = "\n".join(output)
         self.assertTrue("job2741" in output_text)
         self.assertTrue("job2743" in output_text)
         self.assertTrue(not ("job2742" in output_text))
 
         output = self.xt('xt list jobs job2741-job2751 --filter={nodes != 5}')
-        output_text = output.join("\n")
+        output_text = "\n".join(output)
         self.assertTrue("job2741" in output_text)
         self.assertTrue("job2751" in output_text)
         self.assertTrue(not ("job2742" in output_text))
@@ -568,7 +568,7 @@ class TestRun(test_base.TestBase):
         # test TAG FILTERS
 
         output = self.xt('xt list jobs job2741-job2751 --filter={tags.urgent=$exists}')
-        output_text = output.join("\n")
+        output_text = "\n".join(output)
         self.assertTrue("job2747" in output_text)
         self.assertTrue("job2471" in output_text)
 
@@ -579,16 +579,16 @@ class TestRun(test_base.TestBase):
 
         # :regex: (regular expressions)
         output = self.xt('xt list jobs job2741-job2751 --filter={tags.description:regex:.*hidden.*}')
-        output_text = output.join("\n")
+        output_text = "\n".join(output)
         self.assertTrue("job2747" in output_text)
         self.assertTrue("job2471" in output_text)
 
         output = self.xt('xt list jobs job2741-job2751 --filter={tags.description:regex:.*hiDxDen.*}')
-        output_text = output.join("\n")
+        output_text = "\n".join(output)
         self.assertTrue("no matching jobs" in output_text)
 
         output = self.xt('xt list jobs job2741-job2751 --filter={tags.description:regex:^(.*hidden.*}')
-        output_text = output.join("\n")
+        output_text = "\n".join(output)
         self.assertTrue("no matching jobs" in output_text)
 
 
@@ -600,18 +600,18 @@ class TestRun(test_base.TestBase):
 
         # :exists: (test for property existence)
         output = self.xt('xt list jobs job2741-job2751 --filter={tags.urgent:exists:true}')
-        output_text = output.join("\n")
+        output_text = "\n".join(output)
         self.assertTrue("job2747" in output_text)
         self.assertTrue("job2471" in output_text)
 
         output = self.xt('xt list jobs job2741-job2751 --filter={tags.urgent:exists:false}')
-        output_text = output.join("\n")
+        output_text = "\n".join(output)
         self.assertTrue("job2741" in output_text)
         self.assertTrue("job2751" in output_text)
         self.assertTrue(not ("job2747" in output_text))
 
         output = self.xt('xt list jobs job2741-job2751 --tags-all={urgent, nodes}')
-        output_text = output.join("\n")
+        output_text = "\n".join(output)
         self.assertTrue("no matching jobs" in output_text)
 
         output = self.xt('xt list jobs job2741-job2751 --tags-any={urgent, nodes}')
