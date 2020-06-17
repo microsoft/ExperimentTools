@@ -119,11 +119,6 @@ class MongoRunIndex():
 
         fd.update(filter)
 
-        # mongodb workaround: since $ projection operator not working with find_and_modify(),
-        # we add a unique id (guid) so we know which element we have updated
-        guid = str(uuid.uuid4())
-        update["guid"] = guid
-
         cmd = lambda: self.mongo.mongo_db["__active_runs__"].find_and_modify(fd, update={"$set": update}, new=True)
         result = self.mongo.mongo_with_retries("_get_first_entry", cmd)
 

@@ -984,6 +984,8 @@ class Store():
 
     def write_active_runs(self, job_id, active_runs):
         for run in active_runs:
+            guid = str(uuid.uuid4())
+            run['_id'] = guid
             run['job_id'] = job_id
 
         self.mongo.mongo_with_retries("insert_active_runs", lambda: self.mongo.mongo_db["__active_runs__"].insert_many(active_runs))
