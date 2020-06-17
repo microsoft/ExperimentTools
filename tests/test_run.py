@@ -535,7 +535,12 @@ class TestRun(test_base.TestBase):
             #self.xt('xt list tags job2740')
 
             output = self.xt('xt list tags {}'.format(name))
-            self.assert_names(output, ["description", "priority", "sad", "urgent"], "happy")
+            output_text = output.join("\n")
+            self.assertTrue("description" in output_text)
+            self.assertTrue("priority" in output_text)
+            self.assertTrue("sad" in output_text)
+            self.assertTrue("urgent" in output_text)
+            self.assertTrue(not ("urgent" in output_text))
 
     def filter_tags(self):
         # NOTE: in these tests, job2748 is not defined and will be missing for
@@ -544,22 +549,28 @@ class TestRun(test_base.TestBase):
         # test basic PROPERTY FILTERS
 
         output = self.xt('xt list jobs job2741-job2751 --filter={nodes==5}')
-        # expected: job2742
-        self.assert_names(output, "job2742", "job2471")
+        output_text = output.join("\n")
+        self.assertTrue("job2742" in output_text)
+        self.assertTrue("job2471" in output_text)
 
         output = self.xt('xt list jobs job2741-job2751 --filter={nodes > 5}')
-        # expected: job2741, job2743
-        self.assert_names(output, ["job2741", "job2743"], "job2742")
+        output_text = output.join("\n")
+        self.assertTrue("job2741" in output_text)
+        self.assertTrue("job2743" in output_text)
+        self.assertTrue(not ("job2742" in output_text))
 
         output = self.xt('xt list jobs job2741-job2751 --filter={nodes != 5}')
-        # expected: job2741-job2751 EXCEPT for job2742
-        self.assert_names(output, ["job2741", "job2751"], "job2742")
+        output_text = output.join("\n")
+        self.assertTrue("job2741" in output_text)
+        self.assertTrue("job2751" in output_text)
+        self.assertTrue(not ("job2742" in output_text))
 
         # test TAG FILTERS
 
         output = self.xt('xt list jobs job2741-job2751 --filter={tags.urgent=$exists}')
-        # expected: job2747
-        self.assert_names(output, "job2747", "job2471")
+        output_text = output.join("\n")
+        self.assertTrue("job2747" in output_text)
+        self.assertTrue("job2471" in output_text)
 
         output = self.xt('xt list jobs job2741-job2751 --filter={tags.urgent!=$exists}')
         # expected: job2741-job2751 EXCEPT for job2747
@@ -568,16 +579,18 @@ class TestRun(test_base.TestBase):
 
         # :regex: (regular expressions)
         output = self.xt('xt list jobs job2741-job2751 --filter={tags.description:regex:.*hidden.*}')
-        # expected: job2747
-        self.assert_names(output, "job2747", "job2471")
+        output_text = output.join("\n")
+        self.assertTrue("job2747" in output_text)
+        self.assertTrue("job2471" in output_text)
 
         output = self.xt('xt list jobs job2741-job2751 --filter={tags.description:regex:.*hiDxDen.*}')
-        # expected: <no matching jobs>
-        self.assert_names(output, "no matching jobs")
+        output_text = output.join("\n")
+        self.assertTrue("no matching jobs" in output_text)
 
         output = self.xt('xt list jobs job2741-job2751 --filter={tags.description:regex:^(.*hidden.*}')
-        # expected: <no matching jobs>
-        self.assert_names(output, "no matching jobs")
+        output_text = output.join("\n")
+        self.assertTrue("no matching jobs" in output_text)
+
 
         # this is busted on Azure Mongodb
         output = self.xt('xt list jobs job2741-job2751 --filter={tags.description:regex:/.*hiDDen.*/i}')
@@ -587,16 +600,19 @@ class TestRun(test_base.TestBase):
 
         # :exists: (test for property existence)
         output = self.xt('xt list jobs job2741-job2751 --filter={tags.urgent:exists:true}')
-        # expected: job2747
-        self.assert_names(output, "job2747", "job2471")
+        output_text = output.join("\n")
+        self.assertTrue("job2747" in output_text)
+        self.assertTrue("job2471" in output_text)
 
         output = self.xt('xt list jobs job2741-job2751 --filter={tags.urgent:exists:false}')
-        # expected: job2741-job2751 EXCEPT for job2747
-        self.assert_names(output, ["job2741", "job2751"], "job2747")
+        output_text = output.join("\n")
+        self.assertTrue("job2741" in output_text)
+        self.assertTrue("job2751" in output_text)
+        self.assertTrue(not ("job2747" in output_text))
 
         output = self.xt('xt list jobs job2741-job2751 --tags-all={urgent, nodes}')
-        # expected: <no matching jobs>
-        self.assert_names(output, "no matching jobs")
+        output_text = output.join("\n")
+        self.assertTrue("no matching jobs" in output_text)
 
         output = self.xt('xt list jobs job2741-job2751 --tags-any={urgent, nodes}')
 
