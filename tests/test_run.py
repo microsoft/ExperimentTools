@@ -540,7 +540,7 @@ class TestRun(test_base.TestBase):
             self.assertTrue("priority" in output_text)
             self.assertTrue("sad" in output_text)
             self.assertTrue("urgent" in output_text)
-            self.assertTrue(not ("urgent" in output_text))
+            self.assertTrue(not ("happy" in output_text))
 
     def filter_tags(self):
         # NOTE: in these tests, job2748 is not defined and will be missing for
