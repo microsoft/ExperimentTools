@@ -551,7 +551,7 @@ class TestRun(test_base.TestBase):
         output = self.xt('xt list jobs job2741-job2751 --filter={nodes==5}')
         output_text = "\n".join(output)
         self.assertTrue("job2742" in output_text)
-        self.assertTrue("job2471" in output_text)
+        self.assertTrue(not ("job2471" in output_text))
 
         output = self.xt('xt list jobs job2741-job2751 --filter={nodes > 5}')
         output_text = "\n".join(output)
@@ -570,7 +570,7 @@ class TestRun(test_base.TestBase):
         output = self.xt('xt list jobs job2741-job2751 --filter={tags.urgent=$exists}')
         output_text = "\n".join(output)
         self.assertTrue("job2747" in output_text)
-        self.assertTrue("job2471" in output_text)
+        self.assertTrue(not ("job2471" in output_text))
 
         output = self.xt('xt list jobs job2741-job2751 --filter={tags.urgent!=$exists}')
         # expected: job2741-job2751 EXCEPT for job2747
@@ -581,7 +581,7 @@ class TestRun(test_base.TestBase):
         output = self.xt('xt list jobs job2741-job2751 --filter={tags.description:regex:.*hidden.*}')
         output_text = "\n".join(output)
         self.assertTrue("job2747" in output_text)
-        self.assertTrue("job2471" in output_text)
+        self.assertTrue(not ("job2471" in output_text))
 
         output = self.xt('xt list jobs job2741-job2751 --filter={tags.description:regex:.*hiDxDen.*}')
         output_text = "\n".join(output)
@@ -602,7 +602,7 @@ class TestRun(test_base.TestBase):
         output = self.xt('xt list jobs job2741-job2751 --filter={tags.urgent:exists:true}')
         output_text = "\n".join(output)
         self.assertTrue("job2747" in output_text)
-        self.assertTrue("job2471" in output_text)
+        self.assertTrue(not ("job2471" in output_text))
 
         output = self.xt('xt list jobs job2741-job2751 --filter={tags.urgent:exists:false}')
         output_text = "\n".join(output)
