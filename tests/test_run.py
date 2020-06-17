@@ -520,6 +520,101 @@ class TestRun(test_base.TestBase):
         # arguments: nested quotes
         self.xt(''' xt set tags run2 urgent, priority=5, description='"test effect of 8 hidden layers"'  ''')
 
+    def set_tags(self, names):
+        for name in names:
+            self.xt('''xt set tags {} urgent, priority=5, description="'test effect of 8 hidden layers'" '''.format(name))
+            self.xt('xt set tags {} funny, sad'.format(name))
+
+    def clear_tags(self, names):
+        for name in names:
+            self.test_cmd('xt clear tags {} funny'.format(name))
+            #self.test_cmd('xt clear tags run1428-run1429 sad')
+
+    def list_tags(self, names):
+        for name in names:
+            #self.test_cmd('xt list tags job2740')
+
+            output = self.test_cmd('xt list tags {}'.format(name))
+            self.assert_names(output, ["description", "priority", "sad", "urgent"], "happy")
+
+    def filter_tags(self):
+        # NOTE: in these tests, job2748 is not defined and will be missing for
+        # all list jobs commands
+
+        # test basic PROPERTY FILTERS
+
+        output = self.test_cmd('xt list jobs job2741-job2751 --filter={nodes==5}')
+        # expected: job2742
+        self.assert_names(output, "job2742", "job2471")
+
+        output = self.test_cmd('xt list jobs job2741-job2751 --filter={nodes > 5}')
+        # expected: job2741, job2743
+        self.assert_names(output, ["job2741", "job2743"], "job2742")
+
+        output = self.test_cmd('xt list jobs job2741-job2751 --filter={nodes != 5}')
+        # expected: job2741-job2751 EXCEPT for job2742
+        self.assert_names(output, ["job2741", "job2751"], "job2742")
+
+        # test TAG FILTERS
+
+        output = self.test_cmd('xt list jobs job2741-job2751 --filter={tags.urgent=$exists}')
+        # expected: job2747
+        self.assert_names(output, "job2747", "job2471")
+
+        output = self.test_cmd('xt list jobs job2741-job2751 --filter={tags.urgent!=$exists}')
+        # expected: job2741-job2751 EXCEPT for job2747
+        # BUG: the above command mistakenly returns ALL 11 jobs (MongoDB or XT?)
+        #self.assert_names(output, ["job2741", "job2751"], "job2747")
+
+        # :regex: (regular expressions)
+        output = self.test_cmd('xt list jobs job2741-job2751 --filter={tags.description:regex:.*hidden.*}')
+        # expected: job2747
+        self.assert_names(output, "job2747", "job2471")
+
+        output = self.test_cmd('xt list jobs job2741-job2751 --filter={tags.description:regex:.*hiDxDen.*}')
+        # expected: <no matching jobs>
+        self.assert_names(output, "no matching jobs")
+
+        output = self.test_cmd('xt list jobs job2741-job2751 --filter={tags.description:regex:^(.*hidden.*}')
+        # expected: <no matching jobs>
+        self.assert_names(output, "no matching jobs")
+
+        # this is busted on Azure Mongodb
+        output = self.test_cmd('xt list jobs job2741-job2751 --filter={tags.description:regex:/.*hiDDen.*/i}')
+        # expected: job2747
+        # BUG: the above command mistakenly returns ALL 11 jobs (MongoDB or XT?)
+        #self.assert_names(output, "job2747", "job2471")
+
+        # :exists: (test for property existence)
+        output = self.test_cmd('xt list jobs job2741-job2751 --filter={tags.urgent:exists:true}')
+        # expected: job2747
+        self.assert_names(output, "job2747", "job2471")
+
+        output = self.test_cmd('xt list jobs job2741-job2751 --filter={tags.urgent:exists:false}')
+        # expected: job2741-job2751 EXCEPT for job2747
+        self.assert_names(output, ["job2741", "job2751"], "job2747")
+
+        output = self.test_cmd('xt list jobs job2741-job2751 --tags-all={urgent, nodes}')
+        # expected: <no matching jobs>
+        self.assert_names(output, "no matching jobs")
+
+        output = self.test_cmd('xt list jobs job2741-job2751 --tags-any={urgent, nodes}')
+
+    def test_tag(self):
+        result_runs = self.xt("xt list runs --status=completed")
+        self.assertTrue(len(result_runs) > 3)
+        first_result = result_runs[3]
+        result_fields = list(filter(lambda f: len(f.strip()) > 0, first_result.split(" ")))
+        run_id = result_fields[0].strip()
+        job_id = result_fields[1].strip()
+
+        self.set_tags([job_id, run_id])
+        self.clear_tags([job_id, run_id])
+        self.list_tags([job_id, run_id])
+
+        self.filter_tags()
+
+
     def test_random(self):
         # scale this up to 100, 5
         fake_runs = 100
