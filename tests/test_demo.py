@@ -40,9 +40,9 @@ class TestUpload(test_base.TestBase):
 
     def run_demo(self, philly, basic_mode):
         started = time.time()
-        from xtlib.demo_files import xt_demo
 
         with DirChange("xtlib/demo_files"):
+            import xt_demo
             args = "--auto --quick-test --philly={} --basic-mode={}".format(philly, basic_mode)
             arg_parts = args.split(" ")
             xt_demo.main(arg_parts)
