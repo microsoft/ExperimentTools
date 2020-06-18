@@ -27,7 +27,11 @@ logger = logging.getLogger(__name__)
 
 def get_fn_local_config(args):
     # default value
-    fn = os.path.join(".", constants.FN_CONFIG_FILE)
+    config_path_via_env = os.environ.get("XT_GLOBAL_CONFIG", None)
+    if config_path_via_env is None:
+        fn = os.path.join(".", constants.FN_CONFIG_FILE)
+    else:
+        fn = config_path_via_env
 
     # is this a run cmd whose script is a .yaml file?
     cmd = " ".join(args)
