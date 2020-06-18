@@ -6,7 +6,7 @@ Quick Template-Based Setup for XT
 
 .. only:: internal
 
-    If you already have an established Azure compute service such as Batch, Philly, Azure Nachine Learning (AML) or want to use your local resources to run XT experiments, you can do so very quickly using the XT CLI's **xt config --create** command. It uses templates to efficiently create an xt_config.yaml file that you can edit with your services' ID values to get up and running fast. All you need to know about is the names and settings of your Azure compute service. 
+    If you already have an established Azure compute service such as Azure Batch, Philly, Azure Nachine Learning (AML) or want to use your local resources to run XT experiments, you can do so more quickly by using the XT CLI's **xt config --create** command. It uses templates to efficiently create an xt_config.yaml file, that you can edit with your services' ID values to get up and running fast. All you need to know about is the names and settings of your Azure compute service, along with the other Azure services you're running. 
 
     Supported compute service values include the following:
 
@@ -17,7 +17,7 @@ Quick Template-Based Setup for XT
 
 .. only:: not internal
 
-    If you already have an established Azure compute service such as Batch, Azure Nachine Learning (AML) or want to use your local resources to run XT experiments, you can do so quickly using the XT CLI's **xt config --create** command. All you need to know about is the names and settings of your Azure cloud service. 
+    If you already have an established Azure compute service such as Azure Batch or Azure Nachine Learning (AML), or want to use your local resources to run XT experiments, you can do so more quickly by using the XT CLI's **xt config --create** command. It uses templates to efficiently create an xt_config.yaml file, that you can edit with your services' ID values to get up and running fast. All you need to know about is the names and settings of your Azure compute service, along with the other Azure services you're running.  
 
     Supported service values include the following:
 
@@ -131,7 +131,7 @@ The config file appears as follows:
         step-name: "step"
         workspace: "ws1"
 
-The config files still reflect the need to have services for database, secure Key Vault and other elements. 
+The config files still reflect the need to have services for MongoDB database, secure Key Vault and storage, :ref:`as described in Creating Azure Cloud Services for XT <creating_xt_services>`. They are the three services all XT installations must use. The templates also do not exclude the need to add other services to the configuration based on the struture of your MI experiments.  
 
 .. seealso::
 
