@@ -6,6 +6,8 @@ from xtlib import utils
 from xtlib import constants
 from xtlib import file_utils
 import xtlib.xt_cmds as xt_cmds
+from xtlib import console
+import xtlib.xt_run as xt_run
 import test_base
 
 
@@ -40,13 +42,21 @@ class TestUpload(test_base.TestBase):
         generate(2, ".txt", f"{cls.upload_testing_dir}/")
         generate(3, ".py", f"{cls.upload_testing_dir}/myapps/")
         generate(2, ".txt", f"{cls.upload_testing_dir}/myapps/")
-        xt_cmds.main("xt create share sharetest")
+        console.set_capture(True)
+        xt_run.main("xt list shares")
+        result = console.set_capture(False)
+        matching = list(filter(lambda entry: entry.find("sharetest") != -1, result))
+        if matching:
+            xt_run.main("xt delete share sharetest --response=sharetest")
+            time.sleep(5)
+
+        xt_run.main("xt create share sharetest")
 
     def teardown_class(cls):
         """
         Teardown once after all tests
         """
-        xt_cmds.main("xt delete share sharetest --response sharetest")
+        xt_run.main("xt delete share sharetest --response sharetest")
         elapsed = time.time() - cls.started
         print("\nend of uploadTests, elapsed={:.0f} secs".format(elapsed))
 
