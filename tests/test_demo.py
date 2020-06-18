@@ -39,15 +39,19 @@ class TestUpload(test_base.TestBase):
         pass
 
     def run_demo(self, philly, basic_mode):
+        XT_GLOBAL_CONFIG = os.environ.get("XT_GLOBAL_CONFIG")
         started = time.time()
+        from xtlib.demo_files import xt_demo
 
         with DirChange("xtlib/demo_files"):
-            import xt_demo
+            del os.environ["XT_GLOBAL_CONFIG"]
             args = "--auto --quick-test --philly={} --basic-mode={}".format(philly, basic_mode)
             arg_parts = args.split(" ")
             xt_demo.main(arg_parts)
             elapsed = time.time() - started
             print("\nend of xt_demo, elapsed={:.0f} secs".format(elapsed))
+
+        os.environ["XT_GLOBAL_CONFIG"] = XT_GLOBAL_CONFIG
 
     def test_demo_basic_without_philly(self):
         basic_mode = 1
