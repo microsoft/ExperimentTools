@@ -53,6 +53,7 @@ class TestUpload(test_base.TestBase):
 
         os.environ["XT_GLOBAL_CONFIG"] = XT_GLOBAL_CONFIG
 
+    @pytest.mark.skip(reason="Skip Demo test, because interactive")
     def test_demo_basic_without_philly(self):
         basic_mode = 1
         philly = 0
@@ -64,6 +65,7 @@ class TestUpload(test_base.TestBase):
         philly = 1
         self.run_demo(philly, basic_mode)
 
+    @pytest.mark.skip(reason="Skip Demo test, because interactive")
     def test_demo_advanced_without_philly(self):
         basic_mode = 0
         philly = 0
