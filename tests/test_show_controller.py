@@ -1,4 +1,5 @@
 import os
+import pytest
 import subprocess
 import time
 from xtlib import pc_utils
@@ -59,6 +60,7 @@ class TestShowController(test_base.TestBase):
     def show_controller_windows(self):
         pass
 
+    @pytest.mark.skip(reason="Skip as it involves GUI")
     def test_show_controller(self):
         if pc_utils.has_gui():
             if not pc_utils.is_windows():
