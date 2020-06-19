@@ -618,6 +618,12 @@ class TestRun(test_base.TestBase):
 
     def exercise_tags(self):
         result_runs = self.xt("xt list runs --status=completed")
+        wait_count = 0
+        while wait_count < 3 and len(result_runs) <= 3:
+            time.sleep(180)
+            result_runs = self.xt("xt list runs --status=completed")
+            wait_count = wait_count + 1
+
         self.assertTrue(len(result_runs) > 3)
         first_result = result_runs[3]
         result_fields = list(filter(lambda f: len(f.strip()) > 0, first_result.split(" ")))

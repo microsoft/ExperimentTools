@@ -427,6 +427,13 @@ class Store():
 
         # ensure we are not somehow overwriting an existing run
         exists = self.does_run_exist(ws_name, run_name)
+        get_next_id_count = 0
+        while exists and get_next_id_count < 3:
+            run_id = self.mongo.get_next_run_id(ws_name, default_next=default_next)
+            run_name = "run{}".format(run_id)
+            exists = self.does_run_exist(ws_name, run_name)
+            get_next_id_count = get_next_id_count + 1
+
         assert not exists
 
         return self.helper.create_next_run_by_name(ws_name, run_name)
