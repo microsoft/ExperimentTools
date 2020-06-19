@@ -149,7 +149,7 @@ class LocalPsmClient():
             p = self._get_psm_process()
             try:
                 p.kill()
-            except psutil.psutil.AccessDenied:
+            except psutil.AccessDenied:
                 print("AccessDenied in killing python process")
             start_needed = True
 
