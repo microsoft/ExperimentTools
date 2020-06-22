@@ -469,7 +469,7 @@ class TestRun(test_base.TestBase):
 
         # Disable compare for now
         # tester = RunTests(config, seed, compare)
-        if os.environ.get("PHILL_TESTS").lower() != "true":
+        if os.environ.get("PHILL_TESTS", "false").lower() != "true":
             cls.tester = RunTests(config, seed, False, philly=0)
         else:
             cls.tester = RunTests(config, seed, False, philly=1)
