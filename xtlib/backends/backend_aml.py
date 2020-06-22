@@ -704,7 +704,7 @@ class AzureML(BackendBase):
             repeat_count, using_hp, runs_by_box, experiment, snapshot_dir, controller_scripts, args):
 
         blake2bhash = hashlib.blake2b(digest_size=5)
-        blake2bhash.update(bytes(args["username"]))
+        blake2bhash.update(args["username"].encode("utf-8"))
         username_hash = blake2bhash.hexdigest()
         aml_exper_name = "{}__{}__{}".format(username_hash, workspace, experiment)
         cwd = os.getcwd()
