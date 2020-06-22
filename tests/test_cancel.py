@@ -74,7 +74,7 @@ class TestCancel(test_base.TestBase):
         elapsed = time.time() - started
         print("\nend of LOCAL cancel tests, elapsed={:.0f} secs".format(elapsed))
 
-    @pytest.mark.skipif(os.environ.get("PHILLY_TESTS", "false").lower() == "false", reason="Skip Philly tests unless explicitly called")
+    @pytest.mark.skipif(os.environ.get("PHILLY_TESTS", "false").lower() != "true", reason="Skip Philly tests unless explicitly called")
     def test_cancel_philly(self):
         started = time.time()
 
