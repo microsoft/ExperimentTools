@@ -65,7 +65,7 @@ Every XT installation uses up to 6 Azure services. You can use more, but this se
 
 The following steps illustrate how to create these services from the Azure Portal (https://portal.azure.com). We use default settings for service creation except where noted. 
 
-.. note:: Your service names will differ from those shown below; ensure consistency with your service names, and note them down in case of mistakes. Even a single character being off in a service name entry is enough to keep the process from a successful conclusion. 
+.. note:: Your service names will differ from those shown below; ensure consistency with your service names, and note them down in case of mistakes. Even a single character being off in a service name entry is enough to keep the process from working. 
 
 --------------------------------
 Create services template command
@@ -101,7 +101,7 @@ To create the resources for your XT team, do the following:
 
     10. At this point, you can create a new local XT config file for your team.
 
-The template is a schema file in JSON. By default, the **xt create services template** command places this file in the current directory. 
+The template is a schema file in JSON. By default, the **xt create services template** command puts this file in the current directory. 
 
 .. note:: You can copy and paste the contents of the template JSON file, or load it into the custom template page. (After selecting **Build your own template in the editor**, choose **Load file**.) In either case, your Azure tenant ID appears throughout the template. Avoid changing any values in the template file at this phase.
 
@@ -135,7 +135,7 @@ To access services in the Azure Portal, we suggest using the Azure web UI:
 
 #. Replace each of the service names in the above with your Azure service names (suggestion: do an editor search & replace "phoenix" to your team name).
 
-#. For each "key" string, replace with the associated service key or connection string values. For this step, go to each service in the Azure Portal, choose the **Access Keys** tab or **Connection string** tab in the left panel, and copy the primary key or connection string value.
+#. Replace each "key" string with the associated service key or connection string values. For this step, go to each service in the Azure Portal, choose the **Access Keys** tab or **Connection string** tab in the left panel, and copy the primary key or connection string value.
 
    For the **Storage** service:
 
@@ -180,39 +180,53 @@ To access services in the Azure Portal, we suggest using the Azure web UI:
 #. In the Azure Portal, do the following:
 
    a. Navigate to your team's (or your own) Key Vault service. 
-   b. Choose the **Secrets** tab in the left panel.
+   b. Choose the **Settings -> Secrets** tab in the left panel.
    c. Choose **+ Generate/Import**.
    d. For **Name**, enter "xt-keys".
    e. For the **Value**, paste in the copied JSON dictionary (Ctrl+v).
    f. Click **Create**.
 
-#. When you're finished, delete any files or open editor instances containing any key information.
+#. When you're done, delete any files or open editor instances containing any key information.
+
+.. note::
+
+    Enter the **Name** value ("xt-keys") exactly as shown above. You may otherwise receive error messages when you run tests on your XT setup.
+
+The new Key Vault secret can be checked by opening your Key Vault account's **Settings -> Secrets** tab in the left panel. Select the listed secret and then select its current version. You can copy the contents of the **Secret value** field at the bottom and paste that into a text editor. 
 
 *******************************************
 Adding the XT certificates to the Key Vault
 *******************************************
 
-You also need to separately add your XT certificates to the Azure Portal. Do the following:
+You also need to define and add new XT certificates to your Key Vault in the Azure Portal. 
 
-#. Navigate to the Key Vault service associated with your Azure tenant. 
-#. Choose the "Certificates" tab in the left pane. 
+.. note::
+
+    Enter the **Certificate Name** and **Subject** values exactly as described below for each certificate. You may otherwise receive error messages when you run tests on your XT setup.
+
+Do the following:
+
+#. Navigate to the Key Vault service associated with your Azure account. 
+#. Choose the **Certificates** tab in the left pane. 
 #. Create the CLIENT CERT:
 
    a. Click **+ Generate/Import**.
-   b. For the **Method of Certificate Creation**, select "Generate".
+   b. For the **Method of Certificate Creation**, select "Generate". You can use the **Self-signed certificate** setting.
    c. For the **Certificate Name**, enter "xt-clientcert".
-   d. For the **Subject**, enter "CN-xtclient.com".
+   d. For the **Subject**, enter "CN=xtclient.com".
    e. For the **Content Type**, change it to "PEM".
    f. Click **Create**.
 
 #. Create the SERVER CERT:
 
    a. Click **+ Generate/Import**.
-   b. For the **Method of Certificate Creation**, select "Generate".
+   b. For the **Method of Certificate Creation**, select "Generate". You can use the **Self-signed certificate** setting.
    c. For the **Certificate Name**, enter "xt-servercert".
-   d. For the **Subject**, enter "CN-xtserver.com".
+   d. For the **Subject**, enter "CN=xtserver.com".
    e. For the **Content Type**, change it to "PEM".
    f. Click **Create**.
+
+Both certificates will take some time to be generated by Azure, so they appear as 'disabled' when you first create them. When the certs are active, they show a **Thumbprint** value and **Status** as Enabled. After you finsih the above steps, no further certificate configuration is necessary for the key vault.
 
 -----------------------------------------------------------
 Create a Compute Instance for your AML service
@@ -251,7 +265,7 @@ A new copy of the local xt_config.yaml file opens in your default text editor. I
         #workspace: 'ws1'
         #experiment: 'exper1'
 
-Before you start editing in earnest, make sure that the local xt_config.yaml file reads as follows (with no commenting hashtag in the 'general' line):
+Before you start editing in earnest, make sure that the local xt_config.yaml file reads as follows (with no commenting hashtag in the 'general' line, and a unique workspace name):
 
 .. code-block:: none 
 
@@ -263,21 +277,21 @@ Before you start editing in earnest, make sure that the local xt_config.yaml fil
         #workspace: 'contoso1'
         #experiment: 'contoso1'
 
-You will edit this file to use all of your new services' settings.
+You will edit this file to use all of your new services' information.
 
-2. Copy/paste the following sections (or merge them with existing sections of the same name):
+2. Copy/paste the following sections, or merge them with existing sections of the same name. Note that all values showing a **xxx** must be edited to use that service's corresponding settings. These values reflect each service's information that you can get from their Azure console:
 
 .. only:: internal
 
   .. code-block:: none 
 
     external-services: 
-        phoenixbatch: {type: "batch", key: "$vault", url: "xxx"} 
-        phoenixaml: {type: "aml", subscription-id: "xxx", resource-group: "xxx"} 
+        phoenixbatch: {type: "batch", key: "$vault", url: "**xxx**"} 
+        phoenixaml: {type: "aml", subscription-id: "**xxx**", resource-group: "**xxx**"} 
         phoenixstorage: {type: "storage", provider: "azure-blob-21", key: "$vault"} 
         phoenixmongodb: {type: "mongo", mongo-connection-string: "$vault"} 
-        phoenixkeyvault: {type: "vault", url: "xxx"} 
-        phoenixregistry: {type: "registry", login-server: "xxx", username: "xxx", password: "$vault", login: "true"} 
+        phoenixkeyvault: {type: "vault", url: "**xxx**"} 
+        phoenixregistry: {type: "registry", login-server: "**xxx**", username: "**xxx**", password: "$vault", login: "true"} 
 
     xt-services:
         storage: "phoenixstorage"        # storage for all services 
@@ -285,9 +299,9 @@ You will edit this file to use all of your new services' settings.
         vault: "phoenixkeyvault"         # where to keep sensitive data (service credentials) 
 
     compute-targets:   
-        batch: {service: "phoenixbatch", vm-size: "xxx", azure-image: "dsvm", nodes: 1, low-pri: true,  box-class: "dsvm", docker: "none"} 
-        philly: {service: "philly", vc: "xxx", cluster: "xxx", sku: "xxx", nodes: 1, low-pri: true} 
-        aml: {service: "phoenixaml", compute: "xxx", vm-size: "xxx", nodes: 1, low-pri: false}      
+        batch: {service: "phoenixbatch", vm-size: "**xxx**", azure-image: "dsvm", nodes: 1, low-pri: true,  box-class: "dsvm", docker: "none"} 
+        philly: {service: "philly", vc: "**xxx**", cluster: "**xxx**", sku: "**xxx**", nodes: 1, low-pri: true} 
+        aml: {service: "phoenixaml", compute: "**xxx**", vm-size: "**xxx**", nodes: 1, low-pri: false}      
         # Internal users should add their own VC, cluster and SKU values.
 
     general:
@@ -309,12 +323,12 @@ You will edit this file to use all of your new services' settings.
   .. code-block:: none 
 
     external-services: 
-        phoenixbatch: {type: "batch", key: "$vault", url: "xxx"} 
-        phoenixaml: {type: "aml", subscription-id: "xxx", resource-group: "phoenix"} 
+        phoenixbatch: {type: "batch", key: "$vault", url: "**xxx**"} 
+        phoenixaml: {type: "aml", subscription-id: "**xxx**", resource-group: "phoenix"} 
         phoenixstorage: {type: "storage", provider: "azure-blob-21", key: "$vault"} 
         phoenixmongodb: {type: "mongo", mongo-connection-string: "$vault"} 
-        phoenixkeyvault: {type: "vault", url: "xxx"} 
-        phoenixregistry: {type: "registry", login-server: "xxx", username: "xxx", password: "$vault", login: "true"} 
+        phoenixkeyvault: {type: "vault", url: "**xxx**"} 
+        phoenixregistry: {type: "registry", login-server: "**xxx**", username: "**xxx**", password: "$vault", login: "true"} 
 
     xt-services:
         storage: "phoenixstorage"        # storage for all services 
@@ -323,8 +337,8 @@ You will edit this file to use all of your new services' settings.
         target: "local"
 
     compute-targets:   
-        batch: {service: "phoenixbatch", vm-size: "xxx", azure-image: "dsvm", nodes: 1, low-pri: true,  box-class: "dsvm", docker: "none"} 
-        aml: {service: "phoenixaml", compute: "xxx", vm-size: "xxx", nodes: 1, low-pri: false}      
+        batch: {service: "phoenixbatch", vm-size: "**xxx**", azure-image: "dsvm", nodes: 1, low-pri: true,  box-class: "dsvm", docker: "none"} 
+        aml: {service: "phoenixaml", compute: "**xxx**", vm-size: "**xxx**", nodes: 1, low-pri: false}      
 
     general:
         advanced-mode: true
@@ -342,13 +356,17 @@ You will edit this file to use all of your new services' settings.
 
 3. Replace all occurences of "phoenix" with the name of your team.
 
-4. Replace all "xxx" values with the associated property of the specified service, using information from the Azure Portal.
+4. Replace all "**xxx**" values with the associated property of the specified service, using information from the Azure Portal.
 
-5. For the "compute-targets" and "general" sections, review the settings and edit as needed.  See the :ref:`XT Config File help topic <xt_config_file>` for additional information about these properties.
+5. For the "compute-targets" and "general" sections, review the settings and edit them as needed. See the :ref:`XT Config File help topic <xt_config_file>` for additional information about these properties.
 
 -----------------------------------------------------------
 Test your new XT services
 -----------------------------------------------------------
+
+.. note:: 
+
+    When you run **xt run** commands in this section with a sample script, you can :ref:`use the Micro Mnist script<micro_mnist>` to do your testing in this section. 
 
 Test your new XT services configuration by running XT in the directory that contains your local XT config file. Try the following commands in the specified order:
 
@@ -363,11 +381,11 @@ Test your new XT services configuration by running XT in the directory that cont
         - Checks for the correct configuration of the Mongo DB service.
         - If you see a **getaddrinfo failed** error, you may have specified the wrong connection string for mongodb.  if so, update the xt-keys secret in the vault.
 
-    #. xt run --target=batch <script>
-        - This will ensure that the Batch service is configured correctly
+    #. **xt run --target=batch <script>**
+        - Checks for correct configuration of the Batch service
 
-    #. xt run --target=aml <script>
-        - this will ensure that the Batch service is configured correctly
+    #. **xt run --target=aml <script>**
+        - Checks for correct configuration of the Azure ML service
 
 If you need to recreate one or more of the cloud services, do the following:
 

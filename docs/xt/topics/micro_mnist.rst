@@ -4,9 +4,7 @@
 Micro Mnist Tutorial Sample
 ======================================
 
-The Micro Mnist sample is a small python program to demonstrate how a program run under XT
-can write log and checkpoint information to the cloud, and use that information 
-to detect and process run restarts on low-priority compute services.
+The Micro Mnist sample is a small python program to demonstrate how a program running under XT can write log and checkpoint information to the cloud, and use that information to detect and process run restarts on low-priority compute services.
 
 The sample consists of::
 
@@ -17,7 +15,9 @@ The sample consists of::
 The program
 ------------------------------
 
-Here is the program::
+The MicroMnist Python script is as follows:
+
+.. code-block::
 
     # microMnist.py: a tiny program to show how ML apps can write to mounted cloud storage in XT
     import os
@@ -68,15 +68,11 @@ The key line of code in the above program is the line::
 
     output_dir = os.getenv("XT_OUTPUT_MNT", "output")
 
-When XT runs the program, it uses Azure BlobFuse to mount the (cloud) storage container
-associated with the run and it maps this to a local path.  It then sets the value of the environment 
-variable **XT_OUTPUT_MNT** to the same local path.
+When XT runs the microMnist program, it uses Azure BlobFuse to mount the (cloud) storage container associated with the run, and maps it to a local path. It then sets the value of the environment variable **XT_OUTPUT_MNT** to the same local path.
 
-So the above line of code sets **output_dir** to the path for the mounted run storage (if the program 
-is being run under XT) or to a local **output** directory (if the program is not being run under XT).
+If you run the program under XT, the above line of code sets **output_dir** to the path for the mounted run storage (). If you don't run the program under XT, it sets **output_dir** to a local **output** directory.
 
-
-And here is the xt_config file:
+To run microMnist, copy the following xt_config text into a separate file in the /tutorials directory:
 
 .. only:: internal
 
@@ -114,14 +110,21 @@ And here is the xt_config file:
     code:
         code-omit: ["output"]     # directories and files to omit when capturing code files    
 
+--------------------------
+Running MicroMnist
+--------------------------
 
-To run this program, you can use:
+To run microMnist, you can use:
 
 .. code-block:: none
 
     > xt run microMnist.py
 
-The above command will run the program under the control of the XT controller.  To run the program without the controller, in "direct mode", use the command:
+.. note::
+
+    You can find the microMnist.py file in the /tutorials directory of your top-level XT folder.
+
+The above command runs the program under the control of the XT controller. To run it without the controller, in "direct mode", use the command:
 
 .. code-block:: none
 
