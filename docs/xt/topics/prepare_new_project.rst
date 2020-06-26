@@ -6,7 +6,7 @@ Integrating XT Into your Training Code
 
 This page describes how to finish setting up your XT project for machine learning (ML) experiments. We discuss using the XTlib library to add support for logging metrics and hyperparameters, and other monitoring capabilities for maintaining and managing your projects.
 
-You should already have configured XT for a set of cloud services (storage, compute, etc.), done either by you or your team adminstrator. If this step hasn't been done yet, refer to :ref:`Creating Azure Cloud Services for XT <creating_xt_services>` and :ref:`Understanding the XT Config file <xt_config_file>` for more information.
+You should already have configured XT for a set of cloud services (storage, compute, and database, etc.), done either by you or your team adminstrator. If this step hasn't been done yet, refer to :ref:`Creating Azure Cloud Services for XT <creating_xt_services>` and :ref:`Understanding the XT Config file <xt_config_file>` for more information.
 
 Preparing a new project for XT consists of 3 overall steps:
     - Defining Code Changes in your XT Installation. Consists of adding code to your ML app for XT logging, checkpointing, and data/model loading;
@@ -34,21 +34,20 @@ You can run your ML scripts under XT without changing any of the code, but by ad
 Code: Creating an XT Run Object
 **************************************
 
-The first step is to create an XT Run object.  Using an XT Run object, your ML app can log hyperparameter settings, train and test metrics, and upload or download needed files.  The recommended statement for creating an XT
-run object is::
+The first step is to create an XT Run object.  Using an XT Run object, your ML processes can log hyperparameter settings, log training and testing metrics, and upload or download needed files.  The recommended statement for creating an XT run object is::
 
     from xtlib.run import Run
     xt_run = Run(tb_path="logs")
 
-It creates a Run instance enabled for XT and Tensorboard logging.  To do your own Tensorboard logging, omit the **tb_path** argument.
+It creates a Run instance enabled for XT and Tensorboard logging. To do your own Tensorboard logging, omit the **tb_path** argument.
 
 **************************************
 Code: Hyperparameter Logging 
 **************************************
 
-.. note:: If your ML app is not doing training, you can skip hyperparameter logging.
+.. note:: If your ML procedures are not executing training, you can skip hyperparameter logging.
 
-To log the value of your hyperparameters, you can pass a dictionary of hyperparameter names and their values. If you use command line arguments for your hyperparameters and parse them with the **argsparse** library, we recommend the following statement::
+To log the value of your hyperparameters, you can pass a dictionary of hyperparameter names and their values. If you use command line arguments for your hyperparameters and `parse them with the **argsparse** library <https://docs.python.org/3/library/argparse.html>`_, we recommend the following statement::
 
         # log hyperparameters to XT
         if xt_run:
@@ -66,6 +65,8 @@ If you don't already have a hyperparameter dictionary, use a code block like the
             xt_run.log_hparams(hp_dict)
 
 Place your hyperparameter logging statement after the creation of the xt_run object, but before your ML app starts its training operation. 
+
+Refer to :ref:`Config File Section: Hyperparameter Explorer <xt_config_hpe_sec>` for more details on hyperparameter logging settings.
 
 ************************
 Code: Metrics Logging
@@ -99,27 +100,43 @@ To enable your ML app to access mapped or downloaded data, XT sets the environme
 
     data_dir = os.getenv("XT_DATA_DIR", args.data)
 
-The above statement will use the **XT_DATA_DIR** as the data directory if XT has set it, otherwise, it will use the parsed command line argument for **data** (in this example). Edit **args.data** above to be the location of your dataset on your local machine, as needed.
+The above statement uses the **XT_DATA_DIR** as the data directory if XT has set it, otherwise, it will use the parsed command line argument for **data** (in this example). Edit **args.data** above to be the location of your dataset on your local machine, as needed.
+
+An example:
+
+.. code-block::
+
+    model_dir = os.getenv("XT_DATA_DIR", C:/testdata/exper26/data/)
+
+Refer to :ref:`Config File Section: Data <config_file_data>` for more details on the xt_config file's **Data** section.
 
 ************************
 Code: XT_MODEL_DIR
 ************************
 
-.. note:: This section applies to the use case where you want to upload a model to a model share (cloud storage) and then direct your ML app to use that model (for evaluation or model analysis, for example).  For checkpointing model loading, refer to the **Code: Checkpointing** section below.
+.. note:: This section applies when you want to upload a model to a model share (cloud storage) and then direct your ML app to use that model (for evaluation or model analysis, for example).  For checkpointing model loading, refer to the :ref:`Code: Checkpointing <code_checkpointing>` section.
 
 When your job starts to run on a compute node, XT can map a local path to the model share path of your project's model file(s). It can also download your model to a local path. The **model** section of your XT config file controls both actions.  
 
-To enable your ML app to access the mapped model or the downloaded model, XT sets the environment variable **XT_MODEL_DIR** to the local path of the model.  We recommend the following code statement to get the path to your model::
+To enable your ML app to access the mapped model or the downloaded model, XT sets the environment variable **XT_MODEL_DIR** to the local path of the model.  We recommend the following code statement to get the path to your model:
+
+.. code-block::
 
     model_dir = os.getenv("XT_MODEL_DIR", args.model)
 
-The above statement uses **XT_MODEL_DIR** as the model directory if XT has set it. Otherwise, it uses the parsed command line argument for **model**.  Change **args.model** above to the location of the model on your local machine, as needed.
+The above statement uses **XT_MODEL_DIR** as the model directory if XT has set it. Otherwise, it uses the parsed command line argument for **model**.  Change **args.model** above to the location of the model on your local machine, as needed. An example:
+
+.. code-block::
+
+    model_dir = os.getenv("XT_MODEL_DIR", C:/testdata/exper26/datamodel/)
+
+Refer to :ref:`Config File Section: Model <config_file_model>` for more details on the xt_config file's **Model** section.
 
 ************************
 Code: XT_OUTPUT_DIR
 ************************
 
-When your job starts to run on a compute node (backend service or a Linux VM), XT will map your run's storage location in the cloud to a local path and set the environment variable **XT_OUTPUT_DIR** to that value. You can use this path to write your output logs and anything else you would like to be written to the cloud before your run completes. 
+When your job runs on a compute node (backend service or a Linux VM), XT will map your run's storage location in the cloud to a local path and set the environment variable **XT_OUTPUT_DIR** to that value. You can use this path to write your output logs and anything else you would like to be written to the cloud before your run completes. 
 
 .. note:: A separate mechanism applies for capturing selected files when your job completes (the **after-files** section of the XT config file controls this).
 
@@ -129,7 +146,9 @@ The recommended statement for getting the **XT_OUTPUT_DIR** value is::
 
 The above statement uses **XT_OUTPUT_DIR** as the output directory if XT has set it, otherwise, it uses the directory **output** (in this example). Change **output** above to be the location on your local machine that you use for output files, as needed.
 
-If you are doing your own Tensorboard logging to the **XT_OUTPUT_DIR**, you will need an additional code statement to have it work as expected. See :ref:`Using Tensorboard with XT <tensorboard>`  for more details.
+If you are doing your own Tensorboard logging to the **XT_OUTPUT_DIR**, you will need an additional code statement to have it work as expected. See :ref:`Using Tensorboard with XT <tensorboard>` for more details.
+
+.. _code_checkpointing:
 
 ************************
 Code: Checkpointing
@@ -158,7 +177,7 @@ Code: Run Script
 
 You normally specify your run's environment and its dataset dependencies in :ref:`Understanding the XT Config file <xt_config_file>`. You can specify your app's main python script when you invoke the **xt run** command.
 
-Instead, you can specify a Shell script (or Windows .bat file) when you invoke **xt run**. Doing so, you can run any code needed to initialize the compute node for your app (generate datasets, installing dependencies, etc). You can also do custom post-processing after your python script completes.
+You can write and then specify a Shell script (or Windows .bat file) when you invoke **xt run**. Doing so, you can more conveniently run any code needed to initialize the compute node for your app (generate datasets, installing dependencies, etc). You can also do custom post-processing after your python script completes.
 
 A shell script example::
 
@@ -178,7 +197,7 @@ Subsections in this category of actions describe data files to consider uploadin
 Upload: Dataset 
 ************************
 
-If your job accesses a dataset during its run, it's recommended to upload the dataset to your XT data share. The following command shows an example::
+If your job accesses a dataset during its run, we recommend uploading the dataset to your XT data share. The following command shows an example::
 
     xt upload data/MNIST/** MNIST --share=data
 
@@ -192,11 +211,11 @@ After the command completes, invoke the following to verify that your data is in
 Upload: Model
 ************************
 
-If your job accesses a model during its run (for evaluation or analysis), you can upload the model to your XT models share.  Invoke the following command to upload your model::
+If your job accesses a model during its run (for evaluation or analysis), you can upload that model to your XT models share. Invoke the following XT command to upload your model::
 
     xt upload models/MNIST/** MNIST --share=models
 
-The above commands uploads the model file(s) found in the local directory **models/MNIST** to the MNIST path on your XT models share. Of course, your directory settings and path may differ.
+It uploads the model file(s) found in the local directory **models/MNIST** to the MNIST path on your XT models share. Of course, your directory settings and path may differ.
 
 After the command completes, invoke the following to verify your model is in the models share::
 
@@ -206,7 +225,7 @@ After the command completes, invoke the following to verify your model is in the
 Important local xt_config settings 
 --------------------------------------
 
-This section describes a number of changes to consider making to a local copy of your XT config file, beyond just editing the **advanced-mode** setting. You can also consider this a more in-depth introduction to the xt_config file, which is also described in further detail in :ref:`Understanding the XT Config file <xt_config_file>`.
+This section describes a number of changes to consider making to a local copy of your XT config file, beyond just editing the **advanced-mode** setting. Each section also provides links to more-detailed information.
 
 ***************************************
 Config: Copying to your new project
@@ -216,9 +235,9 @@ For this step, decide on the working directory of your new project. This is the 
 
 Next, copy your **xt_config.yaml** file from one of your previous XT projects to your new project's working directory.  
 
-If this is your first project, copy the **xt_config.yaml** file that was created during the creation of your XT services (see :ref:`Creating your Azure Cloud Services for XT <creating_xt_services>` for more information. 
+If this is your first project, copy the **xt_config.yaml** file that was created during the creation of your XT services (see :ref:`Creating your Azure Cloud Services for XT <creating_xt_services>` for more information). 
 
-If you are using a set of pre-configured Sandbox services, start with a empty **xt_config.yaml** file.  
+If you are using a set of pre-configured Azure services, start with a empty **xt_config.yaml** file.  
 
 For editing your XT config file in the following steps, use your preferred editor or the **xt config** command.
 
@@ -226,9 +245,9 @@ For editing your XT config file in the following steps, use your preferred edito
 Config: target.docker property 
 ***************************************
 
-Docker is a tool that captures all of the software dependencies of a complex application and reassembles them on the same or a different computer. The application runs as it would in a normal istallation, in a portable format called a *docker image*. 
+Docker is a tool that captures all of the software dependencies of a complex application and reassembles them on the same or a different computer. The application runs as it normally would, in a portable format called a *docker image*. 
 
-If your ML app will run in a docker container image, you will need to ensure that the **docker** property of the **compute-target** you will be using is set to the an entry in the **dockers** section that describes your docker image.  See :ref:`refer to XT and Docker <xt_and_docker>` for more information.
+If your ML app will run in a docker container image, you will need to ensure that the **docker** property of the **compute-target** you will be using is set to the an entry in the **dockers** section that describes your docker image. :ref:`Refer to XT and Docker <xt_and_docker>` for more information.
 
 ***************************************
 Config: target.setup property 
@@ -244,14 +263,14 @@ Refer to :ref:`Understanding the XT Config file <xt_config_file>` for more detai
 Config: general.workspace property 
 ***************************************
 
-For your new project and for tasks such as , you should change the name of your default workspace. A workspace stores your XT runs and experiments for current and future use. 
+For your new project and for testing and running jobs, you should change the name of your default workspace. A workspace stores your XT runs and experiments for current and future use. 
 
 Workspace names are limited by the rules of Azure storage container names.
 
     - A blob container name must be between 3 and 63 characters in length; 
     - Container names start with a letter or number; and contain only letters, numbers, and the hyphen. All letters used in blob container names must be lowercase.
 
-Refer to :ref:`Understanding the XT Config file <xt_config_file>` for more details on the **general** section.
+Refer to :ref:`Config File Section: General <xt_config_general>` for more information on the **workspace** property.
 
 **************************************
 Config: general.experiment property 
@@ -261,7 +280,7 @@ An XT experiment name is a string that you can associate with XT jobs when you s
 
 For your new project, you may want to change the experment name.
 
-Refer to :ref:`Understanding the XT Config file <xt_config_file>` for more details on the **general** section.
+Refer to :ref:`Config File Section: General <xt_config_general>` for more information on the **experiment** property.
 
 ***************************************
 Config: general.primary-metric property 
@@ -269,7 +288,7 @@ Config: general.primary-metric property
 
 If the job run will perform XT hyperparameter searches, set the **primary-metric** property to the name of the metric to be used by the hyperparameter search algorithm to select more promising hyperparameter sets on each search.  
 
-Refer to :ref:`Understanding the XT Config file <xt_config_file>` for more details on the **general** section.
+Refer to :ref:`Config File Section: General <xt_config_general>` for more information on the **primary-metric** property.
 
 *****************************************
 Config: general.maximize-metric property 
@@ -277,7 +296,7 @@ Config: general.maximize-metric property
 
 If the job run will perform XT hyperparameter searches, set the **maximize-metric** property, in the XT config file's **General** section, to **true** if higher values of the **primary-metric** are desired (for example **accuracy**) and otherwise to **false** otherwise (for example, **loss**).
 
-Refer to :ref:`Understanding the XT Config file <xt_config_file>` for more details on the **sgeneral** section.
+Refer to :ref:`Config File Section: General <xt_config_general>` for more information on the **maximize-metric** property.
 
 *****************************************
 Config: code section
@@ -287,7 +306,7 @@ The **code** section defines which files should be uploaded to each compute node
 
 Review the **code** settings and ensure they are correct for your new project.
 
-See :ref:`Understanding the XT Config file <xt_config_file>` for more details on the **code** section.
+Refer to :ref:`Config File Section: Code <xt_config_code>` for more information.
 
 *****************************************
 Config: after-files section
@@ -297,7 +316,7 @@ The **after-files** section defines which files should be uploaded from each com
 
 Review the **after-files** settings and ensure they are correct for your new project.
 
-See :ref:`Understanding the XT Config file <xt_config_file>` for more details on the **after-files** section.
+Refer to :ref:`Config File Section: After Files <xt_config_after-files>` for more information.
 
 *****************************************
 Config: data section
@@ -307,7 +326,7 @@ If your app needs access to an uploaded dataset, set the **data-share-path** pro
 
 If you need to open your dataset files multiple times during a run, use the **download** value.
 
-See :ref:`Understanding the XT Config file <xt_config_file>` for more details on the **data** section.
+Refer to :ref:`Config File Section: Data <config_file_data>` for more information.
 
 *****************************************
 Config: model section
@@ -315,7 +334,9 @@ Config: model section
 
 If your app needs access to an uploaded model, set the **model-share-path** property (in the **model** section) to the path on the models share containing the model. Set **model-action** to either **mount** (if you want to access the model thru a mapped drive) or **download** (if you want to access the model as actual local files). 
 
-If you need to open your model files multiple times during a run, use the **download** value. Refer to :ref:`Understanding the XT Config file <xt_config_file>` for more information on the **model** section.
+If you need to open your model files multiple times during a run, use the **download** value. 
+
+Refer to :ref:`Config File Section: Model <config_file_model>` for more information.
 
 *****************************************
 Config: run-reports section
@@ -325,7 +346,9 @@ Use the **columns** property (in the **run-reports** section of the XT config fi
 
 Be sure to prefix hyperparameter names by **hparams.** and metric names by **metrics.**.
 
-You can also use these strings to specify column aliases and column formatting. Refer to :ref:`Understanding the XT Config file <xt_config_file>` for more information on the **run-reports** section.
+You can also use these strings to specify column aliases and column formatting. 
+
+Refer to :ref:`Config File Section: Run Reports <xt_config_rr_sec>` for more information.
 
 *****************************************
 Config: tensorboard section
@@ -333,7 +356,7 @@ Config: tensorboard section
 
 Use the **template** property in XT config file's **tensorboard** section to specify the standard run columns, hyperparameter values, and literal strings that you want to appear in tensorboard for each log file. This helps you associate logs with the runs they represent, and can also be used to filter the logs by hyperparameter values and other properties.
 
-For more information, refer to :ref:`Understanding the XT Config file <xt_config_file>`.
+Refer to :ref:`Config File Section: Tensorboard <xt_config_tensorboard>` for more information.
 
 *****************************************
 Config: aml-options section
@@ -341,7 +364,7 @@ Config: aml-options section
 
 If your new project will be using Azure Machine Learning, you need to specify your ML **framework**, the **fw-version**, and **distributed-training** properties in the **aml-options** XT Config File section.
 
-See :ref:`Understanding the XT Config file <xt_config_file>` for more information on the **aml-options** section.
+Refer to :ref:`Config File Section: AML Options <xt_config_aml_options>` for more information.
 
 *****************************************
 Config: early-stopping section
@@ -349,7 +372,7 @@ Config: early-stopping section
 
 If your new project uses Azure Machine Learning and AML hyperparameter searches, you may want to specify properties in the **early-stopping** XT Config File section to control how unpromising runs can be detected and terminated early in their training sequence.
 
-Refer to :ref:`Understanding the XT Config file <xt_config_file>` for more information on the **early-stopping** section.
+Refer to :ref:`Config File Section: Early Stopping <xt_config_early_stop>` for more information.
 
 .. seealso:: 
 
