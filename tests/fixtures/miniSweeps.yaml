@@ -1,0 +1,20 @@
+# miniSweeps.yaml: specifies hyperparamers and values to search over in miniMnist app
+hyperparameter-distributions:
+    epochs: 200   
+
+    # GENERAL hyperparamers
+    lr: $linspace(.0001, .1, 15)
+    momentum: [.1, .2]
+    batch-size: [6, 20, 32]
+    seed: $randint()
+    log-interval: 1    # this HP required by hyperparameter explorer
+
+    # CNN hyperparamers
+    mid-conv: [0, 1]
+    mlp-units: [8, 16, 32, 64, 100]  #  100, 1000, 2000, 4000
+    channels1: [12, 16, 20, 32, 50, 64, 128, 256]
+    channels2: [16, 32, 50, 64, 128, 256, 512]
+
+    # optimizer
+    optimizer: [adam, sgd]
+    weight-decay: [.001, .005, .010, .015, .2, .3, .4]

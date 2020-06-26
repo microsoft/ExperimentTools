@@ -7,14 +7,14 @@ $record-types:
     rec_philly: {type: "philly"}
     rec_batch: {type: "batch", key: $str, url: $str }
     rec_aml: {type: "aml", subscription-id: $str, resource-group: $str}
-    rec_storage: {type: "storage", provider: $str, $opt: {key: $str, path: $str}}
+    rec_storage: {type: "storage", provider: $str, $opt: {key: $str, path: $str, name: $str}}
     rec_mongo: {type: "mongo", mongo-connection-string: $str}
     rec_vault: {type: "vault", url: $str}
     rec_registry: {type: "registry", login-server: $str, $opt: {username: $str, password: $str, login: $bool}}
 
     rec_service: {service: $str, $opt: 
         {vm-size: $str, azure-image: $str, low-pri: $bool, box-class: $str, docker: $str, setup: $str, 
-        boxes: $str-list, vc: $str, cluster: $str, queue: $str, sku: $str, compute: $str, nodes: $int }}
+        boxes: $str-list, vc: $str, cluster: $str, queue: $str, sku: $str, compute: $str, nodes: $int, name: $str }}
 
     rec_docker: {registry: $str, image: $str}
     rec_setup: { $opt: {activate: $str, conda-packages: $str-list, pip-packages: $str-list } }

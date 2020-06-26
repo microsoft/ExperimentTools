@@ -8,6 +8,7 @@ import json
 import shutil
 import logging
 import urllib.request
+import hashlib
 from interface import implements
 
 from xtlib import utils
@@ -702,8 +703,10 @@ class AzureML(BackendBase):
     def submit_job(self, job_id, job_runs, workspace, compute_def, resume_name, 
             repeat_count, using_hp, runs_by_box, experiment, snapshot_dir, controller_scripts, args):
 
-        username = args["username"]
-        aml_exper_name = "{}__{}__{}".format(username, workspace, experiment)
+        blake2bhash = hashlib.blake2b(digest_size=5)
+        blake2bhash.update(args["username"].encode("utf-8"))
+        username_hash = blake2bhash.hexdigest()
+        aml_exper_name = "{}__{}__{}".format(username_hash, workspace, experiment)
         cwd = os.getcwd()
 
         compute = args["target"]
