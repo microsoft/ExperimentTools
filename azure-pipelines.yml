@@ -13,7 +13,7 @@ steps:
 - task: AzureCLI@2
   inputs:
     azureSubscription: 'rfernand xt-sandbox'
-    scriptType: 'ps'
+    scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: 'az group create –name "Demo-rg" –location uswest'
 - task: UsePythonVersion@0
