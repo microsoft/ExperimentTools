@@ -13,5 +13,7 @@ steps:
 - task: UsePythonVersion@0
   inputs:
     versionSpec: '3.6'
+- script: export ENCODED_BASE_CONFIG=$(ENCODED_BASE_CONFIG)
+  displayName: 'Map environment variable'
 - script: bash run-tests.sh
   displayName: 'Run Pytest Suite'
