@@ -126,14 +126,15 @@ class XTVault():
 
             azure_username = os.environ.get("AZURE_USERNAME")
 
-            console.print("using device-code authorization (Azure AD currently requires 2-4 authenications here)")
-            if self.azure_tenant_id is not None:
-                if azure_username is not None:
-                    credential = DefaultAzureCredential()
-                else:
-                    credential = DeviceCodeCredential(tenant_id=self.azure_tenant_id, client_id=AZURE_CLI_CLIENT_ID)
+            if azure_username is not None:
+                console.print("attempting to use environment variables to establish Azure identity credentials...")
+                credential = DefaultAzureCredential()
             else:
-                credential = DeviceCodeCredential(client_id=AZURE_CLI_CLIENT_ID)  
+                console.print("using device-code authorization (Azure AD currently requires 2-4 authenications here)")
+                if self.azure_tenant_id is not None:
+                    credential = DeviceCodeCredential(tenant_id=self.azure_tenant_id, client_id=AZURE_CLI_CLIENT_ID)
+                else:
+                    credential = DeviceCodeCredential(client_id=AZURE_CLI_CLIENT_ID)  
         else:
             errors.syntax_error("unrecognized authentication type '{}'".format(authentication))
 
