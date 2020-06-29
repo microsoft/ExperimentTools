@@ -1,4 +1,4 @@
-echo $ENCODED_BASE_CONFIG
+echo ENCODED_BASE_CONFIG $ENCODED_BASE_CONFIG
 pip install -e .
 pip install -r dev_requirements.txt
 python prepare-test-environment.py
