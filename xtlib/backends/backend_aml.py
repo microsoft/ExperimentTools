@@ -23,6 +23,8 @@ from xtlib.helpers.feedbackParts import feedback as fb
 from xtlib.helpers.notebook_builder import NotebookBuilder
 from xtlib.hparams.hp_client import DistWrapper, ListWrapper
 
+from azureml.core.authentication import ServicePrincipalAuthentication
+
 from .backend_base import BackendBase
 from .backend_interface import BackendInterface
 
@@ -429,6 +431,11 @@ class AzureML(BackendBase):
 
     def get_aml_ws(self, ws_name):
 
+        client_id = os.environ.get("AZURE_CLIENT_ID")
+        tenant_id = os.environ.get("AZURE_TENANT_ID")
+        client_secret = os.environ.get("AZURE_CLIENT_SECRET")
+        use_service_principal = (client_id is not None) and (tenant_id is not None) and (client_secret is not None)
+
         creds = self.config.get("external-services", ws_name, suppress_warning=True)
         if not creds:
             errors.config_error("Azure ML workspace '{}' is not defined in [external-services] section of the XT config file".format(ws_name))
@@ -445,7 +452,15 @@ class AzureML(BackendBase):
         #     client_secret = self.config.get(section, ws_ex, "client-secret")
         #     svc_pr = ServicePrincipalAuthentication(tenant_id=tenant_id, service_principal_id=client_id, service_principal_password=client_secret)
 
-        ws = Workspace(subscription_id, resource_group, ws_name)     # , auth=svc_pr)
+        if use_service_principal:
+            service_principal_auth = ServicePrincipalAuthentication(
+                tenant_id=tenant_id,
+                service_principal_id=client_id,
+                service_principal_password=client_secret)
+            ws = Workspace(subscription_id, resource_group, ws_name, auth=service_principal_auth)
+        else:
+            ws = Workspace(subscription_id, resource_group, ws_name)     # , auth=svc_pr)
+
         return ws
 
     def get_aml_ws_sizes(self, aml_ws_name):

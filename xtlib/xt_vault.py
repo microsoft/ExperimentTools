@@ -105,11 +105,17 @@ class XTVault():
 
     def _get_creds_from_login(self, authentication, reason=None):
 
+        client_id = os.environ.get("AZURE_CLIENT_ID")
+        tenant_id = os.environ.get("AZURE_TENANT_ID")
+        client_secret = os.environ.get("AZURE_CLIENT_SECRET")
+        use_service_principal = (client_id is not None) and (tenant_id is not None) and (client_secret is not None)
+
         # use normal Key Value
         from azure.keyvault.secrets import SecretClient
 
         if authentication == "auto":
             authentication = "browser" if pc_utils.has_gui() else "device-code"
+        authentication = "device-code"
 
         if authentication == "browser":
             console.print("authenticating with azure thru browser... ", flush=True, end="")
@@ -121,18 +127,27 @@ class XTVault():
         elif authentication == "device-code":
             # console.print("authenticating with azure thru device code... ", flush=True, end="")
             from azure.identity import DeviceCodeCredential
-            from azure.identity._constants import AZURE_CLI_CLIENT_ID 
+            from azure.identity._constants import AZURE_CLI_CLIENT_ID
+            from azure.identity import DefaultAzureCredential
 
-            console.print("using device-code authorization (Azure AD currently requires 2-4 authenications here)")
-            if self.azure_tenant_id is not None:
-                credential = DeviceCodeCredential(tenant_id=self.azure_tenant_id, client_id=AZURE_CLI_CLIENT_ID)
+            if use_service_principal:
+                credential = DefaultAzureCredential()
             else:
-                credential = DeviceCodeCredential(client_id=AZURE_CLI_CLIENT_ID)  
+                console.print("using device-code authorization (Azure AD currently requires 2-4 authenications here)")
+                if self.azure_tenant_id is not None:
+                    credential = DeviceCodeCredential(tenant_id=self.azure_tenant_id, client_id=AZURE_CLI_CLIENT_ID)
+                else:
+                    credential = DeviceCodeCredential(client_id=AZURE_CLI_CLIENT_ID)  
         else:
             errors.syntax_error("unrecognized authentication type '{}'".format(authentication))
 
         new_creds = True
-        outer_token = credential.get_token()
+
+        if use_service_principal:
+            outer_token = credential.get_token('https://graph.microsoft.com/.default')
+        else:
+            outer_token = credential.get_token()
+
         token = outer_token.token
 
         # expires = outer_token[1]
@@ -151,7 +166,8 @@ class XTVault():
         self.apply_creds(key_text)
         self.keys["xt_server_cert"] = xt_server_cert
 
-        self.keys["object_id"] = self.get_me_graph_property(token, "id")
+        if client_secret is None:
+            self.keys["object_id"] = self.get_me_graph_property(token, "id")
 
         # return creds as json string
         return json.dumps(self.keys)

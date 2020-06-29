@@ -14,15 +14,18 @@ else:
 
 class KeyPressChecker:
     def __init__(self):
+        self.old_settings = None
         self.is_windows = pc_utils.is_windows()
 
     def __enter__(self):
         if not self.is_windows:
             # save off current stdin settings (LINE mode)
-            self.old_settings = termios.tcgetattr(sys.stdin)
-
-            # put stdin into CHAR mode
-            tty.setcbreak(sys.stdin.fileno())
+            try:
+                self.old_settings = termios.tcgetattr(sys.stdin)
+                # put stdin into CHAR mode
+                tty.setcbreak(sys.stdin.fileno())
+            except Exception:
+                console.print("Error getting current stdin settings")
 
         return self
 
@@ -71,12 +74,15 @@ class KeyPressChecker:
                 ch = self._get_windows_char(encoding)
         else:
             # linux
-            if select.select([sys.stdin], [], [], 0) == ([sys.stdin], [], []):
-                ch = sys.stdin.read(1)
+            try:
+                if select.select([sys.stdin], [], [], 0) == ([sys.stdin], [], []):
+                    ch = sys.stdin.read(1)
+            except Exception:
+                console.print("Culd not read from stdin")
         return ch
 
     def __exit__(self, type, value, traceback):
-        if not self.is_windows:
+        if not self.is_windows and self.old_settings is not None:
             # restore stdin to LINE mode
             termios.tcsetattr(sys.stdin, termios.TCSADRAIN, self.old_settings)
 
