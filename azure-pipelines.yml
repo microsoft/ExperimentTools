@@ -31,3 +31,9 @@ steps:
     export AZURE_CLIENT_SECRET=$(AZURE_CLIENT_SECRET)
     bash run-tests.sh
   displayName: 'Run Pytest Suite'
+
+- task: PublishTestResults@2
+  condition: succeededOrFailed()
+  inputs:
+    testResultsFiles: 'test-*.xml'
+    testRunTitle: 'Publish test results for Python $(python.version)'
