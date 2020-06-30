@@ -15,7 +15,7 @@ steps:
     azureSubscription: 'rfernand xt-sandbox'
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
-    inlineScript: az group create -l eastus -n DemoRG
+    inlineScript: az storage blob list
 - task: UsePythonVersion@0
   inputs:
     versionSpec: '3.6'
