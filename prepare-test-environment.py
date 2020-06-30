@@ -13,7 +13,7 @@ def place_merged_config():
     default_config_file.close()
     from azure.identity import DefaultAzureCredential
     credential = DefaultAzureCredential()
-    outer_token = credential.get_token()
+    outer_token = credential.get_token('https://vault.azure.net/.default')
     print(outer_token)
 
 
