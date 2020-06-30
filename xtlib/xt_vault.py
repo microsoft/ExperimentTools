@@ -105,6 +105,8 @@ class XTVault():
 
     def _get_creds_from_login(self, authentication, reason=None):
 
+        client_secret = os.environ.get("AZURE_CLIENT_SECRET")
+
         # use normal Key Value
         from azure.keyvault.secrets import SecretClient
 
@@ -124,8 +126,6 @@ class XTVault():
             from azure.identity._constants import AZURE_CLI_CLIENT_ID
             from azure.identity import DefaultAzureCredential
 
-            client_secret = os.environ.get("AZURE_CLIENT_SECRET")
-
             if client_secret is not None:
                 credential = DefaultAzureCredential()
             else:
@@ -138,7 +138,12 @@ class XTVault():
             errors.syntax_error("unrecognized authentication type '{}'".format(authentication))
 
         new_creds = True
-        outer_token = credential.get_token()
+
+        if client_secret is not None:
+            outer_token = credential.get_token('https://vault.azure.net/.default')
+        else:
+            outer_token = credential.get_token()
+
         token = outer_token.token
 
         # expires = outer_token[1]
