@@ -15,7 +15,9 @@ steps:
     azureSubscription: 'rfernand xt-sandbox'
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
-    inlineScript: az storage blob list -c ws1 --auth-mode login
+    inlineScript: |
+      az extension add -n storage-preview
+      az storage blob list -c ws1 --auth-mode login
 - task: UsePythonVersion@0
   inputs:
     versionSpec: '3.6'
