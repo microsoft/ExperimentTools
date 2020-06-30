@@ -16,18 +16,18 @@ steps:
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: |
-      echo servicePrincipalId $servicePrincipalId
-      echo servicePrincipalKey $servicePrincipalKey
-      az extension add -n storage-preview
-      az storage container list --account-name xtsandboxstorage --auth-mode login
+      export AZURE_CLIENT_ID=$(AZURE_CLIENT_ID)
+      export AZURE_TENANT_ID=$(AZURE_TENANT_ID)
+      export AZURE_CLIENT_SECRET=$(AZURE_CLIENT_SECRET)
+      az login --service-principal -u https://VisualStudio/SPN20113650-f80d-4309-8f35-da944e11f2c0 -p $AZURE_CLIENT_SECRET --tenant $AZURE_TENANT_ID
 - task: UsePythonVersion@0
   inputs:
     versionSpec: '3.6'
 
 - script: |
     export ENCODED_BASE_CONFIG=$(ENCODED_BASE_CONFIG)
-    export AZURE_USERNAME=$(AZURE_USERNAME)
-    export AZURE_PASSWORD=$(AZURE_PASSWORD)
     export AZURE_CLIENT_ID=$(AZURE_CLIENT_ID)
-    # bash run-tests.sh
+    export AZURE_TENANT_ID=$(AZURE_TENANT_ID)
+    export AZURE_CLIENT_SECRET=$(AZURE_CLIENT_SECRET)
+    bash run-tests.sh
   displayName: 'Run Pytest Suite'
