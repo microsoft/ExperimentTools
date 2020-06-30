@@ -16,6 +16,8 @@ steps:
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: |
+      echo servicePrincipalId $servicePrincipalId
+      echo servicePrincipalKey $servicePrincipalKey
       az extension add -n storage-preview
       az storage container list --account-name xtsandboxstorage --auth-mode login
 - task: UsePythonVersion@0
