@@ -11,10 +11,6 @@ def place_merged_config():
     default_config_file = open(f"{resources_folder}/default_config.yaml", "w")
     default_config_file.write(config_string)
     default_config_file.close()
-    from azure.identity import DefaultAzureCredential
-    credential = DefaultAzureCredential()
-    outer_token = credential.get_token('https://vault.azure.net/.default')
-    print(outer_token)
 
 
 if __name__ == "__main__":
