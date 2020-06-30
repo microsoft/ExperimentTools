@@ -17,7 +17,7 @@ steps:
     scriptLocation: 'inlineScript'
     inlineScript: |
       az extension add -n storage-preview
-      az storage blob list -c ws1 --auth-mode login
+      az storage blob list -c ws1 --account-name xtsandboxstorage --auth-mode login
 - task: UsePythonVersion@0
   inputs:
     versionSpec: '3.6'
