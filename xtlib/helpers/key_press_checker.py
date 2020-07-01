@@ -74,8 +74,11 @@ class KeyPressChecker:
                 ch = self._get_windows_char(encoding)
         else:
             # linux
-            if select.select([sys.stdin], [], [], 0) == ([sys.stdin], [], []):
-                ch = sys.stdin.read(1)
+            try:
+                if select.select([sys.stdin], [], [], 0) == ([sys.stdin], [], []):
+                    ch = sys.stdin.read(1)
+            except Exception:
+                console.print("Culd not read from stdin")
         return ch
 
     def __exit__(self, type, value, traceback):
