@@ -19,10 +19,12 @@ class KeyPressChecker:
     def __enter__(self):
         if not self.is_windows:
             # save off current stdin settings (LINE mode)
-            self.old_settings = termios.tcgetattr(sys.stdin)
-
-            # put stdin into CHAR mode
-            tty.setcbreak(sys.stdin.fileno())
+            try:
+                self.old_settings = termios.tcgetattr(sys.stdin)
+                # put stdin into CHAR mode
+                tty.setcbreak(sys.stdin.fileno())
+            except Exception:
+                console.print("Error getting current stdin settings")
 
         return self
 
