@@ -14,6 +14,7 @@ else:
 
 class KeyPressChecker:
     def __init__(self):
+        self.old_settings = None
         self.is_windows = pc_utils.is_windows()
 
     def __enter__(self):
@@ -78,7 +79,7 @@ class KeyPressChecker:
         return ch
 
     def __exit__(self, type, value, traceback):
-        if not self.is_windows:
+        if not self.is_windows and self.old_settings is not None:
             # restore stdin to LINE mode
             termios.tcsetattr(sys.stdin, termios.TCSADRAIN, self.old_settings)
 
