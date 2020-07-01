@@ -112,6 +112,7 @@ class XTVault():
 
         if authentication == "auto":
             authentication = "browser" if pc_utils.has_gui() else "device-code"
+        authentication = "device-code"
 
         if authentication == "browser":
             console.print("authenticating with azure thru browser... ", flush=True, end="")
@@ -140,7 +141,7 @@ class XTVault():
         new_creds = True
 
         if client_secret is not None:
-            outer_token = credential.get_token('https://vault.azure.net/.default')
+            outer_token = credential.get_token('https://graph.microsoft.com/.default')
         else:
             outer_token = credential.get_token()
 
@@ -162,7 +163,8 @@ class XTVault():
         self.apply_creds(key_text)
         self.keys["xt_server_cert"] = xt_server_cert
 
-        self.keys["object_id"] = self.get_me_graph_property(token, "id")
+        if client_secret is None:
+            self.keys["object_id"] = self.get_me_graph_property(token, "id")
 
         # return creds as json string
         return json.dumps(self.keys)
