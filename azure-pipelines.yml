@@ -7,9 +7,10 @@ trigger:
   branches:
     - dev
     - master
-  pr:
-    - dev
-    - master
+
+pr:
+  - dev
+  - master
 
 pool:
   vmImage: 'ubuntu-18.04'
