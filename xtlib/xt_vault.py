@@ -105,7 +105,10 @@ class XTVault():
 
     def _get_creds_from_login(self, authentication, reason=None):
 
+        client_id = os.environ.get("AZURE_CLIENT_ID")
+        tenant_id = os.environ.get("AZURE_TENANT_ID")
         client_secret = os.environ.get("AZURE_CLIENT_SECRET")
+        use_service_principal = (client_id is not None) and (tenant_id is not None) and (use_service_principal)
 
         # use normal Key Value
         from azure.keyvault.secrets import SecretClient
@@ -127,7 +130,7 @@ class XTVault():
             from azure.identity._constants import AZURE_CLI_CLIENT_ID
             from azure.identity import DefaultAzureCredential
 
-            if client_secret is not None:
+            if use_service_principal:
                 credential = DefaultAzureCredential()
             else:
                 console.print("using device-code authorization (Azure AD currently requires 2-4 authenications here)")
@@ -140,7 +143,7 @@ class XTVault():
 
         new_creds = True
 
-        if client_secret is not None:
+        if use_service_principal:
             outer_token = credential.get_token('https://graph.microsoft.com/.default')
         else:
             outer_token = credential.get_token()

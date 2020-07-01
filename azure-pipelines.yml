@@ -4,22 +4,16 @@
 # https://aka.ms/yaml
 
 trigger:
-- ci-pipeline
+  branches:
+    - dev
+    - master
+  pr:
+    - dev
+    - master
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'ubuntu-18.04'
 
-steps:
-- task: AzureCLI@2
-  inputs:
-    azureSubscription: 'rfernand xt-sandbox'
-    scriptType: 'bash'
-    scriptLocation: 'inlineScript'
-    inlineScript: |
-      export AZURE_CLIENT_ID=$(AZURE_CLIENT_ID)
-      export AZURE_TENANT_ID=$(AZURE_TENANT_ID)
-      export AZURE_CLIENT_SECRET=$(AZURE_CLIENT_SECRET)
-      az login --service-principal -u https://VisualStudio/SPN20113650-f80d-4309-8f35-da944e11f2c0 -p $AZURE_CLIENT_SECRET --tenant $AZURE_TENANT_ID
 - task: UsePythonVersion@0
   inputs:
     versionSpec: '3.6'
