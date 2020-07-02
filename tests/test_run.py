@@ -620,11 +620,11 @@ class TestRun(test_base.TestBase):
         output = self.xt('xt list jobs job2741-job2751 --tags-any={urgent, nodes}')
 
     def exercise_tags(self):
-        result_runs = self.xt("xt list runs --status=completed")
+        result_runs = self.xt("xt list runs --status=queued,completed")
         wait_count = 0
         while wait_count < 3 and len(result_runs) <= 3:
-            time.sleep(180)
-            result_runs = self.xt("xt list runs --status=completed")
+            time.sleep(300)
+            result_runs = self.xt("xt list runs --status=queued,completed")
             wait_count = wait_count + 1
 
         self.assertTrue(len(result_runs) > 3)
