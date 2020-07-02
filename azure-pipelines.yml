@@ -1,0 +1,37 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+  branches:
+    include:
+      - dev
+      - master
+
+pr:
+  - dev
+  - master
+
+pool:
+  vmImage: 'ubuntu-18.04'
+
+steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.6'
+
+  - script: |
+      export ENCODED_BASE_CONFIG=$(ENCODED_BASE_CONFIG)
+      export AZURE_CLIENT_ID=$(AZURE_CLIENT_ID)
+      export AZURE_TENANT_ID=$(AZURE_TENANT_ID)
+      export AZURE_CLIENT_SECRET=$(AZURE_CLIENT_SECRET)
+      echo $(pwd)
+      bash run-tests.sh
+    displayName: 'Run Pytest Suite'
+
+  - task: PublishTestResults@2
+    condition: succeededOrFailed()
+    inputs:
+      testResultsFiles: '**/test-*.xml'
+      testRunTitle: 'Publish test results for Python $(python.version)'
