@@ -4,31 +4,103 @@
 Understanding the XT Config file
 ================================
 
-This topic describes how to fully onboard to your XT environment. 
+This topic is a comprehensive reference to all XT config file settings. We recommend using one of our config file templates to quickly define the key Azure cloud service config settings you need, and refer to this topic to get information about specific settings in all the categories for the config file. See :ref:`Quick Template-Based Setup for XT <defining_your_config_file>` for more details.
 
-To create a new set of Azure cloud services for your XT installation, follow the steps in this topic to get up and running. 
+.. note::
 
-By default, XT does not come with predefined Azure services. 
+    Throughout this and other chapters, we use example 'sandbox' services as examples to illustrate service configurations. Always change these values to apply to your own service instances.
 
-.. note:: If you are starting from scratch, and need to configure the Azure services to support your new XT deployment, see :ref:`Creating your Azure Cloud Services for XT <creating_xt_services>`.
+By default, XT does not come with predefined Azure services. Many new XT users will already have existing Azure cloud services that they can use with XT experiments. 
+
+.. note:: If you are starting from scratch with XT and with Azure cloud services, and need to configure new Azure services to support your new XT deployment, see :ref:`Creating Azure Cloud Services for XT <creating_xt_services>`. Our Azure templates enable you to quickly build your set of Azure services without spending hours in the Azure console.
 
 ------------------------------
 Overview of the XT Config File
 ------------------------------
 
-You control XT using an extensive set of properties in the *XT config file*. Its properties, organized into sections, determine how you work with XT and what cloud resources you use with XT.
+You control XT using an extensive set of properties in the *XT config file*. Its properties, organized into sections, determine how you work with XT, what cloud resources you use with XT, and how those resources operate.
 
-XT's *default XT config file* defines these properties when you install XT. It is a *read-only* file that's installed as part of the XTLib package. Users customize their Experiment Tools installation by editing a *local XT config file*, which resides in the user account's home directory. It overrides the default settings.
+XT's *default XT config file* defines all of these properties when you install XT. It is a *read-only* file that's installed as part of the XTLib package. 
+
+Users customize their Experiment Tools installation by editing a *local XT config file*. It overrides the default settings.
 
 To ensure XT works with your cloud services, you must copy, paste, and edit selected entries from the default xt_config file to your local version. Your XT installation runs based on the settings you define here.
 
-You can find the original copy of the local xt_config file in the home directory for your user account.
-
-.. note:: In Windows, for a user named "Contoso," their local XT config file (xt_config.yaml) is located in the C:/Users/contoso/ folder. In Linux, the local config file is in the /home/<username>/ folder, as in /home/contoso/xt_config.yaml.
+.. note:: For using XT with all your settings, just place your local xt_config.yaml file in the directory from which you run the XT program. 
 
 Your local config file should only contain the XT properties that you change. It is typically smaller then the default config file. 
 
-You can also use XT command options to override XT Config properties during your experiments. Check the help for each command to see available options.
+You can also use XT *command options* to override XT Config properties during your experiments. Check the help for each command to see available options:
+
+.. code-block::
+
+    (xt) C:\ExperimentTools\docs\xt>xt help run
+
+Usage: xt run [OPTIONS] <script> [script-args]
+
+    The run command is used to run a program, python script, batch file, or shell script on
+    one of following compute services:
+
+    - local (the local machine)
+    - pool (a specified set of computers managed by the user)
+    - Azure Batch
+    - Azure ML
+    - Philly
+
+    Options:
+      --after-upload       flag    when true, the after files are upload when the run completes
+      --cluster            str     the name of the Philly cluster to be used
+      --code-upload        flag    when true, code is uploaded to job and download for each run of job
+      --concurrent         int     the maximum concurrent runs to be allowed on each node
+      --data-action        str     the data action to take on the target, before run is started
+      --data-upload        flag    when true, the data for this job will be automatically upload when the job is submitted
+      --data-writable      flag    when true, a mounted data path can be written to
+      --description        str     your description of this run
+      --direct-run         flag    when True, the script is run without the controller (on Philly or AML)
+      --distributed        flag    when True, the multiple nodes will be put into distributed training mode
+      --docker             str     the docker entry to use with the target (from one of the entries in the config file [dockers] section
+      --dry-run            flag    when True, the planned runs are displayed but not submitted
+      --escape             int     breaks out of attach or --monitor loop after specified # of seconds
+      --experiment         str     the name of the experiment to create this run under
+      --fake-submit        flag    when True, we skip creation of job and runs and the submit (used for internal testing)
+      --hold               flag    when True, the Azure Pool (VM's) are held open for debugging)
+      --hp-config          str     the path of the hyperparameter config file
+      --jupyter-monitor    flag    when True, a Jupyter notebook is created to monitor the run
+      --low-pri            bool    when true, use low-priority (preemptable) nodes for this job
+      --max-minutes        int     the maximum number of minutes the run can execute before being terminated
+      --max-runs           int     the total number of runs across all nodes (for hyperparameter searches)
+      --model-action       str     the model action to take on the target, before run is started
+      --model-writable     flag    when true, a mounted model path can be written to
+      --monitor            str     how to monitor primary run of the new job [one of: new, same, none]
+      --multi-commands     flag    the script file contains multiple run commands (one per line)
+      --nodes              int     the number of normal (non-preemptable) nodes to allocte for this run
+      --parent-script      str     path of script used to initialize the target for repeated runs of primary script
+      --queue              str     the name of the Philly queue to use when submitting this job
+      --resume-name        str     when resuming a run, this names the previous run
+      --runs               int     the total number of runs across all nodes (for hyperparameter searches)
+      --schedule           str     specifies if runs are pre-assigned to each node or allocate on demand [one of: static, dynamic]
+      --search-type        str     the type of hyperparameter search to perform [one of: random, grid, bayesian, dgd]
+      --seed               str     the random number seed that can be used for reproducible HP searches
+      --sku                str     the name of the Philly SKU to be used (e.g, 'G1')
+      --submit-logs        str     specifies a directory to which log files for the submit are saved
+      --target             str     one of the user-defined compute targets on which to run
+      --use-gpu            bool    when True, the gpu(s) on the nodes will be used by the run
+      --username           str     the username to log as the author of this run
+      --vc                 str     the name of the Philly virtual cluster to be used
+      --vm-size            str     the type of Azure VM computer to run on
+      --workspace          str     the workspace to create and manage the run
+      --xtlib-upload       flag    when True, local source code for xtlib is included in the source code snapshot
+
+    Arguments:
+      script         the name of the script to run
+      script-args    the command line arguments for the script
+
+    Examples:
+      run the script miniMnist.py:
+      > xt run miniMnist.py
+
+      run the linux command 'sleep3d' on philly:
+      > xt run --target=philly --code-upload=0 sleep 3d
 
 For quick reference, enter the following command to view the default xt_config file in the XT installation:
 
@@ -44,9 +116,9 @@ The default xt_config file appears in your computer's default editor.
 Config File Section: External Services
 **************************************
 
-The **external-services** section defines the service names and credentials for the cloud services used by your XT installation.
+The **external-services** section defines the names and credentials for your Azure cloud services used by your XT installation. This section is always required for your XT setup.
 
-XT works with 4 types of external cloud services.
+XT works with 5 key types of external cloud services.
 
 +-------------------------------+-----------------------------------+
 | External service type         | Description                       |
@@ -58,6 +130,11 @@ XT works with 4 types of external cloud services.
 +-------------------------------+-----------------------------------+
 | **MongoDB Service**           | Database services that uses       |
 |                               | the MongoDB interface             |
++-------------------------------+-----------------------------------+
+| **Vault Service**             | Azure Key Vault service for       |
+|                               | managing and storing the secure   |
+|                               | passwords and keys for Azure cloud|
+|                               | services                          |
 +-------------------------------+-----------------------------------+
 | **Container registry**        | Services that can store (register |
 |                               | and retrieve) Docker containers   |
@@ -73,15 +150,49 @@ Where:
     - **servicetype** is one of the following constants: **batch**, **aml**, **storage**, **mongo**, **registry**
     - **prop** and **value** represent other credentials appropriate to the associated service.
 
-Service properties by each service type are the following:
+Individual service properties referenced by each service type include the following:
 
-    - batch       - **key**, **url**
-    - aml         - **subscription-id**, **resource-group**
-    - storage     - **key**
+    - batch       - **key**, **url** (Compute service)
+    - aml         - **subscription-id**, **resource-group** (Compute service)
+    - storage     - **provider**, **key**
     - mongo       - **mongo-connection-string**
     - registry    - **login-server**, **username**, **password**, **login**
 
-XT's default xt_config file contains a complete sample list of cloud services that you can adapt in your local xt config file, to use the services under your Azure account. 
+XT's default xt_config file contains a complete sample list of Azure cloud services that you can adapt in your local xt_config file, to use the services under your Azure account. That complete list is as follows:
+
+.. only:: internal
+
+  .. code-block::
+
+    external-services:
+        filestorage: {type: "storage", provider: "store-file", path: "~/.xt/file_store"}
+        philly: {type: "philly"}
+        xtsandboxbatch: {type: "batch", key: "$vault", url: "https://xtsandboxbatch.eastus.batch.azure.com"}
+        aml-sandbox-ws: {type: "aml", subscription-id: "41c6e824-0f66-4076-81dd-f751c70a140b", resource-group: "xt-sandbox"}
+        canadav100ws: {type: "aml", subscription-id: "db9fc1d1-b44e-45a8-902d-8c766c255568", resource-group: "canadav100"}
+        xtsandboxstorage: {type: "storage", provider: "azure-blob-21", key: "$vault"}
+        xt-sandbox-cosmos: {type: "mongo", mongo-connection-string: "$vault"}
+        sandbox-vault: {type: "vault", url: "https://xtsandboxvault.vault.azure.net/"}
+        xtsandboxregistry: {type: "registry", login-server: "xtsandboxregistry.azurecr.io", username: "xtsandboxregistry", password: "$vault", login: "true"}
+        xtcontainerregistry: {type: "registry", login-server: "xtcontainerregistry.azurecr.io", username: "xtcontainerregistry", password: "$vault", login: "true"}
+        philly-registry: {type: "registry", login-server: "phillyregistry.azurecr.io", login: "false"}
+
+.. only:: not internal
+
+  .. code-block::
+
+    external-services:
+        filestorage: {type: "storage", provider: "store-file", path: "~/.xt/file_store"}
+        xtsandboxbatch: {type: "batch", key: "$vault", url: "https://xtsandboxbatch.eastus.batch.azure.com"}
+        aml-sandbox-ws: {type: "aml", subscription-id: "41c6e824-0f66-4076-81dd-f751c70a140b", resource-group: "xt-sandbox"}
+        canadav100ws: {type: "aml", subscription-id: "db9fc1d1-b44e-45a8-902d-8c766c255568", resource-group: "canadav100"}
+        xtsandboxstorage: {type: "storage", provider: "azure-blob-21", key: "$vault"}
+        xt-sandbox-cosmos: {type: "mongo", mongo-connection-string: "$vault"}
+        sandbox-vault: {type: "vault", url: "https://xtsandboxvault.vault.azure.net/"}
+        xtsandboxregistry: {type: "registry", login-server: "xtsandboxregistry.azurecr.io", username: "xtsandboxregistry", password: "$vault", login: "true"}
+        xtcontainerregistry: {type: "registry", login-server: "xtcontainerregistry.azurecr.io", username: "xtcontainerregistry", password: "$vault", login: "true"}
+
+Of course, your particular set of services will be brief by comparison. Here is a more-typical example, broken up by comment header.
 
 .. only:: not internal
 
@@ -90,8 +201,6 @@ XT's default xt_config file contains a complete sample list of cloud services th
     external-services:
         # compute services
             xtsandboxbatch: {type: "batch", key: "$vault", url: "https://xtsandboxbatch.eastus.batch.azure.com"}
-            aml-sandbox-ws: {type: "aml", subscription-id: "43de1a51-d0f9-4494-8c57-bcc6ba4202e4", resource-group: "xt-sandbox"}
-            canadav100ws: {type: "aml", subscription-id: "db9fc1d1-b44e-45a8-902d-8c766c255568", resource-group: "canadav100"}
 
         # storage services
             xtsandboxstorage: {type: "storage", provider: "azure-blob-21", key: "$vault"}
@@ -105,7 +214,6 @@ XT's default xt_config file contains a complete sample list of cloud services th
     
         # registry services
             xtsandboxregistry: {type: "registry", login-server: "xtsandboxregistry.azurecr.io", username: "xtsandboxregistry", password: "$vault", login: "true"}
-            xtcontainerregistry: {type: "registry", login-server: "xtcontainerregistry.azurecr.io", username: "xtcontainerregistry", password: "$vault", login: "true"}
 
 .. only:: internal
 
@@ -114,8 +222,7 @@ XT's default xt_config file contains a complete sample list of cloud services th
     external-services:
         # compute services
             xtsandboxbatch: {type: "batch", key: "$vault", url: "https://xtsandboxbatch.eastus.batch.azure.com"}
-            aml-sandbox-ws: {type: "aml", subscription-id: "43de1a51-d0f9-4494-8c57-bcc6ba4202e4", resource-group: "xt-sandbox"}
-            canadav100ws: {type: "aml", subscription-id: "db9fc1d1-b44e-45a8-902d-8c766c255568", resource-group: "canadav100"}
+            philly: {type: "philly"}
 
         # storage services
             xtsandboxstorage: {type: "storage", provider: "azure-blob-21", key: "$vault"}
@@ -129,7 +236,6 @@ XT's default xt_config file contains a complete sample list of cloud services th
     
         # registry services
             xtsandboxregistry: {type: "registry", login-server: "xtsandboxregistry.azurecr.io", username: "xtsandboxregistry", password: "$vault", login: "true"}
-            xtcontainerregistry: {type: "registry", login-server: "xtcontainerregistry.azurecr.io", username: "xtcontainerregistry", password: "$vault", login: "true"}
             philly-registry: {type: "registry", login-server: "phillyregistry.azurecr.io", login: "false"}
             philly: {type: "philly"}
 
@@ -139,7 +245,7 @@ XT's default xt_config file contains a complete sample list of cloud services th
 Config File Section: XT Services
 ********************************
 
-The **xt-services** section identifies the external service XT uses for each of the following: 
+The **xt-services** section identifies the external Azure cloud service that XT uses for each of the following: 
 
     - XT uses the **storage** service for storage of all workspace, experiment, and run related files, include source code, log files, and output files.
     - XT uses the **mongo** service as the database (with a MongoDB interface) for fast access to job stats and metrics.
@@ -253,15 +359,63 @@ If you specify no **compute-targets** in your configuration, XT defaults to the 
 
     local: {service: "pool", boxes: ["localhost"], setup: "local"}
 
+.. _xt_config_setups:
+
+******************************
+Config File Section: Setups
+******************************
+
+The **Setups** section prepares the compute nodes to run the XT user's Python script. Required settings differ based on the type of compute service that owns the compute nodes. The **Setups** section provides a structured way to prepare each compute node - activate a virtual environment if needed; install packages in the virtual environment to support the dependencies of the script; and install packages at the Pip level.
+
+You should define a setup in this section for any compute service that you plan to use to run your script. You can use more than one if you'll use more than one compute service (e.g., AML and Local). The following are typical examples:
+
+.. only:: internal 
+
+  .. code-block::
+
+    setups:
+        local: {activate: "$call conda activate $current_conda_env", conda-packages: [], pip-packages: []}
+        philly: {activate: null, conda-packages: [], pip-packages: ["xtlib==*"]}
+        aml: {pip-packages: ["torch==1.2.0", "torchvision==0.4.1", "Pillow==6.2.0", "watchdog==0.9.0", "horovod", "xtlib==*"] }
+
+.. only:: not internal 
+
+  .. code-block::
+
+    setups:
+        local: {activate: "$call conda activate $current_conda_env", conda-packages: [], pip-packages: []}
+        aml: {pip-packages: ["torch==1.2.0", "torchvision==0.4.1", "Pillow==6.2.0", "watchdog==0.9.0", "horovod", "xtlib==*"] }
+
+Note the following:
+
+    - You'll typically not need to activate a virtual environment on instances in Philly or Batch;
+    - You will typically not need to install packages for the virtual environment, such as Conda;
+    - Installing Pip-level packages such as Torchvision and Pytorch will usually be necessary for any compute service. 
+
+You can list the specific packages and required versions as described here, or write up a requirements.txt file in your code directory and refer your **pip-packages** property to that file, such as: 
+
+.. code-block::
+
+    pip-packages: ["-r requirements.txt", "xtlib==*"]
+
+Each compute service (local, VM pools, Philly, Batch, and AML) also allows for the use of Docker images.
+
 .. _xt_config_dockers:
 
 ****************************
 Config File Section: Dockers
 ****************************
 
-The **Dockers** section lets users define named Docker images environments, that can be used in compute target definitions.
+If you use it, the **Dockers** section allows you to define named Docker images, to be used in compute target definitions. 
 
- A Docker environment should be defined as follows:
+Notes on using Docker:
+
+    - For use on your local machine or in a VM or pools, make sure you have Docker installed and running;
+    - The Philly service requires you to specify a Docker image to run with (using the **docker** property for the target);
+    - For the AML services, if you don't specify a **docker** property, it will build a Docker image for you, based on your **Setups** information;
+    - For Batch, you can run normally or use a Docker image.
+
+ Define a Docker environment as follows:
 
   .. code-block::
 
@@ -272,7 +426,7 @@ Where:
     - **registryservice** is the name of a registry service defined in the **external-services** section
     - **imagename** is the name of a Docker image defined in the registry service.
 
-Example: to specify a docker image that is registered in the **registry** service:
+Example: to specify a docker image that is registered in the XT user's **registry** service:
 
 .. only:: not internal
 
@@ -297,13 +451,14 @@ Example: to specify a docker image that is registered in the **registry** servic
 Config File Section: General
 *******************************
 
-The **general** section defines the set of general XT properties and their values. 
+The **general** section defines a substantial set of general XT properties and their values. 
 
 General properties include the following:
 
 +-------------------------------+--------------------------------------------------+
-| **Advanced-mode**             | Set to 'False' (Basic mode) by default. Set to   |
-|                               | 'True' if you want to run XT in Advanced mode.   |
+| **Advanced-mode**             | Set to 'False' (Basic mode) by default. You can  |
+|                               | this to 'True' if you want to run XT in          |
+|                               | Advanced mode.                                   |
 +-------------------------------+--------------------------------------------------+
 | **Username**                  | Set to the variable "$username", which defaults  |
 |                               | to the corporate login name of the user.         |
@@ -392,7 +547,7 @@ An example of a general section definition:
 Config File Section: Code
 ***************************
 
-The **code** section defines the set of XT properties that control the creation of code snapshots (collecting and copying the code from the local machine to the storage service as part of the run submission process).  
+The **code** section defines the set of XT properties for the creation of code snapshots, which is collecting and copying the code from the local machine to the storage service as part of the run submission process.  
 
 **Code** properties include the following:
 
@@ -432,15 +587,17 @@ Here is an example of the **code** section:
 Config File Section: After Files
 ********************************
 
-The **after-files** section defines the set of XT properties that control the uploading of run-related files after the run has completed.
+The **after-files** section defines the set of XT properties for uploading run-related files after the run has completed.
 
 The **after-files** properties include:
 
     **after-dirs**
-        A list of directories that define the files to be captured and uploader after a run has completed. the directories are specified relative to the working directory of the run (which is set by the XT controller). Any directory can optionally include a wildcard name as its last node, to match files in the specified directory.  You can use the special wildcard **\*\*** to specify that the directory should be captured recursively (processing all subdirectories of all subdirectories).
+        A list of directories that define the files to be captured and uploaded after a complete run. You specify the directories relative to the working directory of the run, which is set by the XT controller. Any directory can optionally include a wildcard name as its last node, to match all files in the specified directory.  
+        
+        You can use the special wildcard **\*\*** to specify that the directory should be captured recursively (processing all subdirectories of all subdirectories).
 
     **after-upload**
-        Normally set to True, meaning that the contents of the **after-files** should be captured and uploaded to the XT storage associated with the asociated run. If set to False, no files will be captured/copied.
+        Normally set to True, meaning that the contents of the **after-files** should be captured and uploaded to the XT storage associated with the asociated run. If set to False, no files will be captured and copied.
 
 An example of the **after-files** section:
 
@@ -598,7 +755,7 @@ The **internal** section controls operations in XT designed for internal XT deve
         - **detail** (command timing and detailed trace information show on the console).
           
     **stack-trace**
-        When set to True and exceptions are raised, the associated stack traces appear on the console. When set to False, the stack traces are omitted.
+        When set to True and any exceptions are raised, the associated stack traces appear on the console. When set to False, the stack traces are omitted.
 
     **auto-start**
         When set to True, the XT controller is automatically started for "view status" commands (mainly for use when running on the local machine or on a specified pool of boxes). The default is that the XT controller continues to run after the submitted job is completed.
@@ -636,7 +793,7 @@ The **aml-options** section contains properties specific to the Azure ML service
         If set to True, Azure ML assumes the environment has already been correctly configured by the user.  This property should be set to False for normal runs.
 
     **distributed-training**
-        Specifies the name of the distributed backend to use for distributed training. The value must be one of the following: **mpi**, **gloo**, or **nccl**.
+        Specifies the name of the distributed backend to use for `distributed training <https://docs.microsoft.com/en-us/azure/machine-learning/concept-distributed-training>`_. The value must be one of the following: **mpi**, **gloo**, or **nccl**.
 
     **max-seconds**
         Specifies the time limit for the ML run. If the running time exceeds this limit, a timeout error will occur.
@@ -644,6 +801,8 @@ The **aml-options** section contains properties specific to the Azure ML service
 .. note::
 
         Set the max-seconds property to -1 to specify the maximized run time.
+
+        `Check this link for information about distributed backends with Pytorch <https://pytorch.org/docs/stable/distributed.html#module-torch.distributed>`_ and how to decide between them.
 
 An example of the **aml-options** section:
 
@@ -664,7 +823,11 @@ An example of the **aml-options** section:
 Config File Section: Early Stopping
 ***********************************
 
-The **early-stopping** section specifies properties that are used by the Azure ML early stopping algorithms (currently only available when running on an AML service). Early stopping algorithms look at the training progress and status of an ML app and decide if the training should be stopped before it reaches the specified number of steps or epochs.
+The **early-stopping** section specifies properties that are used by the `Azure ML early stopping algorithms <https://docs.microsoft.com/en-us/azure/machine-learning/how-to-tune-hyperparameters#early-termination>`_. Early stopping algorithms look at the training progress and status of an ML app and decide if the training should be stopped before it reaches the specified number of steps or epochs. You can use this capability to save resources being used on poorly-performing runs.
+
+.. note::
+
+    The Early Stopping feature can only be used on Azure Machine Learning.
 
 The properties in the **early-stopping** section include:
 
@@ -711,14 +874,14 @@ Config File Section: Hyperparameter Search
 
 The **hyperparameter-search** section controls how XT uses hyperparameter searching.  
 
-In XT, hyperparameter searching starts from a set of named hyperparameters and their associated value distributions. These are normally specified in a hyperparameter config file (.txt), or they can be specified in the run command, as special arguments to your ML app. Before each search run starts, the values for each hyperparameter are sampled from their distributes, according to the hyperparameter search algorithm being used. Once a set of values for the hyperparameters is determined, the values can be passed to the ML app through an *app config file* (.txt), or by passing command line arguments to the ML app.
+In XT, hyperparameter searching starts from a set of named hyperparameters and their associated value distributions. These are normally specified in a hyperparameter config file (.txt), or you can specify them in the run command, as special arguments to your ML app. Before each search run starts, the values for each hyperparameter are sampled from their distributes, according to the hyperparameter search algorithm being used. Once a set of values for the hyperparameters is determined, the values can be passed to the ML app through an *app config file* (.txt), or by passing command line arguments to the ML app.
 
 The **hyperparameter-search** section properties are:
 
     **option-prefix**
-        If this value is an empty string or the value "none", command line arguments are not generated for each search run. Otherwise, the value of **option-prefix** is used in front of each hyperparameter name to form command line arguments to the ML app. 
+        If this value is an empty string or the value "none", the search run doesn't generate command line arguments. Otherwise, the value of **option-prefix** is used in front of each hyperparameter name to form command line arguments to the ML app. 
         
-        For example, if **option-prefix** is set to "--", and the hyperparameter **lr** is being set to .05 by the hyperparameter search algorithm, then the command argument "--lr=.05" would be passed to your ML app on its command line when it is run.
+        For example, if **option-prefix** is set to "--", and the hyperparameter **lr** is being set to .05 by the hyperparameter search algorithm, then the command argument "--lr=.05" would be passed to your ML app on its command line when it runs.
 
     **aggregate-dest**
         This is where XT aggregates results for the hyperparameter search. This aggregation enables faster access to the log files for the runs in the search. The value of this property must be one of the following: 
@@ -816,7 +979,7 @@ An example of a **hyperparameter-explorer** section:
 Config File Section: Run Reports
 *********************************
 
-The **run-reports** section controls how the **list runs** command formats its reports. The primary control revolves around the run columns, drawn from:
+The **run-reports** section controls how the **list runs** command formats its reports. The primary control governs the run columns, drawn from:
 
     - Standard run properties (such as **target** or **status**);
     - ML app logged hyperparameters (name must be prefixed by "hparams.");
@@ -827,7 +990,7 @@ The properties of the **run-reports** section are:
 
 +-------------------------------+--------------------------------------------------+
 | **sort**                      | Specifies the run column used for sorting the    |
-|                               | runs. If not used, defaults to "run".            |
+|                               | runs. If not used, it defaults to "run".         |
 +-------------------------------+--------------------------------------------------+
 | **reverse**                   | If set to True, XT performs a reverse sort (runs |
 |                               | are arranged in descending order of their sort   |
@@ -846,7 +1009,7 @@ The properties of the **run-reports** section are:
 |                               | column width are truncated with ellipses.        |
 +-------------------------------+--------------------------------------------------+
 | **status**                    | If specified, this value is used to match records|
-|                               | by their status value (filters out non-matching|||
+|                               | by their status value (filters out non-matching  |
 |                               | records).                                        |
 +-------------------------------+--------------------------------------------------+
 | **record-rollup**             | If true, the reporting record with the best      |
@@ -855,7 +1018,7 @@ The properties of the **run-reports** section are:
 |                               | be displayed.                                    |
 +-------------------------------+--------------------------------------------------+
 | **columns**                   | A list of column specifications to define        |
-|                               | the columns and their formatting for the report. |
+|                               | the columns and their report format.             |
 |                               | A column specification can be as simple as the   |
 |                               | name of a column, but it can also include some   |
 |                               | customization.  See `Columns in XT <columns>`    |
@@ -1041,7 +1204,7 @@ Azure Batch Images properties include:
 |                               | to select the latest version of an Image.        |
 +-------------------------------+--------------------------------------------------+
     
-More info about these properties is available in the `Azure Batch docs <https://docs.microsoft.com/en-us/python/api/azure-batch/azure.batch.models.imagereference?view=azure-python>`_, and also `here <https://docs.microsoft.com/en-us/python/api/azure-batch/azure.batch.models.virtualmachineconfiguration?view=azure-python>`_.
+More info about these properties is available in the `Azure Batch docs <https://docs.microsoft.com/en-us/python/api/azure-batch/azure.batch.models.imagereference?view=azure-python>`_, and `also here <https://docs.microsoft.com/en-us/python/api/azure-batch/azure.batch.models.virtualmachineconfiguration?view=azure-python>`_.
 
 An example of an **azure-batch-images** section::
 
@@ -1054,7 +1217,7 @@ An example of an **azure-batch-images** section::
 Config File Section: Boxes
 ***************************
 
-The **boxes** section defines a list of remote computers or Azure VMs that can be used as compute targets with XT.  The named boxes can also be used directly by name in various XT utility commands.  
+The **boxes** section defines a list of remote computers or VMs that can be used as compute targets with XT. The named boxes can also be used directly by name in various XT utility commands.  
 
 Requirements: each defined box needs to have ports 22 and port 18861 open for incoming messages, for configuration the box, and for communicating with the XT controller.
 
@@ -1105,10 +1268,10 @@ Config File Section: Providers
 The **providers** section defines the set of code providers active in XT, listed by their provider type.  
 
 The current provider types in XT are:
-    - command       (defines the set of commands available in XT)
-    - compute       (defines the set of backend compute services available in XT)
-    - hp-search     (defines the set of hyperparameter search algorithms available in XT)
-    - storage       (defines the set of storage providers available in XT)
+    - command       (defines the set of commands available for XT)
+    - compute       (defines the set of backend compute services available for XT)
+    - hp-search     (defines the set of hyperparameter search algorithms available for XT)
+    - storage       (defines the set of storage providers available for XT)
 
 For each provider type, you specify a dictionary of name/value pairs.  
     - The *name* is a user-defined name that may appear elsewhere in the XT config file or command line options.  
