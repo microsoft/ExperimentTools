@@ -14,18 +14,52 @@ pr:
   - master
 
 pool:
-  vmImage: 'ubuntu-18.04'
+  name: "eXperiment Tools"
+  Demands:
+    - Agent.Philly
+
+
+variables:
+  venv: $(System.DefaultWorkingDirectory)/venv
+  PHILLY_TESTS: "true"
 
 steps:
   - task: UsePythonVersion@0
     inputs:
       versionSpec: '3.6'
+      addToPath: true 
+      architecture: 'x64'
+
+  - script: |
+      python -m venv $(venv)
+      export PATH=$(venv)/bin:$PATH
+    displayName: 'Setup and activate virtual environment'
+    env:
+      PYTHON_HOME: ""
+      VIRTUAL_ENV: $(env)
+
+  - script: |
+      pip install xtlib-internal -i https://pkgs.dev.azure.com/msresearch/e709de22-dd8c-4b66-a84e-688f2a391d01/_packaging/eXperimentTools/pypi/simple/
+      xtlib-internal config --reset
+    displayName: 'Install xtlib-internal'
+    condition: eq(variables['PHILLY_TESTS'], 'true')
+
+  - task: PipAuthenticate@1
+    displayName: 'Pip Authenticate'
+    inputs:
+      # Provide list of feed names which you want to authenticate.
+      # Project scoped feeds must include the project name in addition to the feed name.
+      artifactFeeds: eXperimentTools/xtlib-internal
+      onlyAddExtraIndex: true
 
   - script: |
       export ENCODED_BASE_CONFIG=$(ENCODED_BASE_CONFIG)
       export AZURE_CLIENT_ID=$(AZURE_CLIENT_ID)
       export AZURE_TENANT_ID=$(AZURE_TENANT_ID)
       export AZURE_CLIENT_SECRET=$(AZURE_CLIENT_SECRET)
+      export PHILLY_USER=$(PHILLY_USER)
+      export PHILLY_PASS=$(PHILLY_PASS)
+      export PHILLY_TESTS=$(PHILLY_TESTS)
       echo $(pwd)
       bash run-tests.sh
     displayName: 'Run Pytest Suite'
@@ -35,3 +69,8 @@ steps:
     inputs:
       testResultsFiles: '**/test-*.xml'
       testRunTitle: 'Publish test results for Python $(python.version)'
+
+  - script: |
+      deactivate venv
+      rm -rf $(venv)
+    displayName: 'Cleanup'
