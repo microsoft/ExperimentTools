@@ -1,7 +1,6 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
+# Azure Pipeline using the Matrix strategy to run tests on
+# 1. A transient Azure VM (for non-Philly tests)
+# 2. GCR VM added as part of a named pool (for Philly tests)
 
 trigger:
   branches:
@@ -13,15 +12,26 @@ pr:
   - dev
   - master
 
+strategy:
+  maxParallel: 2
+  matrix:
+    philly:
+      poolName: "eXperiment Tools"
+      vmImage: ubuntu-18.04
+      PHILLY_TESTS: "true"
+    azure:
+      poolName: "Azure Pipelines"
+      vmImage: ubuntu-18.04
+      PHILLY_TESTS: "false"
+
 pool:
-  name: "eXperiment Tools"
-  Demands:
-    - Agent.Philly
+  name: $(poolName)
+  vmImage: $(vmImage)
 
 
 variables:
   venv: $(System.DefaultWorkingDirectory)/venv
-  PHILLY_TESTS: "true"
+  PHILLY_TESTS: $(PHILLY_TESTS)
 
 steps:
   - task: UsePythonVersion@0
@@ -47,30 +57,36 @@ steps:
   - task: PipAuthenticate@1
     displayName: 'Pip Authenticate'
     inputs:
-      # Provide list of feed names which you want to authenticate.
-      # Project scoped feeds must include the project name in addition to the feed name.
       artifactFeeds: eXperimentTools/xtlib-internal
       onlyAddExtraIndex: true
+    condition: eq(variables['PHILLY_TESTS'], 'true')
 
   - script: |
       export ENCODED_BASE_CONFIG=$(ENCODED_BASE_CONFIG)
       export AZURE_CLIENT_ID=$(AZURE_CLIENT_ID)
       export AZURE_TENANT_ID=$(AZURE_TENANT_ID)
       export AZURE_CLIENT_SECRET=$(AZURE_CLIENT_SECRET)
-      export PHILLY_USER=$(PHILLY_USER)
-      export PHILLY_PASS=$(PHILLY_PASS)
-      export PHILLY_TESTS=$(PHILLY_TESTS)
-      echo $(pwd)
+      export XT_GLOBAL_CONFIG=tests/xt_config.yaml
+      pip install -r dev_requirements.txt
+      pip install -e .
       bash run-tests.sh
-    displayName: 'Run Pytest Suite'
+    displayName: 'Run Pytest Suite without Philly Tests'
+    condition: eq(variables['PHILLY_TESTS'], 'false')
+
+  - script: |
+      export ENCODED_BASE_CONFIG=$(ENCODED_BASE_CONFIG)
+      export AZURE_CLIENT_ID=$(AZURE_CLIENT_ID)
+      export AZURE_TENANT_ID=$(AZURE_TENANT_ID)
+      export AZURE_CLIENT_SECRET=$(AZURE_CLIENT_SECRET)
+      export XT_GLOBAL_CONFIG=tests/xt_config_philly.yaml
+      pip install -r dev_requirements.txt
+      pip install -e .
+      bash run-tests.sh
+    displayName: 'Run Pytest Suite with only Philly Tests'
+    condition: eq(variables['PHILLY_TESTS'], 'true')
 
   - task: PublishTestResults@2
     condition: succeededOrFailed()
     inputs:
       testResultsFiles: '**/test-*.xml'
       testRunTitle: 'Publish test results for Python $(python.version)'
-
-  - script: |
-      deactivate venv
-      rm -rf $(venv)
-    displayName: 'Cleanup'

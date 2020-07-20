@@ -41,6 +41,7 @@ class TestUpload(test_base.TestBase):
         self.xt('xt run --target={} --data-action=mount --model-action=mount tests/fixtures/miniMnist.py --auto-download=0  --eval-model=1'.format(target))
         self.xt('xt run --target={} --data-action=mount --data-writable=1 --model-action=mount --model-writable=1 tests/fixtures/miniMnist.py --auto-download=0  --eval-model=1'.format(target))
 
+    @pytest.mark.philly_test
     @pytest.mark.skipif(os.environ.get("PHILLY_TESTS", "false").lower() != "true", reason="Skip Philly tests unless explicitly called")
     def test_action_target_philly(self):
         self.action_target("philly")

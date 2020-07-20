@@ -9,7 +9,7 @@ pip install -e .
 # pip install keyring artifacts-keyring
 python prepare-test-environment.py
 # XT_GLOBAL_CONFIG=tests/xt_config.yaml xt help
-XT_GLOBAL_CONFIG=tests/xt_config.yaml pytest tests/ -m "not philly_test" -v --junitxml=test-results.xml
+XT_GLOBAL_CONFIG=tests/xt_config_philly.yaml pytest tests/ -m philly_test -v --junitxml=test-results.xml
 # if [ "$PHILLY_TESTS" ]; then
 #     XT_GLOBAL_CONFIG=tests/xt_config_philly.yaml pytest tests/ -m philly_test -v --junitxml=test-results.xml
 # else
