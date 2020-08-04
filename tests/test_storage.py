@@ -11,7 +11,6 @@ import xtlib.xt_run as xt_run
 import test_base
 
 
-
 def generate(count, ext, subdir):
     texts = ["", "this is a test", "how about that?\nthis is a 2nd line\nthis is 3rd", "huh"]
 
@@ -34,6 +33,11 @@ class TestUpload(test_base.TestBase):
         cls.upload_testing_dir = "upload_testing"
         cls.download_testing_dir = "download_testing"
 
+        if os.environ.get("PHILLY_TESTS") == "true":
+            cls.share_name = "sharetestphilly"
+        else:
+            cls.share_name = "sharetest"
+
         file_utils.ensure_dir_clean(cls.upload_testing_dir)
         file_utils.ensure_dir_clean(cls.download_testing_dir)
 
@@ -45,18 +49,18 @@ class TestUpload(test_base.TestBase):
         console.set_capture(True)
         xt_run.main("xt list shares")
         result = console.set_capture(False)
-        matching = list(filter(lambda entry: entry.find("sharetest") != -1, result))
+        matching = list(filter(lambda entry: entry.find(cls.share_name) != -1, result))
         if matching:
-            xt_run.main("xt delete share sharetest --response=sharetest")
+            xt_run.main(f"xt delete share {cls.share_name} --response={cls.share_name}")
             time.sleep(5)
 
-        xt_run.main("xt create share sharetest")
+        xt_run.main(f"xt create share {cls.share_name}")
 
     def teardown_class(cls):
         """
         Teardown once after all tests
         """
-        xt_run.main("xt delete share sharetest --response sharetest")
+        xt_run.main(f"xt delete share {cls.share_name} --response {cls.share_name}")
         elapsed = time.time() - cls.started
         print("\nend of uploadTests, elapsed={:.0f} secs".format(elapsed))
 
@@ -160,25 +164,25 @@ class TestUpload(test_base.TestBase):
     def test_single_blob(self):
 
         # blob, single, optional, enabled, found
-        xt_cmds.main(f"xt upload {self.upload_testing_dir}/test1.py --share=sharetest")
+        xt_cmds.main(f"xt upload {self.upload_testing_dir}/test1.py --share={self.share_name}")
 
         # blob, single, optional, enabled, not found
         #xt_cmds.main("xt upload test1.pyxx")
 
         # blob, single, optional, disabled, found
-        xt_cmds.main(f"xt upload {self.upload_testing_dir}/test1.py --share=sharetest --feedback=false")
+        xt_cmds.main(f"xt upload {self.upload_testing_dir}/test1.py --share={self.share_name} --feedback=false")
 
         # blob, single, specified, enabled, found
-        xt_cmds.main(f"xt upload {self.upload_testing_dir}/test1.py foo.py --share=sharetest")
+        xt_cmds.main(f"xt upload {self.upload_testing_dir}/test1.py foo.py --share={self.share_name}")
 
         # PASS: dest=DOUBLE path
-        xt_cmds.main(f"xt upload {self.upload_testing_dir}/test1.py maindir/subdir/test1.py --share=sharetest")
+        xt_cmds.main(f"xt upload {self.upload_testing_dir}/test1.py maindir/subdir/test1.py --share={self.share_name}")
 
         # PASS: dest=PARENT path
-        xt_cmds.main(f"xt upload {self.upload_testing_dir}/test1.py __ws__/parent.txt --share=sharetest")
+        xt_cmds.main(f"xt upload {self.upload_testing_dir}/test1.py __ws__/parent.txt --share={self.share_name}")
         
         # PASS: dest=GLOBAL
-        xt_cmds.main(f"xt upload {self.upload_testing_dir}/test1.py /{constants.INFO_CONTAINER}/jobs/job1000/global_single.txt --share=sharetest")
+        xt_cmds.main(f"xt upload {self.upload_testing_dir}/test1.py /{constants.INFO_CONTAINER}/jobs/job1000/global_single.txt --share={self.share_name}")
 
         self.dir_blobs()
         self.download_single_blob()
@@ -187,25 +191,25 @@ class TestUpload(test_base.TestBase):
     # ---- MULTIPLE BLOBS ----
     def test_multiple_blobs(self):
         # blob, multi, not specifed, enabled, found
-        xt_cmds.main(f"xt upload {self.upload_testing_dir}/*.py --share=sharetest")
+        xt_cmds.main(f"xt upload {self.upload_testing_dir}/*.py --share={self.share_name}")
 
         # blob, multi, specifed, enabled, found
-        xt_cmds.main(f"xt upload {self.upload_testing_dir}/*.py mypy --share=sharetest")
+        xt_cmds.main(f"xt upload {self.upload_testing_dir}/*.py mypy --share={self.share_name}")
 
         # PASS: dest=DOUBLE path
-        xt_cmds.main(f"xt upload {self.upload_testing_dir}/myapps maindir/subdir --share=sharetest")
+        xt_cmds.main(f"xt upload {self.upload_testing_dir}/myapps maindir/subdir --share={self.share_name}")
 
         # PASS: dest=PARENT path
-        xt_cmds.main(f"xt upload {self.upload_testing_dir}/*.py __ws__ --share=sharetest")
+        xt_cmds.main(f"xt upload {self.upload_testing_dir}/*.py __ws__ --share={self.share_name}")
         
         # PASS: source=named, dest=PARENT 
-        xt_cmds.main(f"xt upload {self.upload_testing_dir}/myapps __ws__ --share=sharetest")
+        xt_cmds.main(f"xt upload {self.upload_testing_dir}/myapps __ws__ --share={self.share_name}")
 
         # PASS: dest=GLOBAL
-        xt_cmds.main(f"xt upload {self.upload_testing_dir}/*.txt /{constants.INFO_CONTAINER}/jobs/job1000 --share=sharetest")
+        xt_cmds.main(f"xt upload {self.upload_testing_dir}/*.txt /{constants.INFO_CONTAINER}/jobs/job1000 --share={self.share_name}")
         
         # PASS: source=RECURSIVE, dest=named
-        xt_cmds.main(f"xt upload {self.upload_testing_dir}/myapps/** foo --share=sharetest")
+        xt_cmds.main(f"xt upload {self.upload_testing_dir}/myapps/** foo --share={self.share_name}")
 
         self.dir_blobs()
         self.download_multiple_blobs()

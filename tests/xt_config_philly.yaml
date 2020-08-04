@@ -1,0 +1,58 @@
+# local xt_config.yaml file for quick-test
+
+# NOTE: this file contains services used by Microsoft for automated testing and is not yet available to our
+# contributing developers.
+
+
+general:
+    advanced-mode: true
+    workspace: "pytest-workspace-philly"         # use a unique name that will create a new container
+    # getting torchvision + pillow to run on correctly batch, philly, and aml is tricky 
+    xt-team-name: "phoenix"            # for use with XT Grok
+    step-name: "epoch"
+    remote-control: true
+    monitor: "none"
+
+internal:
+    stack-trace: true
+
+code:
+    xtlib-upload: true                 # upload XTLIB sources files for each run and use for controller and ML app
+
+data:
+    data-share-path: "mnist"               # path on data share where run-related data resides
+    data-local: "$scriptdir/../data"       # local directory of data for app
+    data-action: "mount"                   # data action at start of run: none, download, mount
+    data-writable : false
+
+model:
+    model-share-path: "miniMnist"          # name of model share
+    model-action: "mount"                  # model action at start of run: none, download, mount
+    model-writable: false
+
+hyperparameter-explorer:
+    steps-name: "epochs"                   # usually "epochs" or "TOTAL_STEPS"
+    log-interval-name: "log-interval"      # name of hyperparameter that specifies how often to log metrics
+
+run-reports:
+    columns: ["run", "job", # "username", 
+        "created:$do", "experiment", "box", "queued", "target", "nodes", "runs", "search", "search_style", "status", 
+        "tags.priority", "tags.description", "tags.top5", "tags.good_run",
+        "hparams.momentum", "hparams.optimizer",
+        
+        "metrics.step", "hparams.steps",  "metrics.epoch", "hparams.epochs", 
+        "metrics.train-loss", "metrics.dev-loss", "metrics.test-loss", 
+        "metrics.train-acc",  "metrics.dev-acc",  "metrics.test-acc", 
+        "duration", 
+        ]
+
+job-reports:
+    columns: ["job", "created", "started", "workspace", "experiment", "target", "nodes", "runs", "repeat", "tags.description", "tags.urgent", "tags.sad=SADD", "tags.funny", "low_pri", 
+        "vm_size", "azure_image", "service", "vc", "cluster", "queue", "service_type", "search", "search_style",
+        "job_status:$bz", "running_nodes:$bz", "running_runs:$bz", "error_runs:$bz", "completed_runs:$bz"]
+
+boxes:
+    # This section lets you define remote computers for running your experiments (samples listed below).
+    # REQUIREMENTS: each box needs to have ports 22 and 18861 open for incoming messages.
+    # The "actions" property is a list of store names ("data", "model") whose download or mount actions should be performed on the box.
+    local: {address: "localhost", os: "linux", box-class: "linux", max-runs: 1, actions: [], setup: local}

@@ -132,7 +132,7 @@ class ImplStorage(ImplBase):
                 console.print('  {:20.20s} {:>8d}'.format(name, exper_count))
         else:
             for name in names:
-                console.print('  {:20.20s}'.format(name))
+                console.print(name)
 
     #---- CREATE SHARE command ----
     @argument("share", help="the name for the newly created share")
