@@ -353,8 +353,7 @@ def get_client_cs(core, job_id, node_index):
 
     box_secret = utils.safe_value(secrets_by_node, node_id)
 
-    service_info_by_node = utils.safe_value(job, "service_info_by_node")
-    node_info = utils.safe_value(service_info_by_node, node_id)
+    node_info = core.store.mongo.get_service_info_by_node(job_id, node_id)
 
     if compute and node_info:
         backend = core.create_backend(compute)
@@ -385,12 +384,12 @@ def get_job_record(store, job_id, fields_dict = None):
 def get_job_backend(store, core, job_id):
     
     # FYI: getting job record from storage: 2.75 secs, from mongo: 2.39 secs (mongo slightly faster)
-    job_info = get_job_record(store, job_id, {"pool_info": 1, "service_info_by_node": 1})
+    job_info = get_job_record(store, job_id, {"pool_info": 1})
 
     target = job_info["pool_info"]["name"]
     backend = core.create_backend(target)
 
-    return backend, job_info
+    return backend
 
 def get_service_node_info(job_info, node_index):
     
@@ -402,12 +401,13 @@ def get_service_node_info(job_info, node_index):
 
 def get_service_job_info(store, core, job_id):
 
-    job_info = get_job_record(store, job_id, {"pool_info": 1, "service_info_by_node": 1, "service_job_info": 1})
+    job_info = get_job_record(store, job_id, {"pool_info": 1})
 
     target = job_info["pool_info"]["name"]
     backend = core.create_backend(target)
 
-    service_info_by_node = job_info["service_info_by_node"]  
-    service_job_info = job_info["service_job_info"]  
+    mongo = store.get_mongo()
+    service_info_by_node = mongo.get_service_info_by_node(job_id)
+    service_job_info = mongo.get_service_job_info(job_id)
 
     return service_job_info, service_info_by_node, backend

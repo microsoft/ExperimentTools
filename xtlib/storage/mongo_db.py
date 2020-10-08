@@ -119,17 +119,17 @@ class MongoDB():
         jobs = self.mongo_with_retries("delete_job", cmd_func)
 
     def get_next_sequential_job_id(self, default_next):
-        job_ws = "__jobs__"
+        jobs_collection = "__jobs__"
         path = "next_job"
 
         db = self.mongo_db
 
         # does a counters doc exit for this ws_name?
-        cursor = db.ws_counters.find({"_id": job_ws}).limit(1)
+        cursor = db.ws_counters.find({"_id": jobs_collection}).limit(1)
         if not cursor.count():
-            db.ws_counters.insert_one( {"_id": job_ws, path: default_next} )
+            db.ws_counters.insert_one( {"_id": jobs_collection, path: default_next} )
 
-        document = db.ws_counters.find_and_modify( {"_id": job_ws}, update={"$inc": {path: 1} }, new=False)
+        document = db.ws_counters.find_and_modify( {"_id": jobs_collection}, update={"$inc": {path: 1} }, new=False)
         next_id = document[path]
 
         return next_id
@@ -178,8 +178,9 @@ class MongoDB():
         return self.get_next_sequential_ws_id(ws_name, "next_run", default_next)
 
     def get_next_child_id(self, ws_name, run_name, default_next=1):
-        return self.get_next_sequential_ws_id(ws_name, "next_child." + run_name, default_next)
-
+        document = self.mongo_db["__next_child__"].find_and_modify( {"run_name": run_name, "ws_name": ws_name}, update={"$inc": {"next_id": 1} }, new=True, upsert=True)
+        return utils.safe_nested_value(document, 'next_id')
+        
     def get_next_end_id(self, ws_name, default_next_run=1):
         return self.get_next_sequential_ws_id(ws_name, "next_end", default_next_run)
 
@@ -255,10 +256,8 @@ class MongoDB():
 
     def add_run_event(self, ws_name, run_name, log_record):
 
-        # first, add log record to ws/run document
-        update_doc = { "$push": {"log_records": log_record} }
-        self.mongo_with_retries("add_run_event", lambda: self.mongo_db[ws_name].update_one( {"_id": run_name}, update_doc, upsert=True) )
-
+        self.add_log_record_from_dict(ws_name, run_name, log_record)
+        
         event_name = log_record["event"]
         data_dict = log_record["data"]
         updates = {}
@@ -314,6 +313,12 @@ class MongoDB():
 
         self.update_mongo_run_from_dict(ws_name, run_name, updates)
 
+    def add_log_record_from_dict(self, ws_name, run_name, log_record):
+        log_record['run_id'] = run_name
+        log_record['ws_name'] = ws_name
+
+        self.mongo_with_retries("add_log_record_from_dict", lambda: self.mongo_db["__log_records__"].insert_one(log_record))
+
     def update_mongo_run_from_dict(self, ws_name, run_name, dd):
         #console.print("update_mongo_run_from_dict: ws_name={}, run_name={}, dd={}".format(ws_name, run_name, dd))
 
@@ -362,10 +367,8 @@ class MongoDB():
             - keep all runs for ws in cache and apply filter locally (TODO: this option)
         '''
         if include_log_records:
-            fields_dict = {"log_records": 1}
             fn_cache = self.run_cache_dir + "/" + constants.ALL_RUNS_CACHE_FN
         else:
-            fields_dict = {"log_records": 0}
             fn_cache = self.run_cache_dir + "/" + constants.RUN_SUMMARY_CACHE_FN
 
         fn_cache = fn_cache.replace("$aggregator", ws_name)
@@ -519,6 +522,37 @@ class MongoDB():
 
         console.diag("after get_info_for_jobs()")        
         return job_records
+
+    def get_active_runs(self, job_id, run_index=None):
+        records = self.mongo_with_retries("get_active_runs", lambda: self.mongo_db["__active_runs__"].find( {"job_id": job_id, "run_index": run_index}), return_records=True)
+        console.diag("after get_active_runs")
+
+        return records
+
+    def get_runs_by_box(self, job_id, box_id=None):
+        if box_id:
+            records = self.mongo_with_retries("get_runs_by_box", lambda: self.mongo_db["__get_runs_by_box__"].find( {"job_id": job_id, "box_id": box_id}), return_records=True)
+        else:
+            records = self.mongo_with_retries("get_runs_by_box", lambda: self.mongo_db["__get_runs_by_box__"].find( {"job_id": job_id}), return_records=True)
+
+        console.diag("after get_runs_by_box()")        
+        return records
+
+    def get_service_info_by_node(self, job_id, node_id=None):
+        if node_id:
+            records = self.mongo_with_retries("get_service_info_by_node", lambda: self.mongo_db["__service_info_by_node__"].find( {"job_id": job_id, "node_id": node_id}), return_records=True)
+        else:
+            records = self.mongo_with_retries("get_service_info_by_node", lambda: self.mongo_db["__service_info_by_node__"].find( {"job_id": job_id}), return_records=True)
+
+        console.diag("after get_service_info_by_node")
+
+        return records
+
+    def get_service_job_info(self, job_id):
+        records = self.mongo_with_retries("get_service_job_info", lambda: self.mongo_db["__service_job_info__"].find( {"job_id": job_id}), return_records=True)
+        console.diag("after get_service_job_info")
+
+        return records
 
     def update_job_info(self, job_id, dd, clear=False, upsert=True):
         if clear:

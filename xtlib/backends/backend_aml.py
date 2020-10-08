@@ -340,7 +340,7 @@ class AzureML(BackendBase):
             }
         }
 
-        fields_dict = {"job_id": 1, "service_info_by_node": 1, "service_job_info": 1}
+        fields_dict = {"job_id": 1}
 
         job_records = mongo.get_info_for_jobs(filter_dict, fields_dict)
 
@@ -354,6 +354,7 @@ class AzureML(BackendBase):
             cancel_results: a list of kill results records 
                 (keys: workspace, run_name, exper_name, killed, status, before_status)
         '''
+        mongo = self.store.get_mongo()
         cancel_results = []
 
         # get list of active jobs from batch
@@ -362,12 +363,13 @@ class AzureML(BackendBase):
 
         if active_jobs:
             for job_record in active_jobs:
+                job_id = utils.safe_value(job_record, "job_id")
+                service_job_info = mongo.get_service_job_info(job_id)
+                service_info_by_node = mongo.get_service_info_by_node(job_id)
+
                 # watch out for older jobs that didn't have service_job_info/service_info_by_node properties
-                service_job_info = utils.safe_value(job_record, "service_job_info")
-                service_info_by_node = utils.safe_value(job_record, "service_info_by_node")
 
                 if service_job_info and service_info_by_node:
-                    job_id = job_record["job_id"]
                     cancel_result = self.cancel_job(service_job_info, service_info_by_node)
                     for _, node_result in cancel_result.items():
                         cancel_results.append(node_result)
@@ -1056,7 +1058,8 @@ class AzureML(BackendBase):
     def cancel_job(self, service_job_info, service_info_by_node):
         result_by_node = {}
 
-        for node_id, node_info in service_info_by_node.items():
+        for node_info in service_info_by_node:
+            node_id = utils.safe_value(node_info, "node_id")
             result = self.cancel_node(node_info)
             if result is not None:
                 result_by_node[node_id] = result

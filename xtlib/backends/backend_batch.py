@@ -1223,20 +1223,9 @@ class AzureBatch(BackendBase):
             # get runs_by_job data from MONGO
             mongo = self.store.get_mongo()
 
-            filter_dict = {}
-            filter_dict["job_id"] = {"$in": job_ids}
-            filter_dict["username"] = self.username
-
-            fields_dict = {"runs_by_box": 1}
-
-            job_records = mongo.get_info_for_jobs(filter_dict, fields_dict)
-            console.diag("after get_info_for_jobs()")
-
             # cancel each ACTIVE job
-            for job in job_records:
-                job_id = job["_id"]
-                runs_by_box = job["runs_by_box"]
-
+            for job_id in job_ids:
+                runs_by_box = mongo.get_runs_by_box(job_id)
                 kr_by_box = self.cancel_runs_by_job(job_id, runs_by_box)
 
                 cancel_results_by_box.update(kr_by_box)
@@ -1335,8 +1324,9 @@ class AzureBatch(BackendBase):
     def cancel_job(self, service_job_info, service_info_by_node):
         result_by_node = {}
 
-        for node_id, node_info in service_info_by_node.items():
+        for node_info in service_info_by_node:
             result = self.cancel_node(node_info)
+            node_id = node_info['node_id']
             result_by_node[node_id] = result
 
         return result_by_node
