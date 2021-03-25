@@ -25,7 +25,7 @@ requirements = [
     "azureml-widgets==1.0.69.1",
  
     # other xtlib dependencies
-    "PyYAML==5.3.1",            # for YAML parser
+    "PyYAML==5.4",            # for YAML parser
     "arrow==0.14.0",            # avoid annoying warning msgs in 0.14.4, 
     "future==0.18.2",           # temporarily needed by tensorboard
     "grpcio==1.29.0",           # tensorboard requirement
