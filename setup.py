@@ -34,7 +34,7 @@ requirements = [
     "numpy==1.18.1",            # general use
     "pandas==1.0.4",            # for DataFrame 
     "paramiko==2.7.1",          # SSH session-level API (fast access to remote box)
-    "pillow==7.1.0",
+    "pillow==8.2.0",
     "psutil==5.7.0",            # for querying and killing processes (XT controller)
     "ptvsd==4.3.2",             # for attaching debugger to python processes
     "pymongo==3.10.1",          # for reporting/querying runs database (Azure MongoDB API)
