@@ -26,7 +26,7 @@ requirements = [
  
     # other xtlib dependencies
     "PyYAML==5.3.1",            # for YAML parser
-    "arrow==0.14.0",            # avoid annoying warning msgs in 0.14.4, 
+    "arrow==0.15.1",            # avoid annoying warning msgs in 0.14.4, 
     "future==0.18.2",           # temporarily needed by tensorboard
     "grpcio==1.29.0",           # tensorboard requirement
     "hyperopt==0.2.4",          # for bayesian hyperparam searching
